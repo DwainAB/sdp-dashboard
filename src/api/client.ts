@@ -13,7 +13,7 @@ export const api = {
 
   async getDashboard(slug: string): Promise<Dashboard> {
     await delay(400)
-    const normalized = slug === 'marketplace' ? 'aglae' : slug
+    const normalized = slug === 'marketplace' ? 'aglae' : slug === 'analytics' ? 'lylo' : slug
     const dashboard = mockDashboards[normalized]
     if (!dashboard) throw new Error('Dashboard not found')
     return dashboard

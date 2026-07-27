@@ -14,7 +14,7 @@ export const mockProjects: Project[] = [
   { id: 1, name: 'SDP Core', slug: 'sdp-core', description: 'Plateforme principale de gestion des paiements', color: '#6366f1', status: 'active', created_at: '2024-01-01T00:00:00Z' },
   { id: 2, name: 'Aglae', slug: 'aglae', description: 'Place de marché B2B', color: '#f59e0b', status: 'active', created_at: '2024-01-01T00:00:00Z' },
   { id: 3, name: 'Ninno', slug: 'mobile-app', description: 'Application mobile clients', color: '#10b981', status: 'active', created_at: '2024-01-01T00:00:00Z' },
-  { id: 4, name: 'Analytics', slug: 'analytics', description: 'Moteur de reporting et analytics', color: '#ef4444', status: 'active', created_at: '2024-01-01T00:00:00Z' },
+  { id: 4, name: 'Lylo', slug: 'lylo', description: 'Back-office Lylo', color: '#996f56', status: 'active', created_at: '2024-01-01T00:00:00Z' },
   { id: 5, name: 'Admin Portal', slug: 'admin-portal', description: "Portail d'administration interne", color: '#8b5cf6', status: 'maintenance', created_at: '2024-01-01T00:00:00Z' },
 ]
 
@@ -85,30 +85,20 @@ export const mockDashboards: Record<string, Dashboard> = {
     metrics: [],
     charts: [],
   },
-  'analytics': {
-    id: 4, name: 'Analytics', slug: 'analytics', description: 'Moteur de reporting et analytics', color: '#ef4444', status: 'active', created_at: '2024-01-01T00:00:00Z',
+  'lylo': {
+    id: 4, name: 'Lylo', slug: 'lylo', description: 'Back-office Lylo', color: '#996f56', status: 'active', created_at: '2024-01-01T00:00:00Z',
     sections: [
-      { id: 'overview', name: 'Vue d\'ensemble', icon: 'LayoutDashboard', metricIds: [13, 14, 15, 16], chartIds: [8, 9] },
-      { id: 'queries', name: 'Requêtes', icon: 'Database', metricIds: [13, 14, 15], chartIds: [8] },
-      { id: 'infra', name: 'Infrastructure', icon: 'Server', metricIds: [15, 16], chartIds: [9] },
+      { id: 'accueil', name: 'Accueil', icon: 'LayoutDashboard', metricIds: [], chartIds: [] },
+      { id: 'clients', name: 'Clients', icon: 'Users', metricIds: [], chartIds: [] },
+      { id: 'equipe', name: 'Équipe', icon: 'Users', metricIds: [], chartIds: [] },
+      { id: 'formules', name: 'Formules', icon: 'FlaskConical', metricIds: [], chartIds: [] },
+      { id: 'questionnaire', name: 'Questionnaire', icon: 'ClipboardList', metricIds: [], chartIds: [] },
+      { id: 'ingredients', name: 'Ingrédients', icon: 'Beaker', metricIds: [], chartIds: [] },
+      { id: 'imprimantes', name: 'Imprimantes', icon: 'Printer', metricIds: [], chartIds: [] },
+      { id: 'analyses', name: 'Analyses', icon: 'BarChart3', metricIds: [], chartIds: [] },
     ],
-    metrics: [
-      { id: 13, project_id: 4, name: 'Rapports générés', value: 892, unit: '', type: 'number', change: 45.0 },
-      { id: 14, project_id: 4, name: 'Datasets', value: 156, unit: '', type: 'number', change: 12.0 },
-      { id: 15, project_id: 4, name: 'Temps de requête', value: 1.2, unit: 's', type: 'number', change: -23.5 },
-      { id: 16, project_id: 4, name: 'Stockage utilisé', value: 2.4, unit: 'TB', type: 'number', change: 8.3 },
-    ],
-    charts: [
-      { id: 8, title: 'Requêtes par jour', type: 'line', data: [
-        { label: 'Lun', value: 890 }, { label: 'Mar', value: 920 }, { label: 'Mer', value: 880 },
-        { label: 'Jeu', value: 950 }, { label: 'Ven', value: 1020 }, { label: 'Sam', value: 780 },
-        { label: 'Dim', value: 720 },
-      ]},
-      { id: 9, title: 'Temps de réponse', type: 'bar', data: [
-        { label: 'API Rest', value: 0.8 }, { label: 'GraphQL', value: 1.2 },
-        { label: 'WebSocket', value: 0.5 }, { label: 'gRPC', value: 2.1 },
-      ]},
-    ],
+    metrics: [],
+    charts: [],
   },
   'admin-portal': {
     id: 5, name: 'Admin Portal', slug: 'admin-portal', description: "Portail d'administration interne", color: '#8b5cf6', status: 'maintenance', created_at: '2024-01-01T00:00:00Z',

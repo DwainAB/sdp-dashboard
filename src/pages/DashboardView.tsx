@@ -9,6 +9,7 @@ import { WelcomeHeader } from '../components/WelcomeHeader'
 import { SettingsModal } from '../components/SettingsModal'
 import MarketplaceRenderer from '../components/aglae/MarketplaceRenderer'
 import NinnoRenderer from '../components/ninno/NinnoRenderer'
+import LyloRenderer from '../components/lylo/LyloRenderer'
 import { mockUser, mockNotifications } from '../data/mockData'
 import type { Dashboard, Project } from '../types'
 
@@ -16,6 +17,7 @@ const isUserMode = import.meta.env.VITE_USER_MODE === 'user'
 
 const MARKETPLACE_OCR_SECTIONS = new Set(['extraction', 'clients', 'groups', 'analysis', 'orders', 'team', 'devices'])
 const NINNO_ADMIN_SECTIONS = new Set(['appearance', 'notes'])
+const LYLO_SECTIONS = new Set(['accueil', 'clients', 'equipe', 'formules', 'questionnaire', 'ingredients', 'imprimantes', 'analyses'])
 
 export function DashboardView() {
   const { slug } = useParams<{ slug: string }>()
@@ -60,12 +62,14 @@ export function DashboardView() {
     setSelectOpen(false)
   }, [navigate])
 
-  const normalizedSlug = slug === 'marketplace' ? 'aglae' : slug
+  const normalizedSlug = slug === 'marketplace' ? 'aglae' : slug === 'analytics' ? 'lylo' : slug
   const currentProject = projects.find((p) => p.slug === normalizedSlug)
   const isMarketplace = normalizedSlug === 'aglae'
   const isNinno = normalizedSlug === 'mobile-app'
+  const isLylo = normalizedSlug === 'lylo'
   const isOcrSection = isMarketplace && MARKETPLACE_OCR_SECTIONS.has(activeSection)
   const isNinnoAdminSection = isNinno && NINNO_ADMIN_SECTIONS.has(activeSection)
+  const isLyloSections = isLylo && LYLO_SECTIONS.has(activeSection)
 
   const activeSectionData = dashboard?.sections.find((s) => s.id === activeSection)
   const filteredMetrics = dashboard?.metrics.filter((m) =>
@@ -166,7 +170,9 @@ export function DashboardView() {
               <p className="text-red-400 text-sm">{error}</p>
             </div>
           ) : dashboard ? (
-            isNinnoAdminSection ? (
+            isLyloSections ? (
+              <LyloRenderer section={activeSection} />
+            ) : isNinnoAdminSection ? (
               <NinnoRenderer section={activeSection} />
             ) : isOcrSection ? (
               <MarketplaceRenderer
