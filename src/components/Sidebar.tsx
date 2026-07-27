@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { BarChart3, LayoutDashboard, ArrowLeftRight, Euro, ShoppingCart, Store, Users, Activity, Database, Server, BarChart, Headphones, FileText, Tablet, Image, StickyNote, Settings, LogOut, LucideIcon } from 'lucide-react'
+import { Shield, BarChart3, LayoutDashboard, ArrowLeftRight, Euro, ShoppingCart, Store, Users, Activity, Database, Server, BarChart, Headphones, FileText, Tablet, Image, StickyNote, Settings, LogOut, LucideIcon } from 'lucide-react'
 import type { DashboardSection, Project } from '../types'
 
 const iconMap: Record<string, LucideIcon> = {
@@ -45,6 +45,15 @@ export function Sidebar(props: SidebarProps) {
             {!collapsed && 'Tous les projets'}
           </NavLink>
           {!collapsed && <p className="text-[10px] uppercase tracking-widest text-gray-600 font-semibold px-4 pt-4 pb-1">Projets</p>}
+          <NavLink to="/admin"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-2 text-sm transition-colors ${isActive ? 'bg-indigo-600/10 text-indigo-400 border-r-2 border-indigo-400' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`
+            }
+            title={collapsed ? 'Administration' : undefined}
+          >
+            <Shield size={18} className="shrink-0" />
+            {!collapsed && 'Administration'}
+          </NavLink>
           {projects.map((p) => (
             <NavLink key={p.id} to={`/project/${p.slug}`}
               className={({ isActive }) =>

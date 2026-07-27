@@ -3,6 +3,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AuthProvider } from './contexts/AuthContext'
 import { ToastProvider } from './components/ui/Toast'
 import { DashboardView } from './pages/DashboardView'
+import AdminPage from './pages/AdminPage'
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
 
@@ -12,6 +13,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/project/sdp-core" replace />} />
         <Route path="/project/:slug" element={<DashboardView />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   )
