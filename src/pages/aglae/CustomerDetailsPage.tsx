@@ -1,0 +1,260 @@
+import { useEffect, useState } from 'react'
+import { customersApi, ordersApi } from '../../api/ocrClient'
+import { useToast } from '../../components/ui/Toast'
+import { ConfirmModal } from '../../components/ui/Modal'
+
+interface Customer {
+  id: number
+  name: string
+  first_name?: string
+  last_name?: string
+  prenom?: string
+  nom?: string
+  email: string
+  phone: string
+  city: string
+  country: string
+  job: string
+  files?: { id: number; file_name: string; file_path?: string }[]
+}
+
+interface Order {
+  id: number
+  order_type: string
+  status: string
+  created_at: string
+  formula_id: number | null
+}
+
+interface CustomerDetailsPageProps {
+  customerId: number
+  onBack: () => void
+  onCustomerDeleted: () => void
+  onOpenFormula: (formulaId: number) => void
+}
+
+export default function CustomerDetailsPage({ customerId, onBack, onCustomerDeleted, onOpenFormula }: CustomerDetailsPageProps) {
+  const { showError, showSuccess } = useToast()
+  const [customer, setCustomer] = useState<Customer | null>(null)
+  const [orders, setOrders] = useState<Order[]>([])
+  const [loading, setLoading] = useState(true)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [lightboxFile, setLightboxFile] = useState<{ id: number; file_name: string; file_path?: string } | null>(null)
+
+  useEffect(() => {
+    customersApi.getById(customerId)
+      .then(cust => {
+        setCustomer(cust)
+        const fullName = cust.name || [cust.first_name, cust.last_name].filter(Boolean).join(' ') || [cust.prenom, cust.nom].filter(Boolean).join(' ') || ''
+        return ordersApi.getAll(1, 100, { customerName: fullName || String(customerId) }).then(ordRes => {
+          setOrders(ordRes.results || ordRes.data || ordRes.orders || [])
+        })
+      })
+      .catch(() => showError('Erreur', 'Impossible de charger les données'))
+      .finally(() => setLoading(false))
+  }, [customerId])
+
+  const handleDelete = async () => {
+    setDeleting(true)
+    try {
+      await customersApi.delete(customerId)
+      showSuccess('Client supprimé')
+      onCustomerDeleted()
+    } catch {
+      showError('Erreur', 'Impossible de supprimer le client')
+    } finally {
+      setDeleting(false)
+      setDeleteOpen(false)
+    }
+  }
+
+  const statusBadge = (status: string) => {
+    const colors: Record<string, string> = {
+      en_attente: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+      en_cours: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+      terminee: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+      sans_formule: 'bg-red-500/10 text-red-400 border-red-500/30',
+    }
+    return colors[status] || 'bg-gray-500/10 text-gray-400 border-gray-500/30'
+  }
+
+  const statusLabel = (status: string) => {
+    const labels: Record<string, string> = {
+      en_attente: 'En attente',
+      en_cours: 'En cours',
+      terminee: 'Terminée',
+      sans_formule: 'Sans formule',
+    }
+    return labels[status] || status
+  }
+
+  if (loading) {
+    return (
+      <div className="animate-pulse space-y-4">
+        <div className="h-8 bg-gray-800 rounded w-48" />
+        <div className="h-48 bg-gray-800 rounded-xl" />
+        <div className="h-64 bg-gray-800 rounded-xl" />
+      </div>
+    )
+  }
+
+  if (!customer) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-400 text-sm">Client introuvable</p>
+        <button onClick={onBack} className="mt-4 text-sm text-indigo-400 hover:text-indigo-300">Retour</button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-3">
+        <button onClick={onBack} className="text-gray-500 hover:text-white transition-colors">⬅</button>
+        <h1 className="text-lg font-bold text-white">{customer.name}</h1>
+      </div>
+
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-3">
+            <div>
+              <span className="text-xs text-gray-500">Email</span>
+              <p className="text-sm text-white">{customer.email || '—'}</p>
+            </div>
+            <div>
+              <span className="text-xs text-gray-500">Téléphone</span>
+              <p className="text-sm text-white">{customer.phone || '—'}</p>
+            </div>
+            <div>
+              <span className="text-xs text-gray-500">Profession</span>
+              <p className="text-sm text-white">{customer.job || '—'}</p>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <div>
+              <span className="text-xs text-gray-500">Ville</span>
+              <p className="text-sm text-white">{customer.city || '—'}</p>
+            </div>
+            <div>
+              <span className="text-xs text-gray-500">Pays</span>
+              <p className="text-sm text-white">{customer.country || '—'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h2 className="text-sm font-semibold text-white mb-4">📦 Commandes ({orders.length})</h2>
+        {orders.length === 0 ? (
+          <p className="text-sm text-gray-500 text-center py-6">Aucune commande</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-800">
+                  <th className="text-left py-2 px-3 text-gray-500 font-medium">Type</th>
+                  <th className="text-left py-2 px-3 text-gray-500 font-medium">Statut</th>
+                  <th className="text-left py-2 px-3 text-gray-500 font-medium">Date</th>
+                  <th className="text-left py-2 px-3 text-gray-500 font-medium">Formule</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((o) => (
+                  <tr key={o.id} className="border-b border-gray-800/50 hover:bg-gray-800/30">
+                    <td className="py-2 px-3 text-white">{o.order_type}</td>
+                    <td className="py-2 px-3">
+                      <span className={`text-[11px] px-2 py-0.5 rounded-full border ${statusBadge(o.status)}`}>
+                        {statusLabel(o.status)}
+                      </span>
+                    </td>
+                    <td className="py-2 px-3 text-gray-400">{new Date(o.created_at).toLocaleDateString()}</td>
+                    <td className="py-2 px-3">
+                      {o.formula_id ? (
+                        <button
+                          onClick={() => onOpenFormula(o.formula_id!)}
+                          className="text-indigo-400 hover:text-indigo-300 text-xs"
+                        >
+                          🔬 Voir formule
+                        </button>
+                      ) : (
+                        <span className="text-gray-600">—</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {customer.files && customer.files.length > 0 && (
+        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+          <h2 className="text-sm font-semibold text-white mb-4">📁 Fichiers ({customer.files.length})</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            {customer.files.map((f) => (
+              <button
+                key={f.id}
+                onClick={() => setLightboxFile(f)}
+                className="aspect-square bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-indigo-500 transition-colors"
+              >
+                {f.file_path?.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                  <img src={f.file_path} alt={f.file_name} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-2xl text-gray-500">📄</div>
+                )}
+                <p className="text-[10px] text-gray-500 truncate px-1 pb-1">{f.file_name}</p>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="flex justify-between items-center pt-2">
+        <button onClick={onBack} className="text-sm text-gray-400 hover:text-white transition-colors">⬅ Retour</button>
+        <button
+          onClick={() => setDeleteOpen(true)}
+          className="text-sm text-red-400 hover:text-red-300 transition-colors"
+        >
+          🗑 Supprimer le client
+        </button>
+      </div>
+
+      <ConfirmModal
+        isOpen={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        onConfirm={handleDelete}
+        title="Supprimer le client"
+        message={`Êtes-vous sûr de vouloir supprimer ${customer.name} ? Cette action est irréversible.`}
+        confirmText="Supprimer"
+        danger
+        isLoading={deleting}
+      />
+
+      {lightboxFile && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setLightboxFile(null)}
+        >
+          <div className="relative max-w-2xl w-full" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setLightboxFile(null)}
+              className="absolute -top-8 right-0 text-white/60 hover:text-white text-sm"
+            >
+              ✕ Fermer
+            </button>
+            {lightboxFile.file_path?.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+              <img src={lightboxFile.file_path} alt={lightboxFile.file_name} className="w-full rounded-lg" />
+            ) : (
+              <div className="bg-gray-900 rounded-lg p-12 text-center">
+                <p className="text-gray-400">📄 {lightboxFile.file_name}</p>
+              </div>
+            )}
+            <p className="text-center text-sm text-gray-400 mt-3">{lightboxFile.file_name}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
