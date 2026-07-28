@@ -73,8 +73,8 @@ export const adminClient = {
   getUsers: () =>
     request<AdminUser[]>('/users'),
 
-  createUser: (data: { email: string; first_name: string; last_name: string; role_id: number; is_active?: boolean }) =>
-    request<AdminUser>('/users', { method: 'POST', body: JSON.stringify(data) }),
+  createUser: (data: { email: string; first_name: string; last_name: string; role_id: number }) =>
+    request<AdminUser>('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
 
   updateUser: (id: number, data: Partial<AdminUser>) =>
     request<AdminUser>(`/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),

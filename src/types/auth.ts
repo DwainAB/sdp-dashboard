@@ -14,6 +14,7 @@ export interface Role {
 export interface SdpUser {
   id: number
   email: string
+  pseudo: string
   first_name: string
   last_name: string
   is_active: boolean

@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Activity, ChevronDown } from 'lucide-react'
+import { ArrowLeft, Activity, ChevronDown, LogOut } from 'lucide-react'
 import { api } from '../api/client'
 import { Sidebar } from '../components/Sidebar'
+
+
 import { MetricCard } from '../components/MetricCard'
 import { Chart } from '../components/Chart'
 import { WelcomeHeader } from '../components/WelcomeHeader'
@@ -143,6 +145,13 @@ export function DashboardView() {
               </>
             )}
           </div>
+          <button
+            onClick={() => { localStorage.removeItem('sdp_user'); navigate('/login'); }}
+            className="text-gray-500 hover:text-red-400 transition-colors"
+            title="Déconnexion"
+          >
+            <LogOut size={16} />
+          </button>
         </div>
 
         <div className="p-6">
