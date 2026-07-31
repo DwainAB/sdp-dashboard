@@ -352,11 +352,11 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
             <h2 className="text-sm font-semibold text-white mb-4">🖼 Document associé</h2>
             {formula.file_id ? (
               <div>
-                <div className="bg-gray-950 border border-gray-800 rounded-lg overflow-hidden">
+                <div className="bg-gray-950 border border-gray-800 rounded-lg overflow-hidden aspect-square flex items-center justify-center">
                   <img
                     src={formulasApi.getThumbnailUrl(formulaId)}
                     alt="Aperçu"
-                    className="w-full cursor-pointer"
+                    className="max-h-full max-w-full object-contain cursor-pointer"
                     style={{ transform: `rotate(${previewRotation}deg)`, transition: 'transform 0.3s ease' }}
                     onClick={() => { setLightboxImage(formulasApi.getThumbnailUrl(formulaId)); setLightboxRotation(previewRotation) }}
                   />
@@ -433,7 +433,14 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                 ↻
               </button>
             </div>
-            <img src={lightboxImage} alt="Aperçu" className="w-full rounded-lg" style={{ transform: `rotate(${lightboxRotation}deg)`, transition: 'transform 0.3s ease' }} />
+            <div className="overflow-hidden rounded-lg bg-gray-950 flex items-center justify-center max-h-[80vh]">
+              <img
+                src={lightboxImage}
+                alt="Aperçu"
+                className="max-h-[75vh] max-w-full object-contain"
+                style={{ transform: `rotate(${lightboxRotation}deg)`, transition: 'transform 0.3s ease' }}
+              />
+            </div>
           </div>
         </div>
       )}
