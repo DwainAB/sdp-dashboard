@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { customersApi, ordersApi } from '../../api/ocrClient'
 import { useToast } from '../../components/ui/Toast'
 import { ConfirmModal } from '../../components/ui/Modal'
+import { Button } from '../../components/ui/Button'
 
 interface Customer {
   id: number
@@ -16,6 +17,7 @@ interface Customer {
   country: string
   job: string
   files?: { id: number; file_name: string; file_path?: string }[]
+  formulas?: Formula[]
 }
 
 interface Order {
@@ -24,6 +26,12 @@ interface Order {
   status: string
   created_at: string
   formula_id: number | null
+}
+
+interface Formula {
+  id: number
+  reference?: string
+  perfume_name?: string
 }
 
 interface CustomerDetailsPageProps {
@@ -37,17 +45,21 @@ export default function CustomerDetailsPage({ customerId, onBack, onCustomerDele
   const { showError, showSuccess } = useToast()
   const [customer, setCustomer] = useState<Customer | null>(null)
   const [orders, setOrders] = useState<Order[]>([])
+  const [formulas, setFormulas] = useState<Formula[]>([])
   const [loading, setLoading] = useState(true)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [lightboxFile, setLightboxFile] = useState<{ id: number; file_name: string; file_path?: string } | null>(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editForm, setEditForm] = useState<Record<string, string>>({})
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     customersApi.getById(customerId)
       .then(cust => {
         setCustomer(cust)
-        const fullName = cust.name || [cust.first_name, cust.last_name].filter(Boolean).join(' ') || [cust.prenom, cust.nom].filter(Boolean).join(' ') || ''
-        return ordersApi.getAll(1, 100, { customerName: fullName || String(customerId) }).then(ordRes => {
+        setFormulas(cust.formulas || [])
+        return ordersApi.getAll(1, 100, { customerId }).then(ordRes => {
           setOrders(ordRes.results || ordRes.data || ordRes.orders || [])
         })
       })
@@ -67,6 +79,48 @@ export default function CustomerDetailsPage({ customerId, onBack, onCustomerDele
       setDeleting(false)
       setDeleteOpen(false)
     }
+  }
+
+  const handleEdit = () => {
+    if (!customer) return
+    setEditForm({
+      first_name: customer.first_name || customer.prenom || '',
+      last_name: customer.last_name || customer.nom || '',
+      email: customer.email || '',
+      phone: customer.phone || '',
+      job: customer.job || '',
+      city: customer.city || '',
+      country: customer.country || '',
+    })
+    setIsEditing(true)
+  }
+
+  const handleSaveEdit = async () => {
+    if (!customer) return
+    setSaving(true)
+    try {
+      const data: Record<string, string> = {}
+      for (const key of ['first_name', 'last_name', 'email', 'phone', 'job', 'city', 'country']) {
+        if (editForm[key]) data[key] = editForm[key]
+      }
+      await customersApi.update(customerId, data)
+      setCustomer({ ...customer, ...data, name: data.first_name && data.last_name ? `${data.first_name} ${data.last_name}` : customer.name })
+      setIsEditing(false)
+      showSuccess('Client modifié')
+    } catch {
+      showError('Erreur', 'Impossible de modifier le client')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleCancelEdit = () => {
+    setIsEditing(false)
+    setEditForm({})
+  }
+
+  const handleFormChange = (field: string, value: string) => {
+    setEditForm(prev => ({ ...prev, [field]: value }))
   }
 
   const statusBadge = (status: string) => {
@@ -112,36 +166,94 @@ export default function CustomerDetailsPage({ customerId, onBack, onCustomerDele
     <div className="space-y-6">
       <div className="flex items-center gap-3">
         <button onClick={onBack} className="text-gray-500 hover:text-white transition-colors">⬅</button>
-        <h1 className="text-lg font-bold text-white">{customer.name}</h1>
+        <h1 className="text-lg font-bold text-white flex-1">{customer.name}</h1>
+        {!isEditing ? (
+          <Button size="sm" onClick={handleEdit}>✏️ Modifier</Button>
+        ) : (
+          <div className="flex items-center gap-2">
+            <Button size="sm" variant="secondary" onClick={handleCancelEdit}>Annuler</Button>
+            <Button size="sm" onClick={handleSaveEdit} loading={saving}>Enregistrer</Button>
+          </div>
+        )}
       </div>
 
       <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-3">
-            <div>
-              <span className="text-xs text-gray-500">Email</span>
-              <p className="text-sm text-white">{customer.email || '—'}</p>
+        {!isEditing ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <div>
+                <span className="text-xs text-gray-500">Email</span>
+                <p className="text-sm text-white">{customer.email || '—'}</p>
+              </div>
+              <div>
+                <span className="text-xs text-gray-500">Téléphone</span>
+                <p className="text-sm text-white">{customer.phone || '—'}</p>
+              </div>
+              <div>
+                <span className="text-xs text-gray-500">Profession</span>
+                <p className="text-sm text-white">{customer.job || '—'}</p>
+              </div>
             </div>
-            <div>
-              <span className="text-xs text-gray-500">Téléphone</span>
-              <p className="text-sm text-white">{customer.phone || '—'}</p>
-            </div>
-            <div>
-              <span className="text-xs text-gray-500">Profession</span>
-              <p className="text-sm text-white">{customer.job || '—'}</p>
+            <div className="space-y-3">
+              <div>
+                <span className="text-xs text-gray-500">Ville</span>
+                <p className="text-sm text-white">{customer.city || '—'}</p>
+              </div>
+              <div>
+                <span className="text-xs text-gray-500">Pays</span>
+                <p className="text-sm text-white">{customer.country || '—'}</p>
+              </div>
             </div>
           </div>
-          <div className="space-y-3">
-            <div>
-              <span className="text-xs text-gray-500">Ville</span>
-              <p className="text-sm text-white">{customer.city || '—'}</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              {['first_name', 'last_name', 'email', 'phone', 'job'].map(field => (
+                <div key={field}>
+                  <span className="text-xs text-gray-500 capitalize block mb-1">{field.replace('_', ' ')}</span>
+                  <input
+                    type="text"
+                    value={editForm[field] || ''}
+                    onChange={e => handleFormChange(field, e.target.value)}
+                    className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors"
+                  />
+                </div>
+              ))}
             </div>
-            <div>
-              <span className="text-xs text-gray-500">Pays</span>
-              <p className="text-sm text-white">{customer.country || '—'}</p>
+            <div className="space-y-3">
+              {['city', 'country'].map(field => (
+                <div key={field}>
+                  <span className="text-xs text-gray-500 capitalize block mb-1">{field}</span>
+                  <input
+                    type="text"
+                    value={editForm[field] || ''}
+                    onChange={e => handleFormChange(field, e.target.value)}
+                    className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors"
+                  />
+                </div>
+              ))}
             </div>
           </div>
-        </div>
+        )}
+      </div>
+
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h2 className="text-sm font-semibold text-white mb-4">🧪 Formules disponibles ({formulas.length})</h2>
+        {formulas.length === 0 ? (
+          <p className="text-sm text-gray-500 text-center py-6">Aucune formule disponible pour ce client</p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {formulas.map(f => (
+              <button
+                key={f.id}
+                onClick={() => onOpenFormula(f.id)}
+                className="text-xs bg-gray-800 hover:bg-indigo-600/20 text-gray-300 hover:text-indigo-400 border border-gray-700 hover:border-indigo-500/30 px-3 py-1.5 rounded-lg transition-colors"
+              >
+                🔬 {f.reference || `Formule #${f.id}`}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">

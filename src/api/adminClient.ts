@@ -29,6 +29,7 @@ export interface ProjectNote {
 export interface AdminUser {
   id: number
   email: string
+  pseudo: string
   first_name: string
   last_name: string
   role_id: number
@@ -78,6 +79,9 @@ export const adminClient = {
 
   updateUser: (id: number, data: Partial<AdminUser>) =>
     request<AdminUser>(`/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+
+  resetPassword: (email: string) =>
+    request<{ success: boolean }>('/auth/reset-password', { method: 'POST', body: JSON.stringify({ email }) }),
 
   deleteUser: (id: number) =>
     request<void>(`/users/${id}`, { method: 'DELETE' }),

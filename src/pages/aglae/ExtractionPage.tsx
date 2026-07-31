@@ -37,7 +37,7 @@ async function getPdfPageCount(file: File): Promise<number> {
 }
 
 export default function ExtractionPage() {
-  const { user } = useAuth()
+  const { sdpUser } = useAuth()
   const { showError, showSuccess, showWarning, showQuotaError } = useToast()
   const [queue, setQueue] = useState<QueueItem[]>([])
   const [dragging, setDragging] = useState(false)
@@ -109,7 +109,7 @@ export default function ExtractionPage() {
   }, [])
 
   const processQueue = useCallback(async () => {
-    if (!user) { showError('Non connecté'); return }
+    if (!sdpUser) { showError('Non connecté'); return }
     setProcessing(true)
 
     for (let i = 0; i < queue.length; i++) {
@@ -119,7 +119,7 @@ export default function ExtractionPage() {
       setQueue(prev => prev.map((q, idx) => idx === i ? { ...q, status: 'processing' } : q))
 
       try {
-        await quotasApi.consumePdfQuota(user.id)
+        await quotasApi.consumePdfQuota(sdpUser.id)
       } catch (err: unknown) {
         const error = err as { status?: number; detail?: unknown; message?: string }
         if (error.status === 429) {
@@ -147,7 +147,7 @@ export default function ExtractionPage() {
     }
 
     setProcessing(false)
-  }, [queue, user, showError, showSuccess, showQuotaError, pollJob])
+  }, [queue, sdpUser, showError, showSuccess, showQuotaError, pollJob])
 
   const clearCompleted = () => {
     setQueue(prev => prev.filter(q => q.status === 'pending' || q.status === 'processing'))

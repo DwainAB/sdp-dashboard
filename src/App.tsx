@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { AuthProvider } from './contexts/AuthContext'
 import { ToastProvider } from './components/ui/Toast'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { DashboardView } from './pages/DashboardView'
-import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
 import { AuthGuard } from './components/AuthGuard'
 
@@ -16,17 +16,19 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<AuthGuard><Navigate to="/project/sdp-core" replace /></AuthGuard>} />
         <Route path="/project/:slug" element={<AuthGuard><DashboardView /></AuthGuard>} />
-        <Route path="/admin" element={<AuthGuard><AdminPage /></AuthGuard>} />
+        <Route path="/admin" element={<Navigate to="/project/admin-portal" replace />} />
       </Routes>
     </BrowserRouter>
   )
 
   const wrapped = (
-    <AuthProvider>
-      <ToastProvider>
-        {content}
-      </ToastProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ToastProvider>
+          {content}
+        </ToastProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   )
 
   if (!GOOGLE_CLIENT_ID) return wrapped

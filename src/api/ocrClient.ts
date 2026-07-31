@@ -133,6 +133,26 @@ export const customersApi = {
     const response = await fetch(`${OCR_API_URL}/api/v1/customers/stats/analytics`)
     return handleResponse(response)
   },
+  getCountries: async () => {
+    const response = await fetch(`${OCR_API_URL}/api/v1/customers/countries`)
+    if (response.ok) {
+      const data = await response.json()
+      if (Array.isArray(data)) return data
+      if (data.countries && Array.isArray(data.countries)) return data.countries
+      if (data.data && Array.isArray(data.data)) return data.data
+    }
+    const allData = await customersApi.getAll(1, 100)
+    const allCustomers = (Array.isArray(allData) ? allData : allData.customers || allData.results || allData.data || allData.items || [])
+    const seen = new Set<string>()
+    allCustomers.forEach((c: { pays?: string; country?: string }) => {
+      const val = c.pays || c.country || ''
+      const cleaned = val.replace(/[^a-zA-ZÀ-ÿ\s\-']/g, '').trim()
+      if (!cleaned || /\d/.test(cleaned)) return
+      const key = cleaned.toLowerCase()
+      if (!seen.has(key)) seen.add(key)
+    })
+    return Array.from(seen).sort()
+  },
 }
 
 export const groupsApi = {
@@ -186,11 +206,12 @@ export const groupsApi = {
 }
 
 export const ordersApi = {
-  getAll: async (page = 1, pageSize = 20, filters?: { status?: string; customerName?: string; dateFrom?: string; dateTo?: string; orderType?: string; search?: string }) => {
+  getAll: async (page = 1, pageSize = 20, filters?: { status?: string; customerName?: string; customerId?: number; dateFrom?: string; dateTo?: string; orderType?: string; search?: string }) => {
     let url = `${OCR_API_URL}/api/v1/orders/?page=${page}&size=${pageSize}`
     if (filters) {
       if (filters.status) url += `&status=${filters.status}`
       if (filters.customerName) url += `&customer_name=${encodeURIComponent(filters.customerName)}`
+      if (filters.customerId) url += `&customer_id=${filters.customerId}`
       if (filters.search) url += `&search=${encodeURIComponent(filters.search)}`
       if (filters.dateFrom) url += `&date_from=${filters.dateFrom}`
       if (filters.dateTo) url += `&date_to=${filters.dateTo}`
@@ -382,10 +403,39 @@ export const exportApi = {
 }
 
 export const customerReviewsApi = {
-  getAll: async (page = 1, pageSize = 10, reviewType: string | null = null) => {
+  getAll: async (page = 1, pageSize = 10, reviewType: string | null = null, search: string | null = null) => {
     let url = `${OCR_API_URL}/api/v1/customer-reviews/?page=${page}&size=${pageSize}`
     if (reviewType) url += `&review_type=${reviewType}`
+    if (search) url += `&search=${encodeURIComponent(search)}`
     const response = await fetch(url)
+    return handleResponse(response)
+  },
+  getById: async (reviewId: number) => {
+    const response = await fetch(`${OCR_API_URL}/api/v1/customer-reviews/${reviewId}`)
+    return handleResponse(response)
+  },
+  update: async (reviewId: number, data: Record<string, unknown>) => {
+    const response = await fetch(`${OCR_API_URL}/api/v1/customer-reviews/${reviewId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    return handleResponse(response)
+  },
+  delete: async (reviewId: number) => {
+    const response = await fetch(`${OCR_API_URL}/api/v1/customer-reviews/${reviewId}`, {
+      method: 'DELETE',
+    })
+    return handleResponse(response)
+  },
+  validate: async (reviewId: number) => {
+    const response = await fetch(`${OCR_API_URL}/api/v1/customer-reviews/${reviewId}/transfer`, {
+      method: 'POST',
+    })
+    return handleResponse(response)
+  },
+  getFiles: async (reviewId: number) => {
+    const response = await fetch(`${OCR_API_URL}/api/v1/customer-reviews/${reviewId}/files`)
     return handleResponse(response)
   },
 }

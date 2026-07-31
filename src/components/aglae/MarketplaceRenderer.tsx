@@ -9,6 +9,7 @@ import OrdersPage from '../../pages/aglae/OrdersPage'
 import OrderDetailsPage from '../../pages/aglae/OrderDetailsPage'
 import TeamPage from '../../pages/aglae/TeamPage'
 import DevicesPage from '../../pages/aglae/DevicesPage'
+import CustomerReviewsPage from '../../pages/aglae/CustomerReviewsPage'
 
 export interface MarketplaceRendererProps {
   section: string
@@ -25,6 +26,8 @@ export interface MarketplaceRendererProps {
   onOpenOrder: (id: number) => void
   onBackToOrders: () => void
   onCustomerDeleted: () => void
+  onOpenCustomerReviews?: () => void
+  onBackToClientsFromReviews?: () => void
 }
 
 export default function MarketplaceRenderer({
@@ -42,6 +45,8 @@ export default function MarketplaceRenderer({
   onOpenOrder,
   onBackToOrders,
   onCustomerDeleted,
+  onOpenCustomerReviews,
+  onBackToClientsFromReviews,
 }: MarketplaceRendererProps) {
   switch (section) {
     case 'extraction':
@@ -67,7 +72,7 @@ export default function MarketplaceRenderer({
           />
         )
       }
-      return <ClientsPage onOpenCustomer={onOpenCustomer} onOpenGroups={onOpenGroups} />
+      return <ClientsPage onOpenCustomer={onOpenCustomer} onOpenGroups={onOpenGroups} onOpenCustomerReviews={onOpenCustomerReviews} />
 
     case 'groups':
       if (selectedGroupIds.length > 0) {
@@ -87,10 +92,13 @@ export default function MarketplaceRenderer({
     case 'team':
       return <TeamPage />
 
+    case 'customer-reviews':
+      return <CustomerReviewsPage onBack={onBackToClientsFromReviews ?? onBackToClients} />
+
     case 'devices':
       return <DevicesPage />
 
     default:
-      return <ClientsPage onOpenCustomer={onOpenCustomer} onOpenGroups={onOpenGroups} />
+      return <ClientsPage onOpenCustomer={onOpenCustomer} onOpenGroups={onOpenGroups} onOpenCustomerReviews={onOpenCustomerReviews} />
   }
 }

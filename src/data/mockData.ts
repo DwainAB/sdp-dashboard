@@ -103,16 +103,10 @@ export const mockDashboards: Record<string, Dashboard> = {
   'admin-portal': {
     id: 5, name: 'Admin Portal', slug: 'admin-portal', description: "Portail d'administration interne", color: '#8b5cf6', status: 'maintenance', created_at: '2024-01-01T00:00:00Z',
     sections: [
-      { id: 'overview', name: 'Vue d\'ensemble', icon: 'LayoutDashboard', metricIds: [17, 18, 19, 20], chartIds: [10, 11] },
-      { id: 'usage', name: 'Utilisation', icon: 'BarChart3', metricIds: [18, 19], chartIds: [10] },
-      { id: 'support', name: 'Support', icon: 'Headphones', metricIds: [20], chartIds: [11] },
+      { id: 'projects', name: 'Projets', icon: 'LayoutDashboard', metricIds: [], chartIds: [] },
+      { id: 'users', name: 'Utilisateurs', icon: 'Users', metricIds: [], chartIds: [] },
     ],
-    metrics: [
-      { id: 17, project_id: 5, name: 'Utilisateurs internes', value: 456, unit: '', type: 'number', change: 5.0 },
-      { id: 18, project_id: 5, name: 'Requêtes API', value: 12890, unit: '/jour', type: 'number', change: -2.1 },
-      { id: 19, project_id: 5, name: 'Uptime', value: 99.9, unit: '%', type: 'percentage', change: 0.0 },
-      { id: 20, project_id: 5, name: 'Tickets ouverts', value: 23, unit: '', type: 'number', change: -15.0 },
-    ],
+    metrics: [],
     charts: [
       { id: 10, title: 'Utilisation API', type: 'line', data: [
         { label: 'Lun', value: 12500 }, { label: 'Mar', value: 13100 }, { label: 'Mer', value: 12800 },

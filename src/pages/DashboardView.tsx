@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Activity, ChevronDown, LogOut } from 'lucide-react'
 import { api } from '../api/client'
 import { Sidebar } from '../components/Sidebar'
+import AdminPage from './AdminPage'
 
 
 import { MetricCard } from '../components/MetricCard'
@@ -17,7 +18,7 @@ import type { Dashboard, Project } from '../types'
 
 const isUserMode = import.meta.env.VITE_USER_MODE === 'user'
 
-const MARKETPLACE_OCR_SECTIONS = new Set(['extraction', 'clients', 'groups', 'analysis', 'orders', 'team', 'devices'])
+const MARKETPLACE_OCR_SECTIONS = new Set(['extraction', 'clients', 'groups', 'analysis', 'orders', 'team', 'devices', 'customer-reviews'])
 const NINNO_ADMIN_SECTIONS = new Set(['appearance', 'notes'])
 const LYLO_SECTIONS = new Set(['accueil', 'clients', 'equipe', 'formules', 'questionnaire', 'ingredients', 'imprimantes', 'analyses'])
 
@@ -69,6 +70,7 @@ export function DashboardView() {
   const isMarketplace = normalizedSlug === 'aglae'
   const isNinno = normalizedSlug === 'mobile-app'
   const isLylo = normalizedSlug === 'lylo'
+  const isAdmin = normalizedSlug === 'admin-portal'
   const isOcrSection = isMarketplace && MARKETPLACE_OCR_SECTIONS.has(activeSection)
   const isNinnoAdminSection = isNinno && NINNO_ADMIN_SECTIONS.has(activeSection)
   const isLyloSections = isLylo && LYLO_SECTIONS.has(activeSection)
@@ -183,6 +185,8 @@ export function DashboardView() {
               <LyloRenderer section={activeSection} />
             ) : isNinnoAdminSection ? (
               <NinnoRenderer section={activeSection} />
+            ) : isAdmin ? (
+              <AdminPage embedded section={activeSection} onSectionChange={setActiveSection} />
             ) : isOcrSection ? (
               <MarketplaceRenderer
                 section={activeSection}
@@ -199,6 +203,8 @@ export function DashboardView() {
                 onOpenOrder={(id) => { setSelectedOrderId(id); setActiveSection('orders') }}
                 onBackToOrders={() => setSelectedOrderId(null)}
                 onCustomerDeleted={() => { setSelectedCustomerId(null); setSelectedFormulaId(null) }}
+                onOpenCustomerReviews={() => setActiveSection('customer-reviews')}
+                onBackToClientsFromReviews={() => setActiveSection('clients')}
               />
             ) : (
               <div className="space-y-6">

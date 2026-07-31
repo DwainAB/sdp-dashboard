@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { BarChart3, Eye, EyeOff, Save } from 'lucide-react'
 import { authClient } from '../api/authClient'
 
@@ -9,7 +8,6 @@ interface Props {
 }
 
 export default function ChangePasswordPage({ email, onSuccess }: Props) {
-  const navigate = useNavigate()
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -32,7 +30,6 @@ export default function ChangePasswordPage({ email, onSuccess }: Props) {
     try {
       await authClient.changePassword(email, currentPassword, newPassword)
       onSuccess()
-      navigate('/project/sdp-core', { replace: true })
     } catch (err: any) {
       setError(err.message || 'Erreur lors du changement de mot de passe')
     } finally {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BarChart3, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
@@ -12,10 +12,13 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  if (isSdpAuthenticated) {
-    navigate('/project/sdp-core', { replace: true })
-    return null
-  }
+  useEffect(() => {
+    if (isSdpAuthenticated) {
+      navigate('/project/sdp-core', { replace: true })
+    }
+  }, [isSdpAuthenticated, navigate])
+
+  if (isSdpAuthenticated) return null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,10 +49,10 @@ export default function LoginPage() {
             <p className="text-xs text-red-400 text-center bg-red-400/10 rounded-lg p-2">{error || authError}</p>
           )}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">Email</label>
+            <label className="text-xs text-gray-500 mb-1 block">Email ou pseudo</label>
             <input
-              type="email" value={email} onChange={e => setEmail(e.target.value)}
-              placeholder="vous@exemple.com"
+              type="text" value={email} onChange={e => setEmail(e.target.value)}
+              placeholder="vous@exemple.com ou pseudo"
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500"
               autoFocus
             />

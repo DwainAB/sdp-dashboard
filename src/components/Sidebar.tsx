@@ -3,7 +3,7 @@ import { Shield, BarChart3, LayoutDashboard, ArrowLeftRight, Euro, ShoppingCart,
 import type { DashboardSection, Project } from '../types'
 
 const iconMap: Record<string, LucideIcon> = {
-  LayoutDashboard, ArrowLeftRight, Euro, ShoppingCart, Store,
+  Shield, LayoutDashboard, ArrowLeftRight, Euro, ShoppingCart, Store,
   Users, Activity, Database, Server, BarChart3, BarChart, Headphones,
   FileText, Tablet, Image, StickyNote,
 }
@@ -45,15 +45,6 @@ export function Sidebar(props: SidebarProps) {
             {!collapsed && 'Tous les projets'}
           </NavLink>
           {!collapsed && <p className="text-[10px] uppercase tracking-widest text-gray-600 font-semibold px-4 pt-4 pb-1">Projets</p>}
-          <NavLink to="/admin"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-2 text-sm transition-colors ${isActive ? 'bg-indigo-600/10 text-indigo-400 border-r-2 border-indigo-400' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`
-            }
-            title={collapsed ? 'Administration' : undefined}
-          >
-            <Shield size={18} className="shrink-0" />
-            {!collapsed && 'Administration'}
-          </NavLink>
           {projects.map((p) => (
             <NavLink key={p.id} to={`/project/${p.slug}`}
               className={({ isActive }) =>
@@ -96,25 +87,27 @@ export function Sidebar(props: SidebarProps) {
         })}
       </div>
 
-      {userMode && (
-        <div className="border-t border-gray-800 py-2">
-          <button
-            onClick={onOpenSettings}
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-left"
-            title={collapsed ? 'Paramètres' : undefined}
-          >
-            <Settings size={18} className="shrink-0" />
-            {!collapsed && 'Paramètres'}
-          </button>
-          <button
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-gray-800 transition-colors text-left"
-            title={collapsed ? 'Déconnexion' : undefined}
-          >
-            <LogOut size={18} className="shrink-0" />
-            {!collapsed && 'Déconnexion'}
-          </button>
-        </div>
-      )}
+      <div className="border-t border-gray-800 py-2">
+        {userMode && (
+          <>
+            <button
+              onClick={onOpenSettings}
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-left"
+              title={collapsed ? 'Paramètres' : undefined}
+            >
+              <Settings size={18} className="shrink-0" />
+              {!collapsed && 'Paramètres'}
+            </button>
+            <button
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-gray-800 transition-colors text-left"
+              title={collapsed ? 'Déconnexion' : undefined}
+            >
+              <LogOut size={18} className="shrink-0" />
+              {!collapsed && 'Déconnexion'}
+            </button>
+          </>
+        )}
+      </div>
     </aside>
   )
 }

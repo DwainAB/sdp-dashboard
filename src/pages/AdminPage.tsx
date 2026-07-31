@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BarChart3, Shield, Check, X, Plus, Trash2, Save, Settings } from 'lucide-react'
+import { BarChart3, Shield, Plus, Trash2, Save, Settings, Mail, RotateCw, X as XIcon } from 'lucide-react'
 import { adminClient, type AdminProject, type ProjectNote, type AdminUser, type AdminRole, type UserProject } from '../api/adminClient'
 import { api } from '../api/client'
 import type { Project } from '../types'
@@ -10,8 +10,26 @@ const RESOURCES = ['dashboard', 'lylo', 'aglae', 'ninno', 'users'] as const
 const ACTIONS = ['view', 'edit'] as const
 const PERMISSION_LEVELS = ['none', 'view', 'edit', 'admin'] as const
 
-export default function AdminPage() {
+interface AdminPageProps {
+  embedded?: boolean
+  section?: string
+  onSectionChange?: (id: string) => void
+}
+
+export default function AdminPage({ embedded, section, onSectionChange: _onSectionChange }: AdminPageProps) {
   const [tab, setTab] = useState<Tab>('projects')
+
+  const activeTab = (section || tab) as Tab
+
+  if (embedded) {
+    return (
+      <div className="space-y-4">
+        {activeTab === 'projects' && <ProjectsTab />}
+        {activeTab === 'users' && <UsersTab />}
+        {activeTab === 'roles' && <RolesTab />}
+      </div>
+    )
+  }
 
   return (
     <div className="flex h-screen">
@@ -36,9 +54,9 @@ export default function AdminPage() {
         </nav>
       </aside>
       <main className="flex-1 overflow-y-auto p-6">
-        {tab === 'projects' && <ProjectsTab />}
-        {tab === 'users' && <UsersTab />}
-        {tab === 'roles' && <RolesTab />}
+        {activeTab === 'projects' && <ProjectsTab />}
+        {activeTab === 'users' && <UsersTab />}
+        {activeTab === 'roles' && <RolesTab />}
       </main>
     </div>
   )
@@ -150,48 +168,58 @@ function ProjectsTab() {
 function UsersTab() {
   const [users, setUsers] = useState<AdminUser[]>([])
   const [roles, setRoles] = useState<AdminRole[]>([])
-  const [projects, setProjects] = useState<Project[]>([])
-  const [editing, setEditing] = useState<Partial<AdminUser> | null>(null)
+  const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null)
   const [userProjects, setUserProjects] = useState<UserProject[]>([])
-  const [isNew, setIsNew] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [editData, setEditData] = useState<Partial<AdminUser>>({})
+  const [showNew, setShowNew] = useState(false)
+  const [newUser, setNewUser] = useState({ email: '', first_name: '', last_name: '', role_id: 0 })
+  const [error, setError] = useState<string | null>(null)
+  const [showRoles, setShowRoles] = useState(false)
 
   useEffect(() => {
-    adminClient.getUsers().then(setUsers)
-    adminClient.getRoles().then(setRoles)
-    api.getProjects().then(setProjects)
+    Promise.all([
+      adminClient.getUsers(),
+      adminClient.getRoles(),
+    ]).then(([u, r]) => {
+      setUsers(u)
+      setRoles(r)
+    }).catch(err => setError(err.message))
   }, [])
 
-  const openNew = () => {
-    setEditing({ email: '', first_name: '', last_name: '', role_id: roles[0]?.id, is_active: true })
-    setUserProjects(projects.map(p => ({ ...p, permission: null })))
-    setIsNew(true)
-  }
-
-  const openEdit = async (u: AdminUser) => {
-    setEditing(u)
-    setIsNew(false)
+  const openUser = async (u: AdminUser) => {
+    setSelectedUser(u)
+    setEditing(false)
+    setEditData({ ...u })
     const up = await adminClient.getUserProjects(u.id)
     setUserProjects(up)
   }
 
-  const save = async () => {
-    if (!editing) return
-    if (isNew) {
-      const created = await adminClient.createUser(editing as any)
-      setUsers(prev => [...prev, created])
-    } else {
-      const updated = await adminClient.updateUser(editing.id!, editing)
-      setUsers(prev => prev.map(u => u.id === updated.id ? updated : u))
-    }
-    if (editing.id) {
-      await adminClient.updateUserProjects(editing.id, userProjects.filter(p => p.permission).map(p => ({ project_id: p.id, permission: p.permission! })))
-    }
-    setEditing(null)
+  const saveEdit = async () => {
+    if (!selectedUser || !editData) return
+    const updated = await adminClient.updateUser(selectedUser.id, editData)
+    setUsers(prev => prev.map(u => u.id === updated.id ? updated : u))
+    setSelectedUser(updated)
+    setEditing(false)
+  }
+
+  const saveNew = async () => {
+    if (!newUser.email || !newUser.first_name || !newUser.last_name || !newUser.role_id) return
+    const created = await adminClient.createUser(newUser)
+    setUsers(prev => [...prev, created])
+    setShowNew(false)
+    setNewUser({ email: '', first_name: '', last_name: '', role_id: roles[0]?.id || 0 })
+  }
+
+  const resetPwd = async (email: string) => {
+    await adminClient.resetPassword(email)
+    alert('Mot de passe réinitialisé, email envoyé')
   }
 
   const remove = async (id: number) => {
     await adminClient.deleteUser(id)
     setUsers(prev => prev.filter(u => u.id !== id))
+    setSelectedUser(null)
   }
 
   const toggleProjectPermission = (projectId: number) => {
@@ -203,50 +231,13 @@ function UsersTab() {
     }))
   }
 
-  if (editing) {
+  if (showRoles) {
     return (
       <div>
-        <h1 className="text-xl font-bold text-white mb-6">{isNew ? 'Nouvel utilisateur' : 'Modifier utilisateur'}</h1>
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 space-y-4 max-w-lg">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs text-gray-500 mb-1 block">Prénom</label>
-              <input value={editing.first_name || ''} onChange={e => setEditing({ ...editing, first_name: e.target.value })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
-            </div>
-            <div>
-              <label className="text-xs text-gray-500 mb-1 block">Nom</label>
-              <input value={editing.last_name || ''} onChange={e => setEditing({ ...editing, last_name: e.target.value })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
-            </div>
-          </div>
-          <div>
-            <label className="text-xs text-gray-500 mb-1 block">Email</label>
-            <input value={editing.email || ''} onChange={e => setEditing({ ...editing, email: e.target.value })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
-          </div>
-          <div>
-            <label className="text-xs text-gray-500 mb-1 block">Rôle</label>
-            <select value={editing.role_id || ''} onChange={e => setEditing({ ...editing, role_id: Number(e.target.value) })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
-              {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-gray-500 mb-2 block">Accès projets</label>
-            <div className="space-y-1 max-h-48 overflow-y-auto">
-              {userProjects.map(p => (
-                <button key={p.id} onClick={() => toggleProjectPermission(p.id)} className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs bg-gray-800 hover:bg-gray-700 transition-colors">
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
-                  <span className="flex-1 text-left text-gray-300">{p.name}</span>
-                  <span className={`px-1.5 py-0.5 rounded text-[10px] ${p.permission === 'admin' ? 'bg-purple-400/10 text-purple-400' : p.permission === 'edit' ? 'bg-blue-400/10 text-blue-400' : p.permission === 'view' ? 'bg-emerald-400/10 text-emerald-400' : 'text-gray-600'}`}>
-                    {p.permission || 'none'}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="flex gap-2 pt-2">
-            <button onClick={save} className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm transition-colors"><Save size={14} /> Enregistrer</button>
-            <button onClick={() => setEditing(null)} className="text-gray-400 hover:text-white px-4 py-2 rounded-lg text-sm transition-colors">Annuler</button>
-          </div>
+        <div className="flex items-center gap-3 mb-6">
+          <button onClick={() => setShowRoles(false)} className="text-gray-400 hover:text-white text-sm transition-colors">← Retour aux utilisateurs</button>
         </div>
+        <RolesTab />
       </div>
     )
   }
@@ -255,25 +246,175 @@ function UsersTab() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold text-white">Gestion des utilisateurs</h1>
-        <button onClick={openNew} className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-lg text-sm transition-colors"><Plus size={16} /> Ajouter</button>
+        <div className="flex gap-2">
+          <button onClick={() => setShowRoles(true)} className="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-sm transition-colors">
+            <Shield size={16} /> Gérer les rôles
+          </button>
+          <button onClick={() => setShowNew(true)} className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-lg text-sm transition-colors">
+            <Plus size={16} /> Ajouter
+          </button>
+        </div>
       </div>
-      <div className="space-y-2">
+
+      {/* Cards grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {users.map(u => (
-          <div key={u.id} className="flex items-center gap-3 bg-gray-900 rounded-xl border border-gray-800 px-4 py-3">
-            <div className="w-8 h-8 rounded-full bg-indigo-600/20 flex items-center justify-center text-indigo-400 text-xs font-bold">
-              {u.first_name[0]}{u.last_name[0]}
+          <button key={u.id} onClick={() => openUser(u)} className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-left hover:border-gray-700 transition-colors group">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-indigo-600/20 flex items-center justify-center text-indigo-400 text-sm font-bold shrink-0">
+                {u.first_name[0]}{u.last_name[0]}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-white truncate">{u.first_name} {u.last_name}</p>
+                <p className="text-xs text-gray-500 truncate">{u.pseudo}</p>
+                <p className="text-xs text-gray-500 truncate mt-0.5">{u.email}</p>
+              </div>
             </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-white">{u.first_name} {u.last_name}</p>
-              <p className="text-xs text-gray-500">{u.email}</p>
+            <div className="flex items-center gap-2 mt-3">
+              <span className="text-[10px] text-gray-400 bg-gray-800 px-2 py-0.5 rounded">{u.role_name}</span>
+              <a href={`mailto:${u.email}`} onClick={e => e.stopPropagation()} className="ml-auto text-gray-500 hover:text-indigo-400 transition-colors">
+                <Mail size={14} />
+              </a>
             </div>
-            <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">{u.role_name}</span>
-            {u.is_active ? <Check size={14} className="text-emerald-400" /> : <X size={14} className="text-red-400" />}
-            <button onClick={() => openEdit(u)} className="text-gray-500 hover:text-white transition-colors"><Settings size={14} /></button>
-            <button onClick={() => remove(u.id)} className="text-gray-500 hover:text-red-400 transition-colors"><Trash2 size={14} /></button>
-          </div>
+          </button>
         ))}
       </div>
+
+      {/* New user form */}
+      {showNew && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setShowNew(false)}>
+          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 w-full max-w-md space-y-4" onClick={e => e.stopPropagation()}>
+            <h2 className="text-lg font-semibold text-white">Nouvel utilisateur</h2>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">Prénom</label>
+                <input value={newUser.first_name} onChange={e => setNewUser({ ...newUser, first_name: e.target.value })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
+              </div>
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">Nom</label>
+                <input value={newUser.last_name} onChange={e => setNewUser({ ...newUser, last_name: e.target.value })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">Email</label>
+              <input value={newUser.email} onChange={e => setNewUser({ ...newUser, email: e.target.value })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
+            </div>
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">Rôle</label>
+              <select value={newUser.role_id} onChange={e => setNewUser({ ...newUser, role_id: Number(e.target.value) })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+                <option value={0}>Sélectionner...</option>
+                {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+              </select>
+            </div>
+            <div className="flex gap-2">
+              <button onClick={saveNew} className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm transition-colors">Créer</button>
+              <button onClick={() => setShowNew(false)} className="text-gray-400 hover:text-white px-4 py-2 rounded-lg text-sm transition-colors">Annuler</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* User detail modal */}
+      {selectedUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => { setSelectedUser(null); setEditing(false) }}>
+          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 w-full max-w-lg max-h-[80vh] overflow-y-auto space-y-4" onClick={e => e.stopPropagation()}>
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-indigo-600/20 flex items-center justify-center text-indigo-400 text-lg font-bold">
+                  {selectedUser.first_name[0]}{selectedUser.last_name[0]}
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-white">{selectedUser.first_name} {selectedUser.last_name}</h2>
+                  <p className="text-xs text-gray-500">{selectedUser.pseudo}</p>
+                </div>
+              </div>
+              <button onClick={() => { setSelectedUser(null); setEditing(false) }} className="text-gray-500 hover:text-white">
+                <XIcon size={18} />
+              </button>
+            </div>
+
+            {/* Info / Edit mode */}
+            {editing ? (
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs text-gray-500 mb-1 block">Prénom</label>
+                    <input value={editData.first_name || ''} onChange={e => setEditData({ ...editData, first_name: e.target.value })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 mb-1 block">Nom</label>
+                    <input value={editData.last_name || ''} onChange={e => setEditData({ ...editData, last_name: e.target.value })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 mb-1 block">Email</label>
+                  <input value={editData.email || ''} onChange={e => setEditData({ ...editData, email: e.target.value })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 mb-1 block">Rôle</label>
+                  <select value={editData.role_id || ''} onChange={e => setEditData({ ...editData, role_id: Number(e.target.value) })} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+                    {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 mb-2 block">Accès projets</label>
+                  <div className="space-y-1 max-h-40 overflow-y-auto">
+                    {userProjects.map(p => (
+                      <button key={p.id} onClick={() => toggleProjectPermission(p.id)} className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs bg-gray-800 hover:bg-gray-700 transition-colors">
+                        <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: p.color }} />
+                        <span className="flex-1 text-left text-gray-300">{p.name}</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] ${p.permission === 'admin' ? 'bg-purple-400/10 text-purple-400' : p.permission === 'edit' ? 'bg-blue-400/10 text-blue-400' : p.permission === 'view' ? 'bg-emerald-400/10 text-emerald-400' : 'text-gray-600'}`}>
+                          {p.permission || 'none'}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex gap-2 pt-2">
+                  <button onClick={saveEdit} className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm transition-colors"><Save size={14} /> Enregistrer</button>
+                  <button onClick={() => setEditing(false)} className="text-gray-400 hover:text-white px-4 py-2 rounded-lg text-sm transition-colors">Annuler</button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3 bg-gray-800/50 rounded-lg p-4">
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div><span className="text-gray-500">Email</span><p className="text-white">{selectedUser.email}</p></div>
+                  <div><span className="text-gray-500">Pseudo</span><p className="text-white">{selectedUser.pseudo}</p></div>
+                  <div><span className="text-gray-500">Rôle</span><p className="text-white">{selectedUser.role_name}</p></div>
+                  <div><span className="text-gray-500">Statut</span><p className={selectedUser.is_active ? 'text-emerald-400' : 'text-red-400'}>{selectedUser.is_active ? 'Actif' : 'Inactif'}</p></div>
+                  <div className="col-span-2"><span className="text-gray-500">Dernière connexion</span><p className="text-white">{selectedUser.last_login ? new Date(selectedUser.last_login).toLocaleDateString('fr-FR') + ' ' + new Date(selectedUser.last_login).toLocaleTimeString('fr-FR') : 'Jamais'}</p></div>
+                </div>
+                <div>
+                  <span className="text-xs text-gray-500">Accès projets</span>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {userProjects.filter(p => p.permission).length === 0 && <span className="text-xs text-gray-600">Aucun</span>}
+                    {userProjects.filter(p => p.permission).map(p => (
+                      <span key={p.id} className={`text-[10px] px-1.5 py-0.5 rounded ${p.permission === 'admin' ? 'bg-purple-400/10 text-purple-400' : p.permission === 'edit' ? 'bg-blue-400/10 text-blue-400' : 'bg-emerald-400/10 text-emerald-400'}`}>{p.name}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex gap-2 pt-2">
+              {editing ? null : (
+                <>
+                  <button onClick={() => setEditing(true)} className="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"><Settings size={14} /> Modifier</button>
+                  <button onClick={() => resetPwd(selectedUser.email)} className="flex items-center gap-1.5 bg-amber-600/20 hover:bg-amber-600/30 text-amber-400 px-4 py-2 rounded-lg text-sm transition-colors"><RotateCw size={14} /> Réinitialiser mot de passe</button>
+                  <a href={`mailto:${selectedUser.email}`} className="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"><Mail size={14} /> Envoyer un email</a>
+                  <button onClick={() => remove(selectedUser.id)} className="flex items-center gap-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 px-4 py-2 rounded-lg text-sm transition-colors ml-auto"><Trash2 size={14} /> Supprimer</button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {error && <p className="text-red-400 text-sm text-center py-4 bg-red-400/10 rounded-lg mb-4">{error}</p>}
+      {users.length === 0 && !showNew && !error && (
+        <p className="text-gray-500 text-sm text-center py-12">Aucun utilisateur</p>
+      )}
     </div>
   )
 }

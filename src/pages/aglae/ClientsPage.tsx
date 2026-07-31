@@ -8,9 +8,11 @@ import { Button } from '../../components/ui/Button'
 
 interface Customer {
   id: number
-  nom: string
-  prenom: string
+  nom?: string
+  prenom?: string
   name?: string
+  first_name?: string
+  last_name?: string
   email: string
   email_verified?: boolean
   phone_verified?: boolean
@@ -41,11 +43,13 @@ const MONTHS = ['', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juil
 
 export default function ClientsPage({
   onOpenCustomer,
+  onOpenCustomerReviews,
 }: {
   onOpenCustomer: (customerId: number) => void
   onOpenGroups: (groupIds: number[]) => void
+  onOpenCustomerReviews?: () => void
 }) {
-  const { user } = useAuth()
+  const { sdpUser } = useAuth()
   const { showError, showSuccess, showWarning, showQuotaError } = useToast()
   const [customers, setCustomers] = useState<Customer[]>([])
   const [loading, setLoading] = useState(true)
@@ -55,6 +59,7 @@ export default function ClientsPage({
   const [pagination, setPagination] = useState<Pagination>({ page: 1, pageSize: 20, total: 0, total_pages: 0 })
   const [selected, setSelected] = useState<Set<number>>(new Set())
   const [selectAll, setSelectAll] = useState(false)
+  const [allCountries, setAllCountries] = useState<string[]>([])
   const [filterCountry, setFilterCountry] = useState('')
   const [filterYear, setFilterYear] = useState('')
   const [filterMonth, setFilterMonth] = useState('')
@@ -90,6 +95,10 @@ export default function ClientsPage({
       params.set('size', String(pagination.pageSize))
       params.set('v2', IS_DEV ? 'true' : 'false')
       if (debouncedSearch) params.set('search', debouncedSearch)
+      if (filterCountry) params.set('country', filterCountry)
+      if (filterYear) params.set('year', filterYear)
+      if (filterMonth) params.set('month', filterMonth)
+      if (filterVerified) params.set('verified', filterVerified)
       const data = await customersApi.search(params.toString())
       const items = data.customers || data.results || data.data || data.items || []
       setCustomers(Array.isArray(items) ? items : [])
@@ -99,36 +108,15 @@ export default function ClientsPage({
     } finally {
       setLoading(false)
     }
-  }, [debouncedSearch, pagination.pageSize])
+  }, [debouncedSearch, pagination.pageSize, filterCountry, filterYear, filterMonth, filterVerified])
+
+  useEffect(() => {
+    customersApi.getCountries().then(setAllCountries).catch(() => {})
+  }, [])
 
   useEffect(() => { fetchCustomers(1) }, [fetchCustomers])
 
-  const getClientMonth = (c: Customer): string => {
-    if (c.date) {
-      const parts = c.date.split('/')
-      if (parts.length === 3) {
-        const m = parseInt(parts[1])
-        if (m >= 1 && m <= 12) return String(m)
-      }
-    }
-    if (c.created_at) {
-      const d = new Date(c.created_at)
-      if (!isNaN(d.getTime())) return String(d.getMonth() + 1)
-    }
-    return ''
-  }
 
-  const filteredCustomers = useMemo(() => {
-    return customers.filter(c => {
-      const countryMatch = !filterCountry || (c.pays || c.country || '').toUpperCase() === filterCountry.toUpperCase()
-      const yearMatch = !filterYear || (c.reference && String(c.reference).startsWith(filterYear))
-      const monthMatch = !filterMonth || getClientMonth(c) === filterMonth
-      const emailMatch = !filterVerified ||
-        (filterVerified === 'true' && (c.email_verified || c.verified_email)) ||
-        (filterVerified === 'false' && !(c.email_verified || c.verified_email))
-      return countryMatch && yearMatch && monthMatch && emailMatch
-    })
-  }, [customers, filterCountry, filterYear, filterMonth, filterVerified])
 
   useEffect(() => {
     customerReviewsApi.getAll(1, 1, 'pending')
@@ -156,9 +144,9 @@ export default function ClientsPage({
   }
 
   const handleExportCsv = async () => {
-    if (!user) { showError('Non connecté'); return }
+    if (!sdpUser) { showError('Non connecté'); return }
     try {
-      await quotasApi.consumeCsvQuota(user.id)
+      await quotasApi.consumeCsvQuota(sdpUser.id)
     } catch (err: unknown) {
       const error = err as { status?: number; detail?: unknown; message?: string }
       if (error.status === 429) { showQuotaError(error.detail as { type?: string; message?: string } | undefined); return }
@@ -223,7 +211,7 @@ export default function ClientsPage({
     setAddingToGroup(true)
     try {
       for (const groupId of ids) {
-        await groupsApi.addCustomers(groupId, Array.from(selected), user?.id ?? 0)
+        await groupsApi.addCustomers(groupId, Array.from(selected), sdpUser?.id ?? 0)
       }
       showSuccess('✅ Clients ajoutés aux groupes')
       setGroupModalOpen(false)
@@ -250,11 +238,7 @@ export default function ClientsPage({
     return pages
   }, [pagination.page, pagination.total_pages])
 
-  const countries = useMemo(() => {
-    const set = new Set<string>()
-    customers.forEach(c => { if (c.pays || c.country) set.add(c.pays || c.country!) })
-    return Array.from(set).sort()
-  }, [customers])
+  const countries = allCountries
 
   return (
     <div className="p-6 space-y-4">
@@ -263,9 +247,7 @@ export default function ClientsPage({
           <h1 className="text-lg font-bold text-white">👥 Clients</h1>
           <p className="text-xs text-gray-500 mt-0.5">
             {pagination.total > 0
-              ? (filterCountry || filterYear || filterMonth || filterVerified)
-                ? `${filteredCustomers.length} / ${pagination.total} client${pagination.total !== 1 ? 's' : ''}`
-                : `${pagination.total} client${pagination.total !== 1 ? 's' : ''}`
+              ? `${pagination.total} client${pagination.total !== 1 ? 's' : ''}`
               : ''}
             {pendingReviews > 0 && (
               <span className="ml-2 inline-flex items-center gap-1 text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full text-[10px] font-medium">
@@ -281,6 +263,12 @@ export default function ClientsPage({
           <Button variant="ghost" size="sm" onClick={() => fetchCustomers(1)}>🔄</Button>
         </div>
       </div>
+
+      {onOpenCustomerReviews && (
+        <Button size="sm" onClick={onOpenCustomerReviews}>
+          ⏳ Clients en attente de validation
+        </Button>
+      )}
 
       <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 space-y-3">
         <Input
@@ -365,8 +353,8 @@ export default function ClientsPage({
         </div>
       ) : (
         <>
-          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-x-auto">
+            <table className="min-w-[900px] w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-800 text-gray-400 text-xs uppercase tracking-wider">
                   <th className="px-4 py-3 w-10">
@@ -387,7 +375,7 @@ export default function ClientsPage({
                 </tr>
               </thead>
               <tbody>
-                {filteredCustomers.map(c => (
+                {customers.map(c => (
                   <tr
                     key={c.id}
                     onClick={() => onOpenCustomer(c.id)}
@@ -401,8 +389,8 @@ export default function ClientsPage({
                         className="accent-indigo-500"
                       />
                     </td>
-                    <td className="px-4 py-3 text-white">{c.nom || c.name?.split(' ').slice(1).join(' ') || '—'}</td>
-                    <td className="px-4 py-3 text-white">{c.prenom || c.name?.split(' ')[0] || '—'}</td>
+                    <td className="px-4 py-3 text-white">{c.nom || c.last_name || c.name?.split(' ').slice(1).join(' ') || '—'}</td>
+                    <td className="px-4 py-3 text-white">{c.prenom || c.first_name || c.name?.split(' ')[0] || '—'}</td>
                     <td className="px-4 py-3 text-gray-300">
                       <span className="flex items-center gap-1">
                         {c.email || '—'}
