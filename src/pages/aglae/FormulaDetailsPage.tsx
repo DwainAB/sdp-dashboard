@@ -352,10 +352,10 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
               <div>
                 <div className="bg-gray-950 border border-gray-800 rounded-lg overflow-hidden">
                   <img
-                    src={filesApi.getContentUrl(formula.file_id)}
+                    src={formulasApi.getThumbnailUrl(formulaId)}
                     alt="Aperçu"
                     className="w-full cursor-pointer"
-                    onClick={() => setLightboxImage(filesApi.getContentUrl(formula.file_id!))}
+                    onClick={() => setLightboxImage(formulasApi.getThumbnailUrl(formulaId))}
                   />
                 </div>
                 <div className="mt-2 text-center">
