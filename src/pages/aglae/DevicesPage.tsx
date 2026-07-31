@@ -60,7 +60,7 @@ function EditableName({
         onChange={e => setEditValue(e.target.value)}
         onBlur={handleSave}
         onKeyDown={handleKeyDown}
-        className="w-full bg-gray-800 border border-indigo-500/50 rounded px-2 py-1 text-sm text-white outline-none"
+        className="w-full bg-white border border-indigo-500/50 rounded px-2 py-1 text-sm text-gray-900 outline-none"
       />
     )
   }
@@ -68,7 +68,7 @@ function EditableName({
   return (
     <button
       onClick={() => { setEditValue(value); setEditing(true) }}
-      className="text-sm text-gray-300 hover:text-white hover:bg-gray-800/50 rounded px-2 py-1 -ml-2 transition-colors text-left w-full"
+      className="text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100/60 rounded px-2 py-1 -ml-2 transition-colors text-left w-full"
       title="Cliquer pour modifier"
     >
       {value || '✏️ Sans nom'}
@@ -132,12 +132,12 @@ export default function DevicesPage() {
   const rejected = devices.filter(d => d.status === 'rejected')
 
   const renderDeviceTable = (items: Device[], type: 'pending' | 'approved' | 'rejected') => {
-    if (items.length === 0) return <p className="text-sm text-gray-500 text-center py-8">Aucun appareil</p>
+    if (items.length === 0) return <p className="text-sm text-gray-600 text-center py-8">Aucun appareil</p>
     return (
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-800 text-gray-400 text-xs uppercase tracking-wider">
+            <tr className="border-b border-gray-200 text-gray-500 text-xs uppercase tracking-wider">
               <th className="text-left px-4 py-3 font-medium">Device ID</th>
               <th className="text-left px-4 py-3 font-medium">Nom</th>
               <th className="text-left px-4 py-3 font-medium">Créé le</th>
@@ -147,8 +147,8 @@ export default function DevicesPage() {
           </thead>
           <tbody>
             {items.map(d => (
-              <tr key={d.id} className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors">
-                <td className="px-4 py-3 text-gray-400 font-mono text-xs" title={d.device_id}>
+              <tr key={d.id} className="border-b border-gray-200/50 hover:bg-gray-100/60 transition-colors">
+                <td className="px-4 py-3 text-gray-500 font-mono text-xs" title={d.device_id}>
                   {truncateId(d.device_id)}
                 </td>
                 <td className="px-4 py-3">
@@ -161,8 +161,8 @@ export default function DevicesPage() {
                     }}
                   />
                 </td>
-                <td className="px-4 py-3 text-gray-400 text-xs">{formatDate(d.created_at)}</td>
-                <td className="px-4 py-3 text-gray-400 text-xs">{formatDate(d.updated_at)}</td>
+                <td className="px-4 py-3 text-gray-500 text-xs">{formatDate(d.created_at)}</td>
+                <td className="px-4 py-3 text-gray-500 text-xs">{formatDate(d.updated_at)}</td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-1">
                     {type === 'pending' && (
@@ -218,13 +218,13 @@ export default function DevicesPage() {
   if (loading) {
     return (
       <div className="p-6 space-y-6">
-        <div className="h-8 bg-gray-800 rounded w-48 animate-pulse" />
+        <div className="h-8 bg-gray-200 rounded w-48 animate-pulse" />
         <div className="space-y-4">
           {[1, 2, 3].map(s => (
-            <div key={s} className="bg-gray-900 border border-gray-800 rounded-xl p-4 animate-pulse space-y-3">
-              <div className="h-5 bg-gray-800 rounded w-32" />
-              <div className="h-12 bg-gray-800 rounded" />
-              <div className="h-12 bg-gray-800 rounded" />
+            <div key={s} className="bg-gray-100 border border-gray-200 rounded-xl p-4 animate-pulse space-y-3">
+              <div className="h-5 bg-gray-200 rounded w-32" />
+              <div className="h-12 bg-gray-200 rounded" />
+              <div className="h-12 bg-gray-200 rounded" />
             </div>
           ))}
         </div>
@@ -235,7 +235,7 @@ export default function DevicesPage() {
   if (error) {
     return (
       <div className="p-6 flex flex-col items-center justify-center h-64">
-        <p className="text-red-400 text-sm mb-4">{error}</p>
+        <p className="text-red-700 text-sm mb-4">{error}</p>
         <Button size="sm" onClick={fetchDevices}>🔄 Réessayer</Button>
       </div>
     )
@@ -245,37 +245,37 @@ export default function DevicesPage() {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-white">📱 Appareils</h1>
-          <p className="text-xs text-gray-500 mt-0.5">{devices.length} appareil{devices.length !== 1 ? 's' : ''}</p>
+          <h1 className="text-lg font-bold text-gray-900">📱 Appareils</h1>
+          <p className="text-xs text-gray-600 mt-0.5">{devices.length} appareil{devices.length !== 1 ? 's' : ''}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" onClick={fetchDevices}>🔄</Button>
         </div>
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-800 bg-amber-500/5">
+      <div className="bg-gray-100 border border-gray-200 rounded-xl overflow-hidden">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 bg-amber-500/5">
           <span className="text-sm">🆕</span>
-          <h2 className="text-sm font-semibold text-white">Nouvelles connexions</h2>
-          <span className="text-[10px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded-full font-medium">{pending.length}</span>
+          <h2 className="text-sm font-semibold text-gray-900">Nouvelles connexions</h2>
+          <span className="text-[10px] bg-amber-500/10 text-amber-600 px-1.5 py-0.5 rounded-full font-medium">{pending.length}</span>
         </div>
         {renderDeviceTable(pending, 'pending')}
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-800 bg-emerald-500/5">
+      <div className="bg-gray-100 border border-gray-200 rounded-xl overflow-hidden">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 bg-emerald-500/5">
           <span className="text-sm">✅</span>
-          <h2 className="text-sm font-semibold text-white">Appareils autorisés</h2>
-          <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded-full font-medium">{approved.length}</span>
+          <h2 className="text-sm font-semibold text-gray-900">Appareils autorisés</h2>
+          <span className="text-[10px] bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded-full font-medium">{approved.length}</span>
         </div>
         {renderDeviceTable(approved, 'approved')}
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-800 bg-red-500/5">
+      <div className="bg-gray-100 border border-gray-200 rounded-xl overflow-hidden">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 bg-red-500/5">
           <span className="text-sm">⛔</span>
-          <h2 className="text-sm font-semibold text-white">Appareils rejetés</h2>
-          <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded-full font-medium">{rejected.length}</span>
+          <h2 className="text-sm font-semibold text-gray-900">Appareils rejetés</h2>
+          <span className="text-[10px] bg-red-500/10 text-red-700 px-1.5 py-0.5 rounded-full font-medium">{rejected.length}</span>
         </div>
         {renderDeviceTable(rejected, 'rejected')}
       </div>

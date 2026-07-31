@@ -455,11 +455,11 @@ export default function LyloQuestionnairePage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <div className="rounded-lg border border-gray-200 bg-gray-100 p-6">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Questionnaire</h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <h2 className="text-xl font-semibold text-gray-900">Questionnaire</h2>
+            <p className="mt-1 text-sm text-gray-500">
               Gérez les questions, leur rattachement à plusieurs groupes et l&apos;activation des groupes envoyés au front.
             </p>
           </div>
@@ -467,7 +467,7 @@ export default function LyloQuestionnairePage() {
             <select
               value={langFilter}
               onChange={(e) => setLangFilter(e.target.value as "fr" | "en")}
-              className="rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-white"
+              className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900"
             >
               <option value="fr">Français</option>
               <option value="en">English</option>
@@ -503,41 +503,41 @@ export default function LyloQuestionnairePage() {
               id="sort_mode"
               value={sortMode}
               onChange={(e) => setSortMode(e.target.value as SortMode)}
-              className="w-full rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-white"
+              className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900"
             >
               <option value="text_asc">Texte A → Z</option>
               <option value="text_desc">Texte Z → A</option>
               <option value="choices_desc">Plus de choix d&apos;abord</option>
             </select>
           </div>
-          <div className="rounded-lg border border-gray-800 bg-gray-950/20 px-4 py-3 text-sm text-gray-300">
-            <p className="font-medium text-white">Règle métier</p>
+          <div className="rounded-lg border border-gray-200 bg-gray-50/20 px-4 py-3 text-sm text-gray-600">
+            <p className="font-medium text-gray-900">Règle métier</p>
             <p className="mt-1">Un groupe peut contenir au maximum 12 questions. Le backend bloque le dépassement.</p>
           </div>
         </div>
 
         {error && (
-          <div className="mt-4 rounded-lg border border-red-800 bg-red-900/30 p-3 text-sm text-red-400">{error}</div>
+          <div className="mt-4 rounded-lg border border-red-200 bg-red-50/30 p-3 text-sm text-red-700">{error}</div>
         )}
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
-        <div className="overflow-hidden rounded-lg border border-gray-800 bg-gray-900">
-          <div className="flex items-center justify-between border-b border-gray-800 bg-gray-950/20 px-6 py-4">
-            <div className="text-sm font-semibold text-white">
-              Groupes de questions <span className="text-gray-500">({visibleGroups.length})</span>
+        <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+          <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50/20 px-6 py-4">
+            <div className="text-sm font-semibold text-gray-900">
+              Groupes de questions <span className="text-gray-600">({visibleGroups.length})</span>
             </div>
             <button
               onClick={() => setIsGroupModalOpen(true)}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-800 bg-gray-950 text-gray-300 transition-colors hover:bg-gray-800/50"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-600 transition-colors hover:bg-gray-100/60"
               title="Ajouter un groupe"
             >
               <span className="material-symbols-outlined text-[18px]">add</span>
             </button>
           </div>
-          <div className="divide-y divide-gray-800">
+          <div className="divide-y divide-gray-200">
             {visibleGroups.length === 0 && (
-              <div className="px-6 py-8 text-sm text-gray-400">
+              <div className="px-6 py-8 text-sm text-gray-500">
                 {isBusy ? "Chargement..." : "Aucun groupe disponible pour cette langue."}
               </div>
             )}
@@ -553,8 +553,8 @@ export default function LyloQuestionnairePage() {
                     onClick={() => setSelectedGroupId(group.id)}
                     className="flex-1 text-left"
                   >
-                    <p className="text-sm font-medium text-white">{group.name}</p>
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="text-sm font-medium text-gray-900">{group.name}</p>
+                    <p className="mt-1 text-xs text-gray-600">
                       {questionCountForGroup(group)} question{questionCountForGroup(group) > 1 ? "s" : ""} · max 12
                     </p>
                   </button>
@@ -571,13 +571,13 @@ export default function LyloQuestionnairePage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {selectedGroupId === group.id && (
-                    <span className="rounded-lg border border-indigo-500 bg-indigo-600/10 px-3 py-1 text-xs text-indigo-400">
+                    <span className="rounded-lg border border-indigo-500 bg-indigo-600/10 px-3 py-1 text-xs text-indigo-600">
                       Sélectionné
                     </span>
                   )}
                   <button
                     onClick={() => deleteGroup(group)}
-                    className="rounded-lg border border-red-800 px-3 py-1 text-xs text-red-600 hover:bg-red-900/30"
+                    className="rounded-lg border border-red-200 px-3 py-1 text-xs text-red-700 hover:bg-red-50/30"
                   >
                     Supprimer
                   </button>
@@ -587,37 +587,37 @@ export default function LyloQuestionnairePage() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-gray-800 bg-gray-900">
-          <div className="border-b border-gray-800 bg-gray-950/20 px-6 py-4 text-sm font-semibold text-white">
+        <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+          <div className="border-b border-gray-200 bg-gray-50/20 px-6 py-4 text-sm font-semibold text-gray-900">
             {selectedGroup
-              ? <>Questions du groupe <span className="text-white">{selectedGroup.name}</span> <span className="text-gray-500">({filteredQuestions.length})</span></>
-              : <>Questions <span className="text-gray-500">(0)</span></>
+              ? <>Questions du groupe <span className="text-gray-900">{selectedGroup.name}</span> <span className="text-gray-600">({filteredQuestions.length})</span></>
+              : <>Questions <span className="text-gray-600">(0)</span></>
             }
           </div>
-          <div className="divide-y divide-gray-800">
+          <div className="divide-y divide-gray-200">
             {filteredQuestions.length === 0 && (
-              <div className="px-6 py-10 text-center text-sm text-gray-400">
+              <div className="px-6 py-10 text-center text-sm text-gray-500">
                 {isBusy ? "Chargement..." : selectedGroup ? "Aucune question dans ce groupe." : "Sélectionne un groupe pour voir ses questions."}
               </div>
             )}
             {filteredQuestions.map((question) => (
               <div key={question.id} className="flex items-center gap-4 px-6 py-4">
                 <div className="flex-1 cursor-pointer" onClick={() => openDetail(question)}>
-                  <p className="text-sm font-medium text-white">{question.text}</p>
-                  <p className="mt-0.5 text-xs text-gray-500">
+                  <p className="text-sm font-medium text-gray-900">{question.text}</p>
+                  <p className="mt-0.5 text-xs text-gray-600">
                     {question.choices.length} choix · {question.language.toUpperCase()}
                     {!question.is_active && <span className="ml-2 text-orange-500">· Inactive</span>}
                   </p>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {question.groups.length === 0 ? (
-                      <span className="rounded-full bg-gray-800/60 px-2.5 py-1 text-[11px] text-gray-500">Sans groupe</span>
+                      <span className="rounded-full bg-white/60 px-2.5 py-1 text-[11px] text-gray-600">Sans groupe</span>
                     ) : (
                       question.groups.map((group) => (
                         <span
                           key={group.id}
                           className={`rounded-full px-2.5 py-1 text-[11px] ${
                             group.is_active
-                              ? "bg-blue-500/10 text-blue-400"
+                              ? "bg-blue-500/10 text-blue-600"
                               : "bg-orange-50 text-orange-700"
                           }`}
                         >
@@ -640,7 +640,7 @@ export default function LyloQuestionnairePage() {
                 </button>
                 <button
                   onClick={() => openDetail(question)}
-                  className="rounded-lg border border-gray-800 px-3 py-1 text-xs text-gray-400 hover:bg-gray-800/50"
+                  className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-100/60"
                 >
                   Gérer
                 </button>
@@ -686,7 +686,7 @@ export default function LyloQuestionnairePage() {
               placeholder="Ex : Groupe été"
             />
           </div>
-          <label className="flex items-center gap-3 rounded-lg border border-gray-800 p-3 text-sm text-white">
+          <label className="flex items-center gap-3 rounded-lg border border-gray-200 p-3 text-sm text-gray-900">
             <input
               type="checkbox"
               checked={newGroupActive}
@@ -729,7 +729,7 @@ export default function LyloQuestionnairePage() {
                 id="q_lang"
                 value={newLang}
                 onChange={(e) => setNewLang(e.target.value as "fr" | "en")}
-                className="w-full rounded-lg border border-gray-800 px-3 py-2 text-sm text-white"
+                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900"
               >
                 <option value="fr">Français</option>
                 <option value="en">English</option>
@@ -737,10 +737,10 @@ export default function LyloQuestionnairePage() {
             </div>
             <div className="space-y-2">
               <Label>Groupes</Label>
-              <div className="max-h-36 space-y-2 overflow-auto rounded-lg border border-gray-800 p-3">
-                {groups.length === 0 && <p className="text-sm text-gray-500">Créez un groupe avant d&apos;affecter la question.</p>}
+              <div className="max-h-36 space-y-2 overflow-auto rounded-lg border border-gray-200 p-3">
+                {groups.length === 0 && <p className="text-sm text-gray-600">Créez un groupe avant d&apos;affecter la question.</p>}
                 {groups.map((group) => (
-                  <label key={group.id} className="flex items-center justify-between gap-3 text-sm text-white">
+                  <label key={group.id} className="flex items-center justify-between gap-3 text-sm text-gray-900">
                     <span>{group.name}</span>
                     <input
                       type="checkbox"
@@ -750,7 +750,7 @@ export default function LyloQuestionnairePage() {
                   </label>
                 ))}
               </div>
-              <p className="text-xs text-gray-600">Une question doit appartenir à au moins un groupe.</p>
+              <p className="text-xs text-gray-700">Une question doit appartenir à au moins un groupe.</p>
             </div>
           </div>
 
@@ -760,9 +760,9 @@ export default function LyloQuestionnairePage() {
             {draftChoices.length > 0 && (
               <div className="space-y-2">
                 {draftChoices.map((draft) => (
-                  <div key={draft.id} className="rounded-lg border border-gray-800 p-3">
+                  <div key={draft.id} className="rounded-lg border border-gray-200 p-3">
                     <div className="flex items-center gap-3">
-                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-gray-800 bg-gray-950/40">
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50/40">
                         {draft.preview ? (
                           <img src={draft.preview} alt={draft.text} className="h-full w-full object-cover" />
                         ) : (
@@ -773,7 +773,7 @@ export default function LyloQuestionnairePage() {
                           </div>
                         )}
                       </div>
-                      <p className="flex-1 min-w-0 break-words text-sm font-medium text-white">{draft.text}</p>
+                      <p className="flex-1 min-w-0 break-words text-sm font-medium text-gray-900">{draft.text}</p>
                     </div>
 
                     <div className="mt-2 flex items-center justify-end gap-2">
@@ -790,13 +790,13 @@ export default function LyloQuestionnairePage() {
                       />
                       <label
                         htmlFor={`draft-file-${draft.id}`}
-                        className="cursor-pointer rounded-lg border border-gray-800 px-2 py-1 text-xs text-gray-400 hover:bg-gray-800/50"
+                        className="cursor-pointer rounded-lg border border-gray-200 px-2 py-1 text-xs text-gray-500 hover:bg-gray-100/60"
                       >
                         {draft.preview ? "Changer image" : "+ Image"}
                       </label>
                       <button
                         onClick={() => removeDraftChoice(draft.id)}
-                        className="rounded-lg border border-red-800 px-2 py-1 text-xs text-red-600 hover:bg-red-900/30"
+                        className="rounded-lg border border-red-200 px-2 py-1 text-xs text-red-700 hover:bg-red-50/30"
                       >
                         Supprimer
                       </button>
@@ -823,7 +823,7 @@ export default function LyloQuestionnairePage() {
                 + Ajouter
               </Button>
             </div>
-            <p className="text-xs text-gray-600">Vous pouvez ajouter autant de choix que nécessaire avant de créer.</p>
+            <p className="text-xs text-gray-700">Vous pouvez ajouter autant de choix que nécessaire avant de créer.</p>
           </div>
         </div>
       </Modal>
@@ -858,10 +858,10 @@ export default function LyloQuestionnairePage() {
 
             <div className="space-y-2">
               <Label>Groupes affectés</Label>
-              <div className="max-h-40 space-y-2 overflow-auto rounded-lg border border-gray-800 p-3">
-                {groups.length === 0 && <p className="text-sm text-gray-500">Aucun groupe disponible.</p>}
+              <div className="max-h-40 space-y-2 overflow-auto rounded-lg border border-gray-200 p-3">
+                {groups.length === 0 && <p className="text-sm text-gray-600">Aucun groupe disponible.</p>}
                 {groups.map((group) => (
-                  <label key={group.id} className="flex items-center justify-between gap-3 text-sm text-white">
+                  <label key={group.id} className="flex items-center justify-between gap-3 text-sm text-gray-900">
                     <span className="flex items-center gap-2">
                       {group.name}
                       {!group.is_active && <span className="text-xs text-orange-600">(inactif)</span>}
@@ -874,16 +874,16 @@ export default function LyloQuestionnairePage() {
                   </label>
                 ))}
               </div>
-              <p className="text-xs text-gray-600">Une question doit rester liée à au moins un groupe.</p>
+              <p className="text-xs text-gray-700">Une question doit rester liée à au moins un groupe.</p>
             </div>
 
             <div>
-              <h3 className="mb-3 text-sm font-semibold text-white">Choix ({selectedQ.choices.length})</h3>
+              <h3 className="mb-3 text-sm font-semibold text-gray-900">Choix ({selectedQ.choices.length})</h3>
               <div className="space-y-2">
                 {selectedQ.choices.map((choice) => (
-                  <div key={choice.id} className="rounded-lg border border-gray-800 p-3">
+                  <div key={choice.id} className="rounded-lg border border-gray-200 p-3">
                     <div className="flex items-center gap-3">
-                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-gray-800 bg-gray-950/40">
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50/40">
                         {choice.image_url ? (
                           <img src={choice.image_url} alt={choice.text} className="h-full w-full object-cover" />
                         ) : (
@@ -896,8 +896,8 @@ export default function LyloQuestionnairePage() {
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <p className="break-words text-sm font-medium text-white">{choice.text}</p>
-                        <p className="text-xs text-gray-500">{choice.language.toUpperCase()}</p>
+                        <p className="break-words text-sm font-medium text-gray-900">{choice.text}</p>
+                        <p className="text-xs text-gray-600">{choice.language.toUpperCase()}</p>
                       </div>
                     </div>
 
@@ -916,7 +916,7 @@ export default function LyloQuestionnairePage() {
                       />
                       <label
                         htmlFor={`file-${choice.id}`}
-                        className={`cursor-pointer rounded-lg border border-gray-800 px-2 py-1 text-xs text-gray-400 hover:bg-gray-800/50 ${
+                        className={`cursor-pointer rounded-lg border border-gray-200 px-2 py-1 text-xs text-gray-500 hover:bg-gray-100/60 ${
                           uploadingChoiceId === choice.id ? "opacity-50" : ""
                         }`}
                       >
@@ -924,7 +924,7 @@ export default function LyloQuestionnairePage() {
                       </label>
                       <button
                         onClick={() => deleteChoice(choice.id)}
-                        className="rounded-lg border border-red-800 px-2 py-1 text-xs text-red-600 hover:bg-red-900/30"
+                        className="rounded-lg border border-red-200 px-2 py-1 text-xs text-red-700 hover:bg-red-50/30"
                       >
                         Supprimer
                       </button>
@@ -934,8 +934,8 @@ export default function LyloQuestionnairePage() {
               </div>
             </div>
 
-            <div className="rounded-lg border border-gray-800 bg-gray-950/20 p-4">
-              <h3 className="mb-3 text-sm font-semibold text-white">Ajouter un choix</h3>
+            <div className="rounded-lg border border-gray-200 bg-gray-50/20 p-4">
+              <h3 className="mb-3 text-sm font-semibold text-gray-900">Ajouter un choix</h3>
               <div className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   value={newChoiceText}
@@ -950,7 +950,7 @@ export default function LyloQuestionnairePage() {
                   <select
                     value={newChoiceLang}
                     onChange={(e) => setNewChoiceLang(e.target.value as "fr" | "en")}
-                    className="rounded-lg border border-gray-800 px-3 py-2 text-sm text-white"
+                    className="rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900"
                   >
                     <option value="fr">FR</option>
                     <option value="en">EN</option>

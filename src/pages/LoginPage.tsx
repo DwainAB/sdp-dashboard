@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { BarChart3, Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function LoginPage() {
@@ -37,35 +37,34 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <BarChart3 size={28} className="text-indigo-400" />
-          <span className="text-xl font-bold text-white">SDP Dashboard</span>
+        <div className="flex flex-col items-center gap-3 mb-8">
+          <span className="text-2xl font-semibold text-gray-900 text-center">Le studio des parfums</span>
         </div>
-        <form onSubmit={handleSubmit} className="bg-gray-900 border border-gray-800 rounded-xl p-6 space-y-4">
-          <h1 className="text-lg font-semibold text-white text-center">Connexion</h1>
+        <form onSubmit={handleSubmit} className="bg-gray-100 border border-gray-200 rounded-xl p-6 space-y-4">
+          <h1 className="text-lg font-semibold text-gray-900 text-center">Connexion</h1>
           {(error || authError) && (
-            <p className="text-xs text-red-400 text-center bg-red-400/10 rounded-lg p-2">{error || authError}</p>
+            <p className="text-xs text-red-700 text-center bg-red-500/10 rounded-lg p-2">{error || authError}</p>
           )}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">Email ou pseudo</label>
+            <label className="text-xs text-gray-600 mb-1 block">Email ou pseudo</label>
             <input
               type="text" value={email} onChange={e => setEmail(e.target.value)}
               placeholder="vous@exemple.com ou pseudo"
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500"
               autoFocus
             />
           </div>
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">Mot de passe</label>
+            <label className="text-xs text-gray-600 mb-1 block">Mot de passe</label>
             <div className="relative">
               <input
                 type={showPwd ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 pr-10"
+                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 pr-10"
               />
-              <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+              <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-600">
                 {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>

@@ -4,7 +4,7 @@ import NotesPage from '../../pages/ninno/NotesPage'
 export default function NinnoRenderer({ section }: { section: string }) {
   return (
     <div className="flex flex-col gap-5">
-      <h2 className="text-lg font-bold text-white">
+      <h2 className="text-lg font-bold text-gray-900">
         {section === 'appearance' ? 'Apparence' : 'Notes olfactives'}
       </h2>
 

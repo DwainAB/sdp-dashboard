@@ -74,8 +74,8 @@ export default function GroupsPage({ onOpenGroups }: { onOpenGroups: (groupIds: 
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-lg font-bold text-white">Groups</h1>
-          <p className="text-xs text-gray-500 mt-0.5">{groups.length} group{groups.length !== 1 ? 's' : ''}</p>
+          <h1 className="text-lg font-bold text-gray-900">Groups</h1>
+          <p className="text-xs text-gray-600 mt-0.5">{groups.length} group{groups.length !== 1 ? 's' : ''}</p>
         </div>
         <Button onClick={() => setShowCreate(true)}>➕ New Group</Button>
       </div>
@@ -83,27 +83,27 @@ export default function GroupsPage({ onOpenGroups }: { onOpenGroups: (groupIds: 
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3].map(i => (
-            <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-4 animate-pulse">
-              <div className="h-4 bg-gray-800 rounded w-40 mb-2" />
-              <div className="h-3 bg-gray-800 rounded w-64" />
+            <div key={i} className="bg-gray-100 border border-gray-200 rounded-xl p-4 animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-40 mb-2" />
+              <div className="h-3 bg-gray-200 rounded w-64" />
             </div>
           ))}
         </div>
       ) : error ? (
         <div className="flex items-center justify-center h-64">
-          <p className="text-red-400 text-sm">{error}</p>
+          <p className="text-red-700 text-sm">{error}</p>
         </div>
       ) : groups.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+        <div className="flex flex-col items-center justify-center h-64 text-gray-600">
           <span className="text-3xl mb-2">📂</span>
           <p className="text-sm">No groups yet</p>
           <Button variant="ghost" size="sm" className="mt-2" onClick={() => setShowCreate(true)}>Create your first group</Button>
         </div>
       ) : (
-        <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+        <div className="bg-gray-100 border border-gray-200 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-800 text-gray-400 text-xs uppercase tracking-wider">
+              <tr className="border-b border-gray-200 text-gray-500 text-xs uppercase tracking-wider">
                 <th className="text-left px-4 py-3 font-medium">Name</th>
                 <th className="text-left px-4 py-3 font-medium">Description</th>
                 <th className="text-center px-4 py-3 font-medium">Members</th>
@@ -114,12 +114,12 @@ export default function GroupsPage({ onOpenGroups }: { onOpenGroups: (groupIds: 
               {groups.map(g => (
                 <tr
                   key={g.id}
-                  className="border-b border-gray-800/50 hover:bg-gray-800/40 cursor-pointer transition-colors"
+                  className="border-b border-gray-200/50 hover:bg-gray-100/60 cursor-pointer transition-colors"
                   onClick={() => onOpenGroups([g.id])}
                 >
-                  <td className="px-4 py-3 text-white font-medium">{g.name}</td>
-                  <td className="px-4 py-3 text-gray-400 max-w-xs truncate">{g.description || '—'}</td>
-                  <td className="px-4 py-3 text-center text-gray-300">{g.member_count ?? 0}</td>
+                  <td className="px-4 py-3 text-gray-900 font-medium">{g.name}</td>
+                  <td className="px-4 py-3 text-gray-500 max-w-xs truncate">{g.description || '—'}</td>
+                  <td className="px-4 py-3 text-center text-gray-600">{g.member_count ?? 0}</td>
                   <td className="px-4 py-3 text-right">
                     <Button
                       variant="ghost"
@@ -138,27 +138,27 @@ export default function GroupsPage({ onOpenGroups }: { onOpenGroups: (groupIds: 
 
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowCreate(false)}>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-              <h2 className="text-base font-semibold text-white">Create Group</h2>
-              <button onClick={() => setShowCreate(false)} className="text-gray-500 hover:text-white transition-colors text-lg">✕</button>
+          <div className="bg-gray-100 border border-gray-200 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+              <h2 className="text-base font-semibold text-gray-900">Create Group</h2>
+              <button onClick={() => setShowCreate(false)} className="text-gray-600 hover:text-gray-900 transition-colors text-lg">✕</button>
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="text-xs text-gray-400 mb-1.5 block">Name</label>
+                <label className="text-xs text-gray-500 mb-1.5 block">Name</label>
                 <input
                   value={newName}
                   onChange={e => setNewName(e.target.value)}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none placeholder-gray-600 focus:border-indigo-500 transition-colors"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none placeholder-gray-400 focus:border-indigo-500 transition-colors"
                   placeholder="Group name"
                 />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1.5 block">Description</label>
+                <label className="text-xs text-gray-500 mb-1.5 block">Description</label>
                 <textarea
                   value={newDesc}
                   onChange={e => setNewDesc(e.target.value)}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none placeholder-gray-600 focus:border-indigo-500 transition-colors resize-none"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none placeholder-gray-400 focus:border-indigo-500 transition-colors resize-none"
                   rows={3}
                   placeholder="Optional description"
                 />

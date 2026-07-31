@@ -119,11 +119,11 @@ export default function LyloClientsPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">
+      <div className="rounded-xl border border-gray-200 bg-gray-100 p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Clients</h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <h2 className="text-xl font-semibold text-gray-900">Clients</h2>
+            <p className="mt-1 text-sm text-gray-500">
               Consulte la liste, ajoute un client, puis clique sur une ligne pour modifier les autorisations ou supprimer.
             </p>
           </div>
@@ -135,42 +135,42 @@ export default function LyloClientsPage() {
           </div>
         </div>
         {error && (
-          <div className="mt-4 rounded-lg border border-red-800 bg-red-900/30 p-3 text-sm text-red-400">{error}</div>
+          <div className="mt-4 rounded-lg border border-red-200 bg-red-50/30 p-3 text-sm text-red-700">{error}</div>
         )}
       </div>
-      <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-900">
-        <div className="flex flex-col gap-3 border-b border-gray-800 bg-gray-950/20 px-6 py-4 md:flex-row md:items-center md:justify-between">
-          <div className="text-sm font-semibold text-white">
-            Liste des clients <span className="text-gray-500">({filteredClients.length})</span>
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
+        <div className="flex flex-col gap-3 border-b border-gray-200 bg-gray-50/20 px-6 py-4 md:flex-row md:items-center md:justify-between">
+          <div className="text-sm font-semibold text-gray-900">
+            Liste des clients <span className="text-gray-600">({filteredClients.length})</span>
           </div>
           <div className="w-full md:w-96">
             <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher (nom, email, téléphone)" aria-label="Rechercher un client" />
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-800">
-            <thead className="bg-gray-950/40">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50/40">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Nom / Prénom</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Téléphone</th>
-                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Sessions</th>
-                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Jours</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Nom / Prénom</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Téléphone</th>
+                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-600">Sessions</th>
+                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-600">Jours</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
+            <tbody className="divide-y divide-gray-200">
               {filteredClients.map(c => (
-                <tr key={String(c.id)} className="cursor-pointer transition-colors hover:bg-gray-800/50" onClick={() => openDetail(c)}>
-                  <td className="px-6 py-4 text-sm font-medium text-white">{c.last_name} {c.first_name}</td>
-                  <td className="px-6 py-4 text-sm text-gray-300">{c.email}</td>
-                  <td className="px-6 py-4 text-sm text-gray-300">{c.phone || '—'}</td>
-                  <td className="px-6 py-4 text-right text-sm font-semibold text-white">{c.sessions_available}</td>
-                  <td className="px-6 py-4 text-right text-sm font-semibold text-white">{c.days_available}</td>
+                <tr key={String(c.id)} className="cursor-pointer transition-colors hover:bg-gray-100/60" onClick={() => openDetail(c)}>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{c.last_name} {c.first_name}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">{c.email}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">{c.phone || '—'}</td>
+                  <td className="px-6 py-4 text-right text-sm font-semibold text-gray-900">{c.sessions_available}</td>
+                  <td className="px-6 py-4 text-right text-sm font-semibold text-gray-900">{c.days_available}</td>
                 </tr>
               ))}
               {filteredClients.length === 0 && (
                 <tr>
-                  <td className="px-6 py-10 text-center text-sm text-gray-500" colSpan={5}>
+                  <td className="px-6 py-10 text-center text-sm text-gray-600" colSpan={5}>
                     {isBusy ? 'Chargement...' : "Aucun client ne correspond à ta recherche."}
                   </td>
                 </tr>
@@ -230,8 +230,8 @@ export default function LyloClientsPage() {
               <div className="space-y-2 md:col-span-2"><Label>Email</Label><Input value={selectedClient.email} disabled /></div>
               <div className="space-y-2 md:col-span-2"><Label>Téléphone</Label><Input value={selectedClient.phone || ''} disabled /></div>
             </div>
-            <div className="rounded-lg border border-gray-800 bg-gray-950/40 p-4">
-              <h3 className="text-sm font-semibold text-white">Autorisations</h3>
+            <div className="rounded-lg border border-gray-200 bg-gray-50/40 p-4">
+              <h3 className="text-sm font-semibold text-gray-900">Autorisations</h3>
               <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="edit_sessions">Nombre de sessions autorisées</Label>

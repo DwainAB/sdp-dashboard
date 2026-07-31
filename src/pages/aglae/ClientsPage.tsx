@@ -244,13 +244,13 @@ export default function ClientsPage({
     <div className="p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-white">👥 Clients</h1>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <h1 className="text-lg font-bold text-gray-900">👥 Clients</h1>
+          <p className="text-xs text-gray-600 mt-0.5">
             {pagination.total > 0
               ? `${pagination.total} client${pagination.total !== 1 ? 's' : ''}`
               : ''}
             {pendingReviews > 0 && (
-              <span className="ml-2 inline-flex items-center gap-1 text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full text-[10px] font-medium">
+              <span className="ml-2 inline-flex items-center gap-1 text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-full text-[10px] font-medium">
                 ⏳ {pendingReviews} avis en attente
               </span>
             )}
@@ -270,7 +270,7 @@ export default function ClientsPage({
         </Button>
       )}
 
-      <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 space-y-3">
+      <div className="bg-gray-100 border border-gray-200 rounded-xl p-4 space-y-3">
         <Input
           placeholder="Rechercher par nom, email, téléphone..."
           value={search}
@@ -280,33 +280,33 @@ export default function ClientsPage({
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <div>
-                <label className="text-xs text-gray-400 mb-1.5 block">Pays</label>
+                <label className="text-xs text-gray-500 mb-1.5 block">Pays</label>
                 <select value={filterCountry} onChange={e => setFilterCountry(e.target.value)}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
                   <option value="">Tous</option>
                   {countries.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1.5 block">Année</label>
+                <label className="text-xs text-gray-500 mb-1.5 block">Année</label>
                 <select value={filterYear} onChange={e => setFilterYear(e.target.value)}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
                   <option value="">Toutes</option>
                   {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1.5 block">Mois</label>
+                <label className="text-xs text-gray-500 mb-1.5 block">Mois</label>
                 <select value={filterMonth} onChange={e => setFilterMonth(e.target.value)}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
                   <option value="">Tous</option>
                   {MONTHS.filter(Boolean).map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1.5 block">Email vérifié</label>
+                <label className="text-xs text-gray-500 mb-1.5 block">Email vérifié</label>
                 <select value={filterVerified} onChange={e => setFilterVerified(e.target.value)}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
                   <option value="">Tous</option>
                   <option value="true">✅ Vérifié</option>
                   <option value="false">❌ Non vérifié</option>
@@ -321,8 +321,8 @@ export default function ClientsPage({
       </div>
 
       {selected.size > 0 && (
-        <div className="bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 flex items-center gap-3 flex-wrap">
-          <span className="text-xs text-gray-400">{selected.size} sélectionné(s)</span>
+        <div className="bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3 flex-wrap">
+          <span className="text-xs text-gray-500">{selected.size} sélectionné(s)</span>
           <Button size="sm" onClick={() => setGroupModalOpen(true)}>👥 Ajouter à un groupe</Button>
           <Button size="sm" onClick={handleExportCsv}>📥 Export CSV</Button>
           <Button size="sm" variant="secondary" onClick={() => setBulkEditOpen(true)}>✏️ Édition en masse</Button>
@@ -333,30 +333,30 @@ export default function ClientsPage({
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-4 animate-pulse flex gap-4">
-              <div className="h-4 w-4 bg-gray-800 rounded" />
-              <div className="h-4 bg-gray-800 rounded w-24" />
-              <div className="h-4 bg-gray-800 rounded w-24" />
-              <div className="h-4 bg-gray-800 rounded w-32" />
-              <div className="h-4 bg-gray-800 rounded w-20 ml-auto" />
+            <div key={i} className="bg-gray-100 border border-gray-200 rounded-xl p-4 animate-pulse flex gap-4">
+              <div className="h-4 w-4 bg-gray-200 rounded" />
+              <div className="h-4 bg-gray-200 rounded w-24" />
+              <div className="h-4 bg-gray-200 rounded w-24" />
+              <div className="h-4 bg-gray-200 rounded w-32" />
+              <div className="h-4 bg-gray-200 rounded w-20 ml-auto" />
             </div>
           ))}
         </div>
       ) : error ? (
         <div className="flex items-center justify-center h-64">
-          <p className="text-red-400 text-sm">{error}</p>
+          <p className="text-red-700 text-sm">{error}</p>
         </div>
       ) : customers.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+        <div className="flex flex-col items-center justify-center h-64 text-gray-600">
           <span className="text-3xl mb-2">👥</span>
           <p className="text-sm">Aucun client trouvé</p>
         </div>
       ) : (
         <>
-          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-x-auto">
+          <div className="bg-gray-100 border border-gray-200 rounded-xl overflow-x-auto">
             <table className="min-w-[900px] w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-800 text-gray-400 text-xs uppercase tracking-wider">
+                <tr className="border-b border-gray-200 text-gray-500 text-xs uppercase tracking-wider">
                   <th className="px-4 py-3 w-10">
                     <input
                       type="checkbox"
@@ -379,7 +379,7 @@ export default function ClientsPage({
                   <tr
                     key={c.id}
                     onClick={() => onOpenCustomer(c.id)}
-                    className="border-b border-gray-800/50 hover:bg-gray-800/40 cursor-pointer transition-colors"
+                    className="border-b border-gray-200/50 hover:bg-gray-100/60 cursor-pointer transition-colors"
                   >
                     <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
                       <input
@@ -389,23 +389,23 @@ export default function ClientsPage({
                         className="accent-indigo-500"
                       />
                     </td>
-                    <td className="px-4 py-3 text-white">{c.nom || c.last_name || c.name?.split(' ').slice(1).join(' ') || '—'}</td>
-                    <td className="px-4 py-3 text-white">{c.prenom || c.first_name || c.name?.split(' ')[0] || '—'}</td>
-                    <td className="px-4 py-3 text-gray-300">
+                    <td className="px-4 py-3 text-gray-900">{c.nom || c.last_name || c.name?.split(' ').slice(1).join(' ') || '—'}</td>
+                    <td className="px-4 py-3 text-gray-900">{c.prenom || c.first_name || c.name?.split(' ')[0] || '—'}</td>
+                    <td className="px-4 py-3 text-gray-600">
                       <span className="flex items-center gap-1">
                         {c.email || '—'}
-                        {(c.email_verified || c.verified_email) && <span className="text-emerald-400 text-xs" title="Vérifié">✓</span>}
+                        {(c.email_verified || c.verified_email) && <span className="text-emerald-600 text-xs" title="Vérifié">✓</span>}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-400">
+                    <td className="px-4 py-3 text-gray-500">
                       <span className="flex items-center gap-1">
                         {c.telephone || c.phone || '—'}
-                        {(c.verified_phone || c.phone_verified) && <span className="text-emerald-400 text-xs" title="Vérifié">✓</span>}
+                        {(c.verified_phone || c.phone_verified) && <span className="text-emerald-600 text-xs" title="Vérifié">✓</span>}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-400">{c.metier || c.job || '—'}</td>
-                    <td className="px-4 py-3 text-gray-400">{c.ville || c.city || '—'}</td>
-                    <td className="px-4 py-3 text-gray-400">{c.pays || c.country || '—'}</td>
+                    <td className="px-4 py-3 text-gray-500">{c.metier || c.job || '—'}</td>
+                    <td className="px-4 py-3 text-gray-500">{c.ville || c.city || '—'}</td>
+                    <td className="px-4 py-3 text-gray-500">{c.pays || c.country || '—'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -414,14 +414,14 @@ export default function ClientsPage({
 
           {pagination.total_pages > 1 && (
             <div className="flex items-center justify-between mt-2">
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-600">
                 Page {pagination.page} sur {pagination.total_pages}
               </span>
               <div className="flex gap-1">
                 <Button variant="secondary" size="sm" disabled={pagination.page <= 1} onClick={() => fetchCustomers(pagination.page - 1)}>◀</Button>
                 {pageNumbers.map((p, i) =>
                   typeof p === 'string' ? (
-                    <span key={`e${i}`} className="px-2 py-1 text-xs text-gray-600">...</span>
+                    <span key={`e${i}`} className="px-2 py-1 text-xs text-gray-700">...</span>
                   ) : (
                     <button
                       key={p}
@@ -429,7 +429,7 @@ export default function ClientsPage({
                       className={`px-3 py-1 text-xs rounded-lg transition-colors ${
                         p === pagination.page
                           ? 'bg-indigo-600 text-white'
-                          : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
                       }`}
                     >
                       {p}
@@ -444,7 +444,7 @@ export default function ClientsPage({
       )}
 
       <Modal isOpen={groupModalOpen} onClose={() => setGroupModalOpen(false)} title="Ajouter aux groupes" size="sm">
-        <p className="text-sm text-gray-300 mb-4">Entrez les IDs des groupes séparés par des virgules :</p>
+        <p className="text-sm text-gray-600 mb-4">Entrez les IDs des groupes séparés par des virgules :</p>
         <Input
           placeholder="1, 2, 3"
           value={groupIds}
@@ -457,14 +457,14 @@ export default function ClientsPage({
       </Modal>
 
       <Modal isOpen={bulkEditOpen} onClose={() => setBulkEditOpen(false)} title="✏️ Édition en masse" size="sm">
-        <p className="text-sm text-gray-300 mb-4">
+        <p className="text-sm text-gray-600 mb-4">
           Modification en masse pour {selected.size || customers.length} client(s)
         </p>
         <div className="space-y-3">
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">Colonne</label>
+            <label className="text-xs text-gray-500 mb-1.5 block">Colonne</label>
             <select value={bulkColumn} onChange={e => setBulkColumn(e.target.value)}
-              className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+              className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
               <option value="pays">Pays</option>
               <option value="ville">Ville</option>
               <option value="metier">Métier</option>

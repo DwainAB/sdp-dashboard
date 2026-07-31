@@ -24,16 +24,16 @@ export default function LoginPage() {
   })
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-950">
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-10 w-full max-w-sm mx-4 shadow-2xl text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-gray-100 border border-gray-200 rounded-2xl p-10 w-full max-w-sm mx-4 shadow-2xl text-center">
         <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4">
           SDP
         </div>
-        <h1 className="text-xl font-bold text-white mb-1">SDP OCR</h1>
-        <p className="text-sm text-gray-500 mb-8">Accès sécurisé au dashboard</p>
+        <h1 className="text-xl font-bold text-gray-900 mb-1">SDP OCR</h1>
+        <p className="text-sm text-gray-600 mb-8">Accès sécurisé au dashboard</p>
 
         {authError && (
-          <div className="bg-red-900/50 border border-red-800 text-red-200 text-sm rounded-lg px-4 py-3 mb-6">
+          <div className="bg-red-50/50 border border-red-200 text-red-800 text-sm rounded-lg px-4 py-3 mb-6">
             {authError}
           </div>
         )}
@@ -41,7 +41,7 @@ export default function LoginPage() {
         <button
           onClick={() => googleLogin()}
           disabled={isProcessing || isLoading}
-          className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-800 font-medium px-4 py-3 rounded-lg transition-colors disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-900 font-medium px-4 py-3 rounded-lg transition-colors disabled:opacity-50"
         >
           {(isProcessing || isLoading) ? (
             <span className="w-5 h-5 border-2 border-gray-400 border-t-gray-800 rounded-full animate-spin" />
@@ -56,7 +56,7 @@ export default function LoginPage() {
           <span>{(isProcessing || isLoading) ? 'Connexion en cours...' : 'Se connecter avec Google'}</span>
         </button>
 
-        <p className="text-[11px] text-gray-600 mt-8">🔒 Authentification Google OAuth 2.0</p>
+        <p className="text-[11px] text-gray-700 mt-8">🔒 Authentification Google OAuth 2.0</p>
       </div>
     </div>
   )

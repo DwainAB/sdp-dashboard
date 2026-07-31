@@ -17,13 +17,13 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 max-w-md w-full text-center space-y-4">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+          <div className="bg-gray-100 border border-gray-200 rounded-xl p-8 max-w-md w-full text-center space-y-4">
             <div className="w-12 h-12 mx-auto rounded-full bg-red-500/10 flex items-center justify-center">
-              <span className="text-red-400 text-xl font-bold">!</span>
+              <span className="text-red-700 text-xl font-bold">!</span>
             </div>
-            <h1 className="text-lg font-semibold text-white">Une erreur est survenue</h1>
-            <p className="text-sm text-gray-400 font-mono bg-gray-950 rounded-lg p-3 text-left break-all">
+            <h1 className="text-lg font-semibold text-gray-900">Une erreur est survenue</h1>
+            <p className="text-sm text-gray-500 font-mono bg-gray-50 rounded-lg p-3 text-left break-all">
               {this.state.error?.message || 'Erreur inconnue'}
             </p>
             <button

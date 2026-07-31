@@ -70,13 +70,13 @@ export default function OrdersPage({ onOpenOrder }: { onOpenOrder: (orderId: num
 
   const statusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      pending: 'bg-amber-400/10 text-amber-400',
-      processing: 'bg-blue-400/10 text-blue-400',
-      completed: 'bg-emerald-400/10 text-emerald-400',
-      cancelled: 'bg-red-400/10 text-red-400',
+      pending: 'bg-amber-500/10 text-amber-600',
+      processing: 'bg-blue-500/10 text-blue-600',
+      completed: 'bg-emerald-500/10 text-emerald-600',
+      cancelled: 'bg-red-500/10 text-red-700',
     }
     return (
-      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${colors[status] || 'bg-gray-500/10 text-gray-500'}`}>
+      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${colors[status] || 'bg-gray-300/10 text-gray-600'}`}>
         {status || 'unknown'}
       </span>
     )
@@ -86,8 +86,8 @@ export default function OrdersPage({ onOpenOrder }: { onOpenOrder: (orderId: num
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-lg font-bold text-white">Orders</h1>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <h1 className="text-lg font-bold text-gray-900">Orders</h1>
+          <p className="text-xs text-gray-600 mt-0.5">
             {pagination.total > 0 ? `${pagination.total} order${pagination.total !== 1 ? 's' : ''}` : ''}
           </p>
         </div>
@@ -97,22 +97,22 @@ export default function OrdersPage({ onOpenOrder }: { onOpenOrder: (orderId: num
       </div>
 
       {showFilters && (
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 mb-4 space-y-3">
+        <div className="bg-gray-100 border border-gray-200 rounded-xl p-4 mb-4 space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <Input label="Search" placeholder="Order ID or keyword..." value={filters.search} onChange={e => setFilters(prev => ({ ...prev, search: e.target.value }))} />
             <Input label="Customer Name" placeholder="Filter by customer..." value={filters.customerName} onChange={e => setFilters(prev => ({ ...prev, customerName: e.target.value }))} />
             <div>
-              <label className="text-xs text-gray-400 mb-1.5 block">Status</label>
+              <label className="text-xs text-gray-500 mb-1.5 block">Status</label>
               <select value={filters.status} onChange={e => setFilters(prev => ({ ...prev, status: e.target.value }))}
-                className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
                 <option value="">All</option>
                 {STATUS_OPTIONS.filter(Boolean).map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-xs text-gray-400 mb-1.5 block">Order Type</label>
+              <label className="text-xs text-gray-500 mb-1.5 block">Order Type</label>
               <select value={filters.orderType} onChange={e => setFilters(prev => ({ ...prev, orderType: e.target.value }))}
-                className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
                 <option value="">All</option>
                 {TYPE_OPTIONS.filter(Boolean).map(t => <option key={t} value={t}>{t}</option>)}
               </select>
@@ -130,28 +130,28 @@ export default function OrdersPage({ onOpenOrder }: { onOpenOrder: (orderId: num
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-4 animate-pulse flex gap-4">
-              <div className="h-4 bg-gray-800 rounded w-16" />
-              <div className="h-4 bg-gray-800 rounded w-32" />
-              <div className="h-4 bg-gray-800 rounded w-20 ml-auto" />
+            <div key={i} className="bg-gray-100 border border-gray-200 rounded-xl p-4 animate-pulse flex gap-4">
+              <div className="h-4 bg-gray-200 rounded w-16" />
+              <div className="h-4 bg-gray-200 rounded w-32" />
+              <div className="h-4 bg-gray-200 rounded w-20 ml-auto" />
             </div>
           ))}
         </div>
       ) : error ? (
         <div className="flex items-center justify-center h-64">
-          <p className="text-red-400 text-sm">{error}</p>
+          <p className="text-red-700 text-sm">{error}</p>
         </div>
       ) : orders.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+        <div className="flex flex-col items-center justify-center h-64 text-gray-600">
           <span className="text-3xl mb-2">📦</span>
           <p className="text-sm">No orders found</p>
         </div>
       ) : (
         <>
-          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+          <div className="bg-gray-100 border border-gray-200 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-800 text-gray-400 text-xs uppercase tracking-wider">
+                <tr className="border-b border-gray-200 text-gray-500 text-xs uppercase tracking-wider">
                   <th className="text-left px-4 py-3 font-medium">Order ID</th>
                   <th className="text-left px-4 py-3 font-medium">Customer</th>
                   <th className="text-left px-4 py-3 font-medium">Type</th>
@@ -164,14 +164,14 @@ export default function OrdersPage({ onOpenOrder }: { onOpenOrder: (orderId: num
                 {orders.map(o => (
                   <tr
                     key={o.id}
-                    className="border-b border-gray-800/50 hover:bg-gray-800/40 cursor-pointer transition-colors"
+                    className="border-b border-gray-200/50 hover:bg-gray-100/60 cursor-pointer transition-colors"
                     onClick={() => onOpenOrder(o.id)}
                   >
-                    <td className="px-4 py-3 text-white font-mono text-xs">#{o.id}</td>
-                    <td className="px-4 py-3 text-gray-300">{o.customer_name || '—'}</td>
-                    <td className="px-4 py-3 text-gray-400 capitalize">{o.order_type || '—'}</td>
+                    <td className="px-4 py-3 text-gray-900 font-mono text-xs">#{o.id}</td>
+                    <td className="px-4 py-3 text-gray-600">{o.customer_name || '—'}</td>
+                    <td className="px-4 py-3 text-gray-500 capitalize">{o.order_type || '—'}</td>
                     <td className="px-4 py-3">{statusBadge(o.status)}</td>
-                    <td className="px-4 py-3 text-gray-400 text-xs">{o.created_at ? new Date(o.created_at).toLocaleDateString() : '—'}</td>
+                    <td className="px-4 py-3 text-gray-500 text-xs">{o.created_at ? new Date(o.created_at).toLocaleDateString() : '—'}</td>
                     <td className="px-4 py-3 text-right">
                       <Button variant="ghost" size="sm" onClick={e => { e.stopPropagation(); onOpenOrder(o.id) }}>👁️</Button>
                     </td>
@@ -183,7 +183,7 @@ export default function OrdersPage({ onOpenOrder }: { onOpenOrder: (orderId: num
 
           {pagination.total_pages > 1 && (
             <div className="flex items-center justify-between mt-4">
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-600">
                 Page {pagination.page} of {pagination.total_pages}
               </span>
               <div className="flex gap-2">

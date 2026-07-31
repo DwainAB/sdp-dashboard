@@ -15,7 +15,7 @@ export default function NoteList({
   const [editingId, setEditingId] = useState<number | null>(null)
 
   if (notes.length === 0) {
-    return <p className="text-gray-400 text-sm">Aucune note pour l'instant.</p>
+    return <p className="text-gray-500 text-sm">Aucune note pour l'instant.</p>
   }
 
   return (
@@ -35,29 +35,29 @@ export default function NoteList({
         ) : (
           <div
             key={note.id}
-            className="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-xl p-3"
+            className="flex items-center gap-3 bg-gray-100 border border-gray-200 rounded-xl p-3"
           >
             <div className="flex gap-1 shrink-0">
               {[note.imageUrl, note.happyImageUrl, note.sadImageUrl].map((url, i) => (
                 <div
                   key={i}
-                  className="w-10 h-10 rounded-md border border-gray-800"
+                  className="w-10 h-10 rounded-md border border-gray-200"
                   style={url ? { background: `center/cover no-repeat url(${url})` } : { background: 'var(--bg)' }}
                 />
               ))}
             </div>
             <div className="flex-1 text-left">
-              <strong className="text-white text-sm">{note.name}</strong>
+              <strong className="text-gray-900 text-sm">{note.name}</strong>
             </div>
             <button
               onClick={() => setEditingId(note.id)}
-              className="px-3 py-1.5 rounded-lg border border-gray-700 bg-transparent text-gray-300 text-xs hover:bg-gray-800"
+              className="px-3 py-1.5 rounded-lg border border-gray-300 bg-transparent text-gray-600 text-xs hover:bg-gray-100"
             >
               Modifier
             </button>
             <button
               onClick={() => onDelete(note.id)}
-              className="px-3 py-1.5 rounded-lg border-0 bg-red-900/30 text-red-400 font-semibold text-xs hover:bg-red-900/50"
+              className="px-3 py-1.5 rounded-lg border-0 bg-red-50/30 text-red-700 font-semibold text-xs hover:bg-red-50/50"
             >
               Supprimer
             </button>

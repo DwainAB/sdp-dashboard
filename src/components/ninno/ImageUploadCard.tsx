@@ -44,22 +44,22 @@ export default function ImageUploadCard({
   const displayUrl = preview ?? currentUrl
 
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-lg flex flex-col gap-3">
+    <div className="bg-gray-100 border border-gray-200 rounded-xl p-5 shadow-lg flex flex-col gap-3">
       <div>
-        <h3 className="text-white font-semibold text-sm">{title}</h3>
-        <p className="text-gray-400 text-xs mt-1">{description}</p>
+        <h3 className="text-gray-900 font-semibold text-sm">{title}</h3>
+        <p className="text-gray-500 text-xs mt-1">{description}</p>
       </div>
 
       <div
-        className="h-40 rounded-lg border border-gray-800 flex items-center justify-center text-gray-500 text-sm"
+        className="h-40 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 text-sm"
         style={displayUrl ? { background: `center/cover no-repeat url(${displayUrl})` } : undefined}
       >
         {!displayUrl && 'Aucune image'}
       </div>
 
-      <input ref={inputRef} type="file" accept="image/*" onChange={handleFileChange} className="text-sm text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-500" />
+      <input ref={inputRef} type="file" accept="image/*" onChange={handleFileChange} className="text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-500" />
 
-      {error && <p className="text-red-400 text-xs m-0">{error}</p>}
+      {error && <p className="text-red-700 text-xs m-0">{error}</p>}
 
       <button
         onClick={handleSave}

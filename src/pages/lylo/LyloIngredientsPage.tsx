@@ -23,9 +23,9 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  top: "bg-blue-500/10 text-blue-400",
+  top: "bg-blue-500/10 text-blue-600",
   heart: "bg-pink-500/10 text-pink-400",
-  base: "bg-amber-500/10 text-amber-400",
+  base: "bg-amber-500/10 text-amber-600",
 };
 
 function emptyForm() {
@@ -218,7 +218,7 @@ export default function LyloIngredientsPage() {
         <div className="space-y-2">
           <Label htmlFor="ing_type">Type *</Label>
           <select id="ing_type" value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value as "top" | "heart" | "base" })}
-            className="w-full rounded-lg border border-gray-800 px-3 py-2 text-sm text-white">
+            className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900">
             <option value="top">Note de tête</option>
             <option value="heart">Note de cœur</option>
             <option value="base">Note de fond</option>
@@ -227,7 +227,7 @@ export default function LyloIngredientsPage() {
         <div className="space-y-2">
           <Label htmlFor="ing_lang">Langue *</Label>
           <select id="ing_lang" value={form.language} onChange={(e) => setForm({ ...form, language: e.target.value })}
-            className="w-full rounded-lg border border-gray-800 px-3 py-2 text-sm text-white">
+            className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900">
             <option value="fr">Français</option>
             <option value="en">English</option>
           </select>
@@ -239,7 +239,7 @@ export default function LyloIngredientsPage() {
         <div className="space-y-2">
           <Label htmlFor="ing_intensity">Intensité</Label>
           <select id="ing_intensity" value={form.intensity} onChange={(e) => setForm({ ...form, intensity: e.target.value })}
-            className="w-full rounded-lg border border-gray-800 px-3 py-2 text-sm text-white">
+            className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900">
             <option value="">— Non renseignée —</option>
             <option value="legere">Légère</option>
             <option value="moyenne">Moyenne</option>
@@ -252,7 +252,7 @@ export default function LyloIngredientsPage() {
         </div>
         <div className="space-y-2 md:col-span-2">
           <Label htmlFor="ing_allergens">
-            Allergènes <span className="text-gray-600 font-normal">(séparés par des virgules — laisser vide = IA raisonne seule)</span>
+            Allergènes <span className="text-gray-700 font-normal">(séparés par des virgules — laisser vide = IA raisonne seule)</span>
           </Label>
           <Input id="ing_allergens" value={form.allergens} onChange={(e) => setForm({ ...form, allergens: e.target.value })} placeholder="limonène, linalool, géraniol…" />
         </div>
@@ -263,23 +263,23 @@ export default function LyloIngredientsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <div className="rounded-lg border border-gray-200 bg-gray-100 p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Ingrédients</h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <h2 className="text-xl font-semibold text-gray-900">Ingrédients</h2>
+            <p className="mt-1 text-sm text-gray-500">
               Notes olfactives utilisées par l'IA pour générer les formules de parfum.
             </p>
           </div>
           <div className="flex gap-2 flex-wrap">
             <select value={langFilter} onChange={(e) => setLangFilter(e.target.value)}
-              className="rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-white">
+              className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900">
               <option value="fr">Français</option>
               <option value="en">English</option>
               <option value="">Toutes langues</option>
             </select>
             <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}
-              className="rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-white">
+              className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900">
               <option value="">Tous types</option>
               <option value="top">Tête</option>
               <option value="heart">Cœur</option>
@@ -292,58 +292,58 @@ export default function LyloIngredientsPage() {
           </div>
         </div>
         {error && (
-          <div className="mt-4 rounded-lg border border-red-800 bg-red-900/30 p-3 text-sm text-red-400">{error}</div>
+          <div className="mt-4 rounded-lg border border-red-200 bg-red-50/30 p-3 text-sm text-red-700">{error}</div>
         )}
       </div>
 
       {/* Liste */}
-      <div className="overflow-hidden rounded-lg border border-gray-800 bg-gray-900">
-        <div className="flex items-center justify-between border-b border-gray-800 bg-gray-950/20 px-6 py-4">
-          <div className="text-sm font-semibold text-white">
-            Ingrédients <span className="text-gray-500">({filtered.length})</span>
+      <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+        <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50/20 px-6 py-4">
+          <div className="text-sm font-semibold text-gray-900">
+            Ingrédients <span className="text-gray-600">({filtered.length})</span>
           </div>
           <div className="w-72">
             <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Rechercher…" />
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-800">
-            <thead className="bg-gray-950/40">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50/40">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Nom</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Type</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Catégorie</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Intensité</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Allergènes</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Statut</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Nom</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Type</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Catégorie</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Intensité</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Allergènes</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Statut</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
+            <tbody className="divide-y divide-gray-200">
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-10 text-center text-sm text-gray-400">
+                  <td colSpan={6} className="px-6 py-10 text-center text-sm text-gray-500">
                     {isBusy ? "Chargement..." : "Aucun ingrédient."}
                   </td>
                 </tr>
               )}
               {filtered.map((ing) => (
-                <tr key={ing.id} className="cursor-pointer transition-colors hover:bg-gray-800/50" onClick={() => openDetail(ing)}>
+                <tr key={ing.id} className="cursor-pointer transition-colors hover:bg-gray-100/60" onClick={() => openDetail(ing)}>
                   <td className="px-6 py-4">
-                    <p className="text-sm font-medium text-white">{ing.name}</p>
-                    {ing.description && <p className="text-xs text-gray-500 truncate max-w-xs">{ing.description}</p>}
+                    <p className="text-sm font-medium text-gray-900">{ing.name}</p>
+                    {ing.description && <p className="text-xs text-gray-600 truncate max-w-xs">{ing.description}</p>}
                   </td>
                   <td className="px-6 py-4">
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${TYPE_COLORS[ing.type]}`}>
                       {TYPE_LABELS[ing.type]}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-300">{ing.category || "—"}</td>
-                  <td className="px-6 py-4 text-sm text-gray-300 capitalize">{ing.intensity || "—"}</td>
-                  <td className="px-6 py-4 text-sm text-gray-300">
+                  <td className="px-6 py-4 text-sm text-gray-600">{ing.category || "—"}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600 capitalize">{ing.intensity || "—"}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
                     {ing.allergens ? (
                       <span className="text-orange-600">{ing.allergens.length} renseigné{ing.allergens.length > 1 ? "s" : ""}</span>
                     ) : (
-                      <span className="text-gray-600 italic">IA raisonne</span>
+                      <span className="text-gray-700 italic">IA raisonne</span>
                     )}
                   </td>
                   <td className="px-6 py-4">

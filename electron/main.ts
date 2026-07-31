@@ -22,7 +22,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
     },
     titleBarStyle: 'hiddenInset',
-    backgroundColor: '#030712',
+    backgroundColor: '#FAFAFA',
   })
 
   if (VITE_DEV_SERVER_URL) {

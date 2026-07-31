@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BarChart3, Eye, EyeOff, Save } from 'lucide-react'
+import { Eye, EyeOff, Save } from 'lucide-react'
 import { authClient } from '../api/authClient'
 
 interface Props {
@@ -38,47 +38,47 @@ export default function ChangePasswordPage({ email, onSuccess }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="flex items-center justify-center gap-2 mb-8">
-          <BarChart3 size={28} className="text-indigo-400" />
-          <span className="text-xl font-bold text-white">SDP Dashboard</span>
+          <img src="/favicon.png" alt="SDP" className="h-9 w-9" />
+          <span className="text-xl font-bold text-gray-900">SDP</span>
         </div>
-        <form onSubmit={handleSubmit} className="bg-gray-900 border border-gray-800 rounded-xl p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-gray-100 border border-gray-200 rounded-xl p-6 space-y-4">
           <div className="text-center">
-            <h1 className="text-lg font-semibold text-white">Changement de mot de passe</h1>
-            <p className="text-xs text-gray-500 mt-1">Vous devez changer votre mot de passe provisoire</p>
+            <h1 className="text-lg font-semibold text-gray-900">Changement de mot de passe</h1>
+            <p className="text-xs text-gray-600 mt-1">Vous devez changer votre mot de passe provisoire</p>
           </div>
-          {error && <p className="text-xs text-red-400 text-center bg-red-400/10 rounded-lg p-2">{error}</p>}
+          {error && <p className="text-xs text-red-700 text-center bg-red-500/10 rounded-lg p-2">{error}</p>}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">Mot de passe actuel</label>
+            <label className="text-xs text-gray-600 mb-1 block">Mot de passe actuel</label>
             <div className="relative">
               <input type={show.cur ? 'text' : 'password'} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white pr-10 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-900 pr-10 focus:outline-none focus:border-indigo-500"
               />
-              <button type="button" onClick={() => setShow(s => ({ ...s, cur: !s.cur }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+              <button type="button" onClick={() => setShow(s => ({ ...s, cur: !s.cur }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-600">
                 {show.cur ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
           </div>
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">Nouveau mot de passe</label>
+            <label className="text-xs text-gray-600 mb-1 block">Nouveau mot de passe</label>
             <div className="relative">
               <input type={show.new ? 'text' : 'password'} value={newPassword} onChange={e => setNewPassword(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white pr-10 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-900 pr-10 focus:outline-none focus:border-indigo-500"
               />
-              <button type="button" onClick={() => setShow(s => ({ ...s, new: !s.new }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+              <button type="button" onClick={() => setShow(s => ({ ...s, new: !s.new }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-600">
                 {show.new ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
           </div>
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">Confirmer le mot de passe</label>
+            <label className="text-xs text-gray-600 mb-1 block">Confirmer le mot de passe</label>
             <div className="relative">
               <input type={show.confirm ? 'text' : 'password'} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white pr-10 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-900 pr-10 focus:outline-none focus:border-indigo-500"
               />
-              <button type="button" onClick={() => setShow(s => ({ ...s, confirm: !s.confirm }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+              <button type="button" onClick={() => setShow(s => ({ ...s, confirm: !s.confirm }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-600">
                 {show.confirm ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>

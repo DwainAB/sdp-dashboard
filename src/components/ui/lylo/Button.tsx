@@ -4,9 +4,9 @@ type Variant = 'primary' | 'secondary' | 'danger' | 'ghost'
 
 const VARIANT_CLASS: Record<Variant, string> = {
   primary: 'bg-indigo-600 hover:bg-indigo-500 text-white',
-  secondary: 'bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700',
+  secondary: 'bg-white hover:bg-gray-200 text-gray-700 border border-gray-300',
   danger: 'bg-red-700 hover:bg-red-600 text-white',
-  ghost: 'text-gray-400 hover:text-white hover:bg-gray-800',
+  ghost: 'text-gray-500 hover:text-gray-900 hover:bg-gray-100',
 }
 
 export function Button({ className = '', variant = 'secondary', type, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }) {

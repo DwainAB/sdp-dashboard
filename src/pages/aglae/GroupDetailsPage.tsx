@@ -111,9 +111,9 @@ export default function GroupDetailsPage({ groupIds, onBack }: { groupIds: numbe
     return (
       <div className="p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-800 rounded w-48" />
-          <div className="h-4 bg-gray-800 rounded w-72" />
-          <div className="h-64 bg-gray-800 rounded-xl" />
+          <div className="h-8 bg-gray-200 rounded w-48" />
+          <div className="h-4 bg-gray-200 rounded w-72" />
+          <div className="h-64 bg-gray-200 rounded-xl" />
         </div>
       </div>
     )
@@ -122,9 +122,9 @@ export default function GroupDetailsPage({ groupIds, onBack }: { groupIds: numbe
   if (error) {
     return (
       <div className="p-6">
-        <button onClick={onBack} className="text-gray-400 hover:text-white text-sm mb-4 flex items-center gap-1">◀ Back</button>
+        <button onClick={onBack} className="text-gray-500 hover:text-gray-900 text-sm mb-4 flex items-center gap-1">◀ Back</button>
         <div className="flex items-center justify-center h-64">
-          <p className="text-red-400 text-sm">{error}</p>
+          <p className="text-red-700 text-sm">{error}</p>
         </div>
       </div>
     )
@@ -134,15 +134,15 @@ export default function GroupDetailsPage({ groupIds, onBack }: { groupIds: numbe
 
   return (
     <div className="p-6">
-      <button onClick={onBack} className="text-gray-400 hover:text-white text-sm mb-4 flex items-center gap-1">◀ Back to Groups</button>
+      <button onClick={onBack} className="text-gray-500 hover:text-gray-900 text-sm mb-4 flex items-center gap-1">◀ Back to Groups</button>
 
-      <div className="bg-gray-900 border border-gray-800 rounded-xl p-5 mb-6">
+      <div className="bg-gray-100 border border-gray-200 rounded-xl p-5 mb-6">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-lg font-bold text-white">{group.name}</h1>
-            <p className="text-sm text-gray-400 mt-1">{group.description || 'No description'}</p>
+            <h1 className="text-lg font-bold text-gray-900">{group.name}</h1>
+            <p className="text-sm text-gray-500 mt-1">{group.description || 'No description'}</p>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
             <span>👥</span>
             <span>{members.length} member{members.length !== 1 ? 's' : ''}</span>
           </div>
@@ -150,20 +150,20 @@ export default function GroupDetailsPage({ groupIds, onBack }: { groupIds: numbe
       </div>
 
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-white">Members</h2>
+        <h2 className="text-sm font-semibold text-gray-900">Members</h2>
         <Button size="sm" onClick={openAddModal}>➕ Add Members</Button>
       </div>
 
       {members.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-48 text-gray-500 bg-gray-900 border border-gray-800 rounded-xl">
+        <div className="flex flex-col items-center justify-center h-48 text-gray-600 bg-gray-100 border border-gray-200 rounded-xl">
           <span className="text-3xl mb-2">👤</span>
           <p className="text-sm">No members yet</p>
         </div>
       ) : (
-        <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+        <div className="bg-gray-100 border border-gray-200 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-800 text-gray-400 text-xs uppercase tracking-wider">
+              <tr className="border-b border-gray-200 text-gray-500 text-xs uppercase tracking-wider">
                 <th className="text-left px-4 py-3 font-medium">Name</th>
                 <th className="text-left px-4 py-3 font-medium">Email</th>
                 <th className="text-left px-4 py-3 font-medium">Phone</th>
@@ -172,10 +172,10 @@ export default function GroupDetailsPage({ groupIds, onBack }: { groupIds: numbe
             </thead>
             <tbody>
               {members.map(m => (
-                <tr key={m.id} className="border-b border-gray-800/50 hover:bg-gray-800/40 transition-colors">
-                  <td className="px-4 py-3 text-white font-medium">{m.name || '—'}</td>
-                  <td className="px-4 py-3 text-gray-400">{m.email || '—'}</td>
-                  <td className="px-4 py-3 text-gray-400">{m.phone || '—'}</td>
+                <tr key={m.id} className="border-b border-gray-200/50 hover:bg-gray-100/60 transition-colors">
+                  <td className="px-4 py-3 text-gray-900 font-medium">{m.name || '—'}</td>
+                  <td className="px-4 py-3 text-gray-500">{m.email || '—'}</td>
+                  <td className="px-4 py-3 text-gray-500">{m.phone || '—'}</td>
                   <td className="px-4 py-3 text-right">
                     <Button variant="ghost" size="sm" onClick={() => setRemoveTarget(m)}>✖</Button>
                   </td>
@@ -188,21 +188,21 @@ export default function GroupDetailsPage({ groupIds, onBack }: { groupIds: numbe
 
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowAddModal(false)}>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-              <h2 className="text-base font-semibold text-white">Add Members</h2>
-              <button onClick={() => setShowAddModal(false)} className="text-gray-500 hover:text-white transition-colors text-lg">✕</button>
+          <div className="bg-gray-100 border border-gray-200 rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+              <h2 className="text-base font-semibold text-gray-900">Add Members</h2>
+              <button onClick={() => setShowAddModal(false)} className="text-gray-600 hover:text-gray-900 transition-colors text-lg">✕</button>
             </div>
             <div className="p-6 max-h-80 overflow-y-auto space-y-1">
               {customers.filter(c => !alreadyMembers.has(c.id)).length === 0 ? (
-                <p className="text-gray-500 text-sm text-center py-8">No available customers to add</p>
+                <p className="text-gray-600 text-sm text-center py-8">No available customers to add</p>
               ) : (
                 customers
                   .filter(c => !alreadyMembers.has(c.id))
                   .map(c => (
                     <label
                       key={c.id}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800 cursor-pointer transition-colors"
+                      className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"
                     >
                       <input
                         type="checkbox"
@@ -211,14 +211,14 @@ export default function GroupDetailsPage({ groupIds, onBack }: { groupIds: numbe
                         className="accent-indigo-500"
                       />
                       <div>
-                        <span className="text-sm text-white">{c.name || 'Unnamed'}</span>
-                        <span className="text-xs text-gray-500 ml-2">{c.email}</span>
+                        <span className="text-sm text-gray-900">{c.name || 'Unnamed'}</span>
+                        <span className="text-xs text-gray-600 ml-2">{c.email}</span>
                       </div>
                     </label>
                   ))
               )}
             </div>
-            <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-800">
+            <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
               <Button variant="secondary" onClick={() => setShowAddModal(false)}>Cancel</Button>
               <Button onClick={handleAddMembers} loading={adding} disabled={!selectedIds.length}>Add Selected ({selectedIds.length})</Button>
             </div>

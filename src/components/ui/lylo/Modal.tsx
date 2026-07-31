@@ -47,16 +47,16 @@ export function Modal({ open, title, children, footer, onClose, maxWidthClassNam
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`relative z-10 flex w-full flex-col ${maxWidthClassName} max-h-[90vh] rounded-xl border border-gray-800 bg-gray-900 shadow-xl outline-none`}
+        className={`relative z-10 flex w-full flex-col ${maxWidthClassName} max-h-[90vh] rounded-xl border border-gray-200 bg-gray-100 shadow-xl outline-none`}
       >
-        <div className="flex shrink-0 items-start justify-between gap-4 border-b border-gray-800 px-6 py-4">
+        <div className="flex shrink-0 items-start justify-between gap-4 border-b border-gray-200 px-6 py-4">
           <div className="min-w-0">
-            <h2 id={titleId} className="truncate text-lg font-semibold text-white">{title}</h2>
+            <h2 id={titleId} className="truncate text-lg font-semibold text-gray-900">{title}</h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-7 w-7 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-800 hover:text-white"
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
             aria-label="Fermer"
           >
             <span className="material-symbols-outlined text-[20px] leading-none">close</span>
@@ -64,7 +64,7 @@ export function Modal({ open, title, children, footer, onClose, maxWidthClassNam
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">{children}</div>
         {footer && (
-          <div className="flex shrink-0 items-center justify-end gap-3 border-t border-gray-800 bg-gray-950/40 px-6 py-4">{footer}</div>
+          <div className="flex shrink-0 items-center justify-end gap-3 border-t border-gray-200 bg-gray-50/40 px-6 py-4">{footer}</div>
         )}
       </div>
     </div>

@@ -38,9 +38,9 @@ async function apiFetch(path: string, init?: RequestInit, timeoutMs = 20000) {
 
 const FORMULA_TYPE_LABELS: Record<string, string> = { frais: 'Frais', mix: 'Mix', puissant: 'Puissant' }
 const FORMULA_TYPE_COLORS: Record<string, string> = {
-  frais: 'bg-blue-500/10 text-blue-400 border-blue-800',
-  mix: 'bg-purple-500/10 text-purple-400 border-purple-800',
-  puissant: 'bg-amber-500/10 text-amber-400 border-amber-800',
+  frais: 'bg-blue-500/10 text-blue-600 border-blue-800',
+  mix: 'bg-purple-500/10 text-purple-600 border-purple-800',
+  puissant: 'bg-amber-500/10 text-amber-600 border-amber-800',
 }
 
 function formatDate(iso: string | null) {
@@ -49,7 +49,7 @@ function formatDate(iso: string | null) {
 }
 
 function Badge({ type }: { type: string }) {
-  const color = FORMULA_TYPE_COLORS[type] ?? 'bg-gray-500/10 text-gray-400 border-gray-800'
+  const color = FORMULA_TYPE_COLORS[type] ?? 'bg-gray-300/10 text-gray-500 border-gray-200'
   return <span className={`inline-flex items-center rounded border px-2 py-0.5 text-xs font-semibold ${color}`}>{FORMULA_TYPE_LABELS[type] ?? type}</span>
 }
 
@@ -57,12 +57,12 @@ function NoteGroup({ label, notes }: { label: string; notes: Note[] }) {
   if (!notes?.length) return null
   return (
     <div>
-      <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-gray-500">{label}</p>
+      <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-gray-600">{label}</p>
       <div className="flex flex-wrap gap-2">
         {notes.map((n, i) => (
-          <span key={i} className="inline-flex items-center gap-1 rounded-lg border border-gray-800 bg-gray-800/60 px-2.5 py-1 text-sm text-white">
+          <span key={i} className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white/60 px-2.5 py-1 text-sm text-gray-900">
             {n.name}
-            {n.ml != null && <span className="text-xs text-gray-600">{n.ml} ml</span>}
+            {n.ml != null && <span className="text-xs text-gray-700">{n.ml} ml</span>}
           </span>
         ))}
       </div>
@@ -151,47 +151,47 @@ export default function LyloFormulesPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">
+      <div className="rounded-xl border border-gray-200 bg-gray-100 p-6">
         <div>
-          <h2 className="text-xl font-semibold text-white">Formules générées</h2>
-          <p className="mt-1 text-sm text-gray-400">Recherche par référence (ex : lylo-27042026-001) ou par email client.</p>
+          <h2 className="text-xl font-semibold text-gray-900">Formules générées</h2>
+          <p className="mt-1 text-sm text-gray-500">Recherche par référence (ex : lylo-27042026-001) ou par email client.</p>
         </div>
-        {error && <div className="mt-4 rounded-lg border border-red-800 bg-red-900/30 p-3 text-sm text-red-400">{error}</div>}
+        {error && <div className="mt-4 rounded-lg border border-red-200 bg-red-50/30 p-3 text-sm text-red-700">{error}</div>}
       </div>
-      <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-900">
-        <div className="flex flex-col gap-3 border-b border-gray-800 bg-gray-950/20 px-6 py-4 md:flex-row md:items-center md:justify-between">
-          <div className="text-sm font-semibold text-white">
-            {isBusy ? 'Chargement…' : <>Liste des formules <span className="text-gray-500">({total})</span></>}
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
+        <div className="flex flex-col gap-3 border-b border-gray-200 bg-gray-50/20 px-6 py-4 md:flex-row md:items-center md:justify-between">
+          <div className="text-sm font-semibold text-gray-900">
+            {isBusy ? 'Chargement…' : <>Liste des formules <span className="text-gray-600">({total})</span></>}
           </div>
           <div className="w-full md:w-96">
             <Input value={search} onChange={e => handleSearch(e.target.value)} placeholder="Référence ou email…" aria-label="Rechercher une formule" />
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-800">
-            <thead className="bg-gray-950/40">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50/40">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Référence</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Client</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Profil</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Type</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Référence</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Client</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Profil</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Type</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
+            <tbody className="divide-y divide-gray-200">
               {formulas.map(f => (
-                <tr key={f.id} className="cursor-pointer transition-colors hover:bg-gray-800/50" onClick={() => openDetail(f)}>
-                  <td className="px-6 py-4 font-mono text-sm font-semibold text-white">{f.reference}</td>
-                  <td className="px-6 py-4 text-sm text-gray-200">{f.customer_name ?? '—'}</td>
-                  <td className="px-6 py-4 text-sm text-gray-400">{f.customer_email ?? '—'}</td>
-                  <td className="px-6 py-4 text-sm text-gray-200">{f.profile ?? '—'}</td>
+                <tr key={f.id} className="cursor-pointer transition-colors hover:bg-gray-100/60" onClick={() => openDetail(f)}>
+                  <td className="px-6 py-4 font-mono text-sm font-semibold text-gray-900">{f.reference}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700">{f.customer_name ?? '—'}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{f.customer_email ?? '—'}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700">{f.profile ?? '—'}</td>
                   <td className="px-6 py-4">{f.formula_type ? <Badge type={f.formula_type} /> : '—'}</td>
-                  <td className="px-6 py-4 text-sm text-gray-400">{formatDate(f.created_at)}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{formatDate(f.created_at)}</td>
                 </tr>
               ))}
               {!isBusy && formulas.length === 0 && (
-                <tr><td className="px-6 py-10 text-center text-sm text-gray-500" colSpan={6}>Aucune formule ne correspond à ta recherche.</td></tr>
+                <tr><td className="px-6 py-10 text-center text-sm text-gray-600" colSpan={6}>Aucune formule ne correspond à ta recherche.</td></tr>
               )}
             </tbody>
           </table>
@@ -209,14 +209,14 @@ export default function LyloFormulesPage() {
         {selected && (
           <div className="space-y-5">
             <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-3">
-              <div><p className="text-xs text-gray-500">Client</p><p className="font-medium text-white">{selected.customer_name ?? '—'}</p></div>
-              <div><p className="text-xs text-gray-500">Email</p><p className="font-medium text-white">{selected.customer_email ?? '—'}</p></div>
-              <div><p className="text-xs text-gray-500">Profil</p><p className="font-medium text-white">{selected.profile ?? '—'}</p></div>
-              <div><p className="text-xs text-gray-500">Type</p><div className="mt-0.5">{selected.formula_type ? <Badge type={selected.formula_type} /> : '—'}</div></div>
-              <div><p className="text-xs text-gray-500">Langue</p><p className="font-medium text-white uppercase">{selected.language ?? '—'}</p></div>
-              <div><p className="text-xs text-gray-500">Date</p><p className="font-medium text-white">{formatDate(selected.created_at)}</p></div>
+              <div><p className="text-xs text-gray-600">Client</p><p className="font-medium text-gray-900">{selected.customer_name ?? '—'}</p></div>
+              <div><p className="text-xs text-gray-600">Email</p><p className="font-medium text-gray-900">{selected.customer_email ?? '—'}</p></div>
+              <div><p className="text-xs text-gray-600">Profil</p><p className="font-medium text-gray-900">{selected.profile ?? '—'}</p></div>
+              <div><p className="text-xs text-gray-600">Type</p><div className="mt-0.5">{selected.formula_type ? <Badge type={selected.formula_type} /> : '—'}</div></div>
+              <div><p className="text-xs text-gray-600">Langue</p><p className="font-medium text-gray-900 uppercase">{selected.language ?? '—'}</p></div>
+              <div><p className="text-xs text-gray-600">Date</p><p className="font-medium text-gray-900">{formatDate(selected.created_at)}</p></div>
             </div>
-            <div className="rounded-lg border border-gray-800 bg-gray-950/30 p-4">
+            <div className="rounded-lg border border-gray-200 bg-gray-50/30 p-4">
               <div className="flex flex-col gap-3 md:flex-row md:items-end">
                 <div className="flex-1">
                   <Label htmlFor="formula-email">Email d'envoi</Label>
@@ -226,21 +226,21 @@ export default function LyloFormulesPage() {
                   {isSendingEmail ? 'Envoi...' : 'Envoyer par email'}
                 </Button>
               </div>
-              <p className="mt-2 text-xs text-gray-400">
+              <p className="mt-2 text-xs text-gray-500">
                 {selected.customer_email
                   ? "L'adresse enregistree est preremplie. Tu peux la modifier avant l'envoi."
                   : "Aucune adresse enregistree pour cette formule. Renseigne un email pour envoyer la formule."}
               </p>
-              {emailStatus && <div className="mt-3 rounded-lg border border-emerald-800 bg-emerald-900/30 p-3 text-sm text-emerald-400">{emailStatus}</div>}
-              {emailError && <div className="mt-3 rounded-lg border border-red-800 bg-red-900/30 p-3 text-sm text-red-400">{emailError}</div>}
+              {emailStatus && <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{emailStatus}</div>}
+              {emailError && <div className="mt-3 rounded-lg border border-red-200 bg-red-50/30 p-3 text-sm text-red-700">{emailError}</div>}
             </div>
             {selected.sizes && Object.keys(selected.sizes).length > 0 && (
               <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Taille</p>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-600">Taille</p>
                 <div className="flex gap-2">
                   {Object.keys(selected.sizes).map(size => (
                     <button key={size} type="button" onClick={() => setSelectedSize(size)}
-                      className={`rounded-lg border px-3 py-1.5 text-sm font-semibold transition-colors ${selectedSize === size ? 'border-indigo-500 bg-indigo-600/10 text-indigo-400' : 'border-gray-800 bg-gray-950 text-gray-300 hover:bg-gray-800/60'}`}>
+                      className={`rounded-lg border px-3 py-1.5 text-sm font-semibold transition-colors ${selectedSize === size ? 'border-indigo-500 bg-indigo-600/10 text-indigo-600' : 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100/60'}`}>
                       {size}
                     </button>
                   ))}
@@ -248,7 +248,7 @@ export default function LyloFormulesPage() {
               </div>
             )}
             {sizeDetail && (
-              <div className="space-y-4 rounded-lg border border-gray-800 bg-gray-950/40 p-4">
+              <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50/40 p-4">
                 <NoteGroup label="Notes de tête" notes={sizeDetail.top_notes} />
                 <NoteGroup label="Notes de cœur" notes={sizeDetail.heart_notes} />
                 <NoteGroup label="Notes de fond" notes={sizeDetail.base_notes} />

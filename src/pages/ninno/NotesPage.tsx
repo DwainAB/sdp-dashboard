@@ -44,7 +44,7 @@ export default function NotesPage() {
     await reload()
   }
 
-  if (loading) return <p className="text-gray-400 text-sm">Chargement...</p>
+  if (loading) return <p className="text-gray-500 text-sm">Chargement...</p>
 
   const filtered = notes.filter((n) => n.type === activeTab)
 
@@ -58,7 +58,7 @@ export default function NotesPage() {
             className={`px-4 py-2 rounded-full border font-semibold text-xs transition-colors ${
               activeTab === tab.key
                 ? 'bg-indigo-600 border-indigo-600 text-white'
-                : 'border-gray-700 bg-transparent text-gray-300 hover:bg-gray-800'
+                : 'border-gray-300 bg-transparent text-gray-600 hover:bg-gray-100'
             }`}
           >
             {tab.label}
@@ -68,11 +68,11 @@ export default function NotesPage() {
 
       <div className="grid grid-cols-[320px_1fr] gap-6 items-start">
         <div>
-          <h3 className="text-white text-sm font-semibold mb-2.5">Ajouter une note</h3>
+          <h3 className="text-gray-900 text-sm font-semibold mb-2.5">Ajouter une note</h3>
           <NoteForm type={activeTab} onSubmit={handleCreate} />
         </div>
         <div>
-          <h3 className="text-white text-sm font-semibold mb-2.5">
+          <h3 className="text-gray-900 text-sm font-semibold mb-2.5">
             {TABS.find((t) => t.key === activeTab)?.label}
           </h3>
           <NoteList notes={filtered} onUpdate={handleUpdate} onDelete={handleDelete} />

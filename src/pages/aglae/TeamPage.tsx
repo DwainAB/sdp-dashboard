@@ -117,11 +117,11 @@ export default function TeamPage() {
 
   const roleBadge = (roleName: string) => {
     const colors: Record<string, string> = {
-      admin: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
-      user: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
-      viewer: 'bg-gray-500/10 text-gray-400 border-gray-500/30',
+      admin: 'bg-purple-500/10 text-purple-600 border-purple-500/30',
+      user: 'bg-blue-500/10 text-blue-600 border-blue-500/30',
+      viewer: 'bg-gray-300/10 text-gray-500 border-gray-400/30',
     }
-    return colors[roleName?.toLowerCase()] || 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30'
+    return colors[roleName?.toLowerCase()] || 'bg-indigo-500/10 text-indigo-600 border-indigo-500/30'
   }
 
   if (loading) {
@@ -129,16 +129,16 @@ export default function TeamPage() {
       <div className="p-6">
         <div className="animate-pulse grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-5 space-y-3">
+            <div key={i} className="bg-gray-100 border border-gray-200 rounded-xl p-5 space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gray-800 rounded-full" />
+                <div className="w-10 h-10 bg-gray-200 rounded-full" />
                 <div className="space-y-2 flex-1">
-                  <div className="h-4 bg-gray-800 rounded w-24" />
-                  <div className="h-3 bg-gray-800 rounded w-16" />
+                  <div className="h-4 bg-gray-200 rounded w-24" />
+                  <div className="h-3 bg-gray-200 rounded w-16" />
                 </div>
               </div>
-              <div className="h-3 bg-gray-800 rounded w-32" />
-              <div className="h-3 bg-gray-800 rounded w-28" />
+              <div className="h-3 bg-gray-200 rounded w-32" />
+              <div className="h-3 bg-gray-200 rounded w-28" />
             </div>
           ))}
         </div>
@@ -149,7 +149,7 @@ export default function TeamPage() {
   if (error) {
     return (
       <div className="p-6 flex items-center justify-center h-64">
-        <p className="text-red-400 text-sm">{error}</p>
+        <p className="text-red-700 text-sm">{error}</p>
       </div>
     )
   }
@@ -158,8 +158,8 @@ export default function TeamPage() {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-white">👥 Équipe</h1>
-          <p className="text-xs text-gray-500 mt-0.5">{members.length} membre{members.length !== 1 ? 's' : ''}</p>
+          <h1 className="text-lg font-bold text-gray-900">👥 Équipe</h1>
+          <p className="text-xs text-gray-600 mt-0.5">{members.length} membre{members.length !== 1 ? 's' : ''}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button size="sm" onClick={() => setAddModalOpen(true)}>➕ Ajouter</Button>
@@ -168,7 +168,7 @@ export default function TeamPage() {
         </div>
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
+      <div className="bg-gray-100 border border-gray-200 rounded-xl p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <Input
             placeholder="🔍 Rechercher..."
@@ -176,17 +176,17 @@ export default function TeamPage() {
             onChange={e => setSearch(e.target.value)}
           />
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">Rôle</label>
+            <label className="text-xs text-gray-500 mb-1.5 block">Rôle</label>
             <select value={roleFilter} onChange={e => setRoleFilter(e.target.value)}
-              className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+              className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
               <option value="">Tous</option>
               {roles.map(r => <option key={r.id} value={r.name}>{r.name}</option>)}
             </select>
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">Équipe</label>
+            <label className="text-xs text-gray-500 mb-1.5 block">Équipe</label>
             <select value={teamFilter} onChange={e => setTeamFilter(e.target.value)}
-              className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+              className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
               <option value="">Toutes</option>
               {teams.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
@@ -199,14 +199,14 @@ export default function TeamPage() {
                 onChange={e => setOnlineOnly(e.target.checked)}
                 className="accent-indigo-500"
               />
-              <span className="text-sm text-gray-300">En ligne uniquement</span>
+              <span className="text-sm text-gray-600">En ligne uniquement</span>
             </label>
           </div>
         </div>
       </div>
 
       {filteredMembers.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-48 text-gray-500">
+        <div className="flex flex-col items-center justify-center h-48 text-gray-600">
           <span className="text-3xl mb-2">👥</span>
           <p className="text-sm">Aucun membre trouvé</p>
         </div>
@@ -216,33 +216,33 @@ export default function TeamPage() {
             <div
               key={m.id}
               onClick={() => setSelectedMember(m)}
-              className="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors cursor-pointer space-y-3"
+              className="bg-gray-100 border border-gray-200 rounded-xl p-5 hover:border-gray-300 transition-colors cursor-pointer space-y-3"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-sm font-bold text-indigo-400">
+                  <div className="w-10 h-10 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-sm font-bold text-indigo-600">
                     {getInitials(m.name || `${m.first_name} ${m.last_name}`)}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">{m.name || `${m.first_name} ${m.last_name}`}</p>
+                    <p className="text-sm font-medium text-gray-900">{m.name || `${m.first_name} ${m.last_name}`}</p>
                     <span className={`inline-block text-[10px] px-2 py-0.5 rounded-full border font-medium ${roleBadge(m.role?.name || '')}`}>
                       {m.role?.name || '—'}
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 text-xs">
-                  <span className={`w-2 h-2 rounded-full ${m.is_online ? 'bg-emerald-400' : 'bg-gray-600'}`} />
-                  <span className="text-gray-500">{formatLastLogin(m.last_login_at, m.is_online)}</span>
+                  <span className={`w-2 h-2 rounded-full ${m.is_online ? 'bg-emerald-500' : 'bg-gray-300'}`} />
+                  <span className="text-gray-600">{formatLastLogin(m.last_login_at, m.is_online)}</span>
                 </div>
               </div>
               <div className="space-y-1 text-xs">
-                <p className="text-gray-400 truncate">📧 {m.email}</p>
-                {m.identifier && <p className="text-gray-500 font-mono">🆔 {m.identifier}</p>}
-                {m.phone && <p className="text-gray-400">📞 {m.phone}</p>}
-                {m.team && <p className="text-gray-400">🏢 {m.team}</p>}
+                <p className="text-gray-500 truncate">📧 {m.email}</p>
+                {m.identifier && <p className="text-gray-600 font-mono">🆔 {m.identifier}</p>}
+                {m.phone && <p className="text-gray-500">📞 {m.phone}</p>}
+                {m.team && <p className="text-gray-500">🏢 {m.team}</p>}
               </div>
               <div className="flex gap-2 pt-1">
-                <a href={`mailto:${m.email}`} onClick={e => e.stopPropagation()} className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">
+                <a href={`mailto:${m.email}`} onClick={e => e.stopPropagation()} className="text-xs text-indigo-600 hover:text-indigo-600 transition-colors">
                   📧 Envoyer un email
                 </a>
               </div>
@@ -253,33 +253,33 @@ export default function TeamPage() {
 
       {selectedMember && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSelectedMember(null)}>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-              <h2 className="text-base font-semibold text-white">Détails du membre</h2>
-              <button onClick={() => setSelectedMember(null)} className="text-gray-500 hover:text-white transition-colors text-lg">✕</button>
+          <div className="bg-gray-100 border border-gray-200 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+              <h2 className="text-base font-semibold text-gray-900">Détails du membre</h2>
+              <button onClick={() => setSelectedMember(null)} className="text-gray-600 hover:text-gray-900 transition-colors text-lg">✕</button>
             </div>
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-xl font-bold text-indigo-400">
+                <div className="w-14 h-14 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-xl font-bold text-indigo-600">
                   {getInitials(selectedMember.name || `${selectedMember.first_name} ${selectedMember.last_name}`)}
                 </div>
                 <div>
-                  <p className="text-base font-medium text-white">{selectedMember.name || `${selectedMember.first_name} ${selectedMember.last_name}`}</p>
-                  <span className={`inline-flex items-center gap-1 text-xs ${selectedMember.is_online ? 'text-emerald-400' : 'text-gray-500'}`}>
-                    <span className={`w-2 h-2 rounded-full ${selectedMember.is_online ? 'bg-emerald-400' : 'bg-gray-600'}`} />
+                  <p className="text-base font-medium text-gray-900">{selectedMember.name || `${selectedMember.first_name} ${selectedMember.last_name}`}</p>
+                  <span className={`inline-flex items-center gap-1 text-xs ${selectedMember.is_online ? 'text-emerald-600' : 'text-gray-600'}`}>
+                    <span className={`w-2 h-2 rounded-full ${selectedMember.is_online ? 'bg-emerald-500' : 'bg-gray-300'}`} />
                     {formatLastLogin(selectedMember.last_login_at, selectedMember.is_online)}
                   </span>
                 </div>
               </div>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between"><span className="text-gray-500">Email</span><span className="text-white">{selectedMember.email}</span></div>
-                {selectedMember.identifier && <div className="flex justify-between"><span className="text-gray-500">Identifiant</span><span className="text-white font-mono">{selectedMember.identifier}</span></div>}
-                {selectedMember.phone && <div className="flex justify-between"><span className="text-gray-500">Téléphone</span><span className="text-white">{selectedMember.phone}</span></div>}
-                {selectedMember.team && <div className="flex justify-between"><span className="text-gray-500">Équipe</span><span className="text-white">{selectedMember.team}</span></div>}
-                <div className="flex justify-between"><span className="text-gray-500">Rôle</span><span className="text-white">{selectedMember.role?.name || '—'}</span></div>
+                <div className="flex justify-between"><span className="text-gray-600">Email</span><span className="text-gray-900">{selectedMember.email}</span></div>
+                {selectedMember.identifier && <div className="flex justify-between"><span className="text-gray-600">Identifiant</span><span className="text-gray-900 font-mono">{selectedMember.identifier}</span></div>}
+                {selectedMember.phone && <div className="flex justify-between"><span className="text-gray-600">Téléphone</span><span className="text-gray-900">{selectedMember.phone}</span></div>}
+                {selectedMember.team && <div className="flex justify-between"><span className="text-gray-600">Équipe</span><span className="text-gray-900">{selectedMember.team}</span></div>}
+                <div className="flex justify-between"><span className="text-gray-600">Rôle</span><span className="text-gray-900">{selectedMember.role?.name || '—'}</span></div>
               </div>
               <div className="flex justify-end pt-2">
-                <a href={`mailto:${selectedMember.email}`} className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors">📧 Envoyer un email</a>
+                <a href={`mailto:${selectedMember.email}`} className="text-sm text-indigo-600 hover:text-indigo-600 transition-colors">📧 Envoyer un email</a>
               </div>
             </div>
           </div>
@@ -288,19 +288,19 @@ export default function TeamPage() {
 
       {addModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setAddModalOpen(false)}>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-              <h2 className="text-base font-semibold text-white">➕ Ajouter un membre</h2>
-              <button onClick={() => setAddModalOpen(false)} className="text-gray-500 hover:text-white transition-colors text-lg">✕</button>
+          <div className="bg-gray-100 border border-gray-200 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+              <h2 className="text-base font-semibold text-gray-900">➕ Ajouter un membre</h2>
+              <button onClick={() => setAddModalOpen(false)} className="text-gray-600 hover:text-gray-900 transition-colors text-lg">✕</button>
             </div>
             <div className="p-6 space-y-3">
               <Input label="Email" type="email" placeholder="email@exemple.com" value={addForm.email} onChange={e => setAddForm(f => ({ ...f, email: e.target.value }))} />
               <Input label="Prénom" placeholder="Jean" value={addForm.first_name} onChange={e => setAddForm(f => ({ ...f, first_name: e.target.value }))} />
               <Input label="Nom" placeholder="Dupont" value={addForm.last_name} onChange={e => setAddForm(f => ({ ...f, last_name: e.target.value }))} />
               <div>
-                <label className="text-xs text-gray-400 mb-1.5 block">Rôle</label>
+                <label className="text-xs text-gray-500 mb-1.5 block">Rôle</label>
                 <select value={addForm.role_id} onChange={e => setAddForm(f => ({ ...f, role_id: e.target.value }))}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-indigo-500 transition-colors">
                   <option value="">Sélectionner...</option>
                   {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
                 </select>
@@ -317,23 +317,23 @@ export default function TeamPage() {
 
       {rolesModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setRolesModalOpen(false)}>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-              <h2 className="text-base font-semibold text-white">🔧 Gestion des rôles</h2>
-              <button onClick={() => setRolesModalOpen(false)} className="text-gray-500 hover:text-white transition-colors text-lg">✕</button>
+          <div className="bg-gray-100 border border-gray-200 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+              <h2 className="text-base font-semibold text-gray-900">🔧 Gestion des rôles</h2>
+              <button onClick={() => setRolesModalOpen(false)} className="text-gray-600 hover:text-gray-900 transition-colors text-lg">✕</button>
             </div>
             <div className="p-6 space-y-4">
               <div className="space-y-2">
                 {roles.map(r => (
-                  <div key={r.id} className="flex items-center justify-between px-3 py-2 bg-gray-950 rounded-lg border border-gray-800">
-                    <span className="text-sm text-white">{r.name}</span>
-                    <span className="text-[10px] text-gray-500">ID: {r.id}</span>
+                  <div key={r.id} className="flex items-center justify-between px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
+                    <span className="text-sm text-gray-900">{r.name}</span>
+                    <span className="text-[10px] text-gray-600">ID: {r.id}</span>
                   </div>
                 ))}
-                {roles.length === 0 && <p className="text-sm text-gray-500 text-center py-4">Aucun rôle défini</p>}
+                {roles.length === 0 && <p className="text-sm text-gray-600 text-center py-4">Aucun rôle défini</p>}
               </div>
-              <div className="border-t border-gray-800 pt-4 space-y-3">
-                <p className="text-xs font-medium text-gray-400">Créer un nouveau rôle</p>
+              <div className="border-t border-gray-200 pt-4 space-y-3">
+                <p className="text-xs font-medium text-gray-500">Créer un nouveau rôle</p>
                 <Input placeholder="Nom du rôle" value={roleForm.name} onChange={e => setRoleForm({ name: e.target.value })} />
                 <Button onClick={handleCreateRole} loading={creatingRole} className="w-full">Créer</Button>
               </div>

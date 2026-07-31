@@ -230,8 +230,8 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
   if (loading) {
     return (
       <div className="animate-pulse space-y-4 p-6">
-        <div className="h-8 bg-gray-800 rounded w-48" />
-        <div className="h-64 bg-gray-800 rounded-xl" />
+        <div className="h-8 bg-gray-200 rounded w-48" />
+        <div className="h-64 bg-gray-200 rounded-xl" />
       </div>
     )
   }
@@ -239,8 +239,8 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
   if (!formula) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-400 text-sm">Formule introuvable</p>
-        <button onClick={onBack} className="mt-4 text-sm text-indigo-400 hover:text-indigo-300">Retour</button>
+        <p className="text-red-700 text-sm">Formule introuvable</p>
+        <button onClick={onBack} className="mt-4 text-sm text-indigo-600 hover:text-indigo-600">Retour</button>
       </div>
     )
   }
@@ -248,14 +248,14 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center gap-3">
-        <button onClick={onBack} className="text-gray-400 hover:text-white transition-colors text-lg">←</button>
+        <button onClick={onBack} className="text-gray-500 hover:text-gray-900 transition-colors text-lg">←</button>
         <div>
-          <h1 className="text-lg font-bold text-white">{formula.reference || `Formule #${formula.id}`}</h1>
+          <h1 className="text-lg font-bold text-gray-900">{formula.reference || `Formule #${formula.id}`}</h1>
           {formula.perfume_name && (
-            <p className="text-xs text-gray-500">{formula.perfume_name}</p>
+            <p className="text-xs text-gray-600">{formula.perfume_name}</p>
           )}
           {customerName && (
-            <p className="text-xs text-gray-500">Client : {customerName}</p>
+            <p className="text-xs text-gray-600">Client : {customerName}</p>
           )}
         </div>
         {!isEditing && (
@@ -264,8 +264,8 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h2 className="text-sm font-semibold text-white mb-4">🧪 Composition de la formule</h2>
+        <div className="bg-gray-100 border border-gray-200 rounded-xl p-6">
+          <h2 className="text-sm font-semibold text-gray-900 mb-4">🧪 Composition de la formule</h2>
 
           {!isEditing ? (
             <>
@@ -275,27 +275,27 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                   const notes = displayData?.[noteType] || []
                   return (
                     <div key={noteType}>
-                      <h5 className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-2">
+                      <h5 className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">
                         {['Notes de tête', 'Notes de cœur', 'Notes de fond'][ti]}
                       </h5>
                       {notes.length > 0 ? (
                         <ul className="space-y-1">
                           {notes.map((note, ni) => (
-                            <li key={note.id || ni} className="flex justify-between text-xs text-gray-300">
+                            <li key={note.id || ni} className="flex justify-between text-xs text-gray-600">
                               <span>{note.name}</span>
-                              <span className="text-gray-500">{note.quantity}</span>
+                              <span className="text-gray-600">{note.quantity}</span>
                             </li>
                           ))}
                         </ul>
                       ) : (
-                        <p className="text-xs text-gray-600">Aucune note</p>
+                        <p className="text-xs text-gray-700">Aucune note</p>
                       )}
                       {!hasAnyInvalid && notes.length > 0 && (
-                        <div className="mt-2 pt-2 border-t border-gray-800 text-[11px]">
-                          <span className="text-gray-500">Total: </span>
-                          <span className="text-white font-medium">{stats.total.toFixed(2)} ml</span>
+                        <div className="mt-2 pt-2 border-t border-gray-200 text-[11px]">
+                          <span className="text-gray-600">Total: </span>
+                          <span className="text-gray-900 font-medium">{stats.total.toFixed(2)} ml</span>
                           {grandTotal > 0 && (
-                            <span className="text-gray-500 ml-1">
+                            <span className="text-gray-600 ml-1">
                               ({((stats.total / grandTotal) * 100).toFixed(1)}%)
                             </span>
                           )}
@@ -307,22 +307,22 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
               </div>
 
               {!hasAnyInvalid && (
-                <div className="mt-4 pt-4 border-t border-gray-800 flex items-center gap-2 text-sm">
-                  <span className="text-gray-500 font-medium">Total formule :</span>
-                  <span className="text-white font-bold">{grandTotal.toFixed(2)} ml</span>
+                <div className="mt-4 pt-4 border-t border-gray-200 flex items-center gap-2 text-sm">
+                  <span className="text-gray-600 font-medium">Total formule :</span>
+                  <span className="text-gray-900 font-bold">{grandTotal.toFixed(2)} ml</span>
                 </div>
               )}
 
               {hasAnyInvalid && (
-                <div className="mt-4 bg-amber-900/20 border border-amber-800/50 text-amber-400 text-xs px-3 py-2 rounded-lg">
+                <div className="mt-4 bg-amber-50 border border-amber-200 text-amber-700 text-xs px-3 py-2 rounded-lg">
                   ⚠️ Certaines notes ont une quantité qui ne correspond pas à un nombre valide : {allInvalidNotes.join(', ')}.
                 </div>
               )}
 
               {formula.comment && (
-                <div className="mt-4 pt-4 border-t border-gray-800">
-                  <h5 className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-1">Commentaire</h5>
-                  <p className="text-xs text-gray-300">{formula.comment}</p>
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <h5 className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-1">Commentaire</h5>
+                  <p className="text-xs text-gray-600">{formula.comment}</p>
                 </div>
               )}
             </>
@@ -331,7 +331,7 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
               <div className="grid grid-cols-3 gap-4">
                 {(['top_notes', 'heart_notes', 'base_notes'] as const).map((noteType, ti) => (
                   <div key={noteType}>
-                    <h5 className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mb-2">
+                    <h5 className="text-[10px] uppercase tracking-wider text-gray-600 font-semibold mb-2">
                       {['Notes de tête', 'Notes de cœur', 'Notes de fond'][ti]}
                     </h5>
                     <div className="space-y-1">
@@ -340,7 +340,7 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                           <select
                             value={note.name}
                             onChange={e => handleNoteChange(noteType, ni, 'name', e.target.value)}
-                            className="flex-1 bg-gray-950 border border-gray-800 rounded px-2 py-1 text-xs text-white outline-none focus:border-indigo-500"
+                            className="flex-1 bg-gray-50 border border-gray-200 rounded px-2 py-1 text-xs text-gray-900 outline-none focus:border-indigo-500"
                           >
                             <option value="">-- Choisir --</option>
                             {note.name && !ALL_NOTES_OPTIONS.includes(note.name) && (
@@ -360,12 +360,12 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                             type="text"
                             value={note.quantity}
                             onChange={e => handleNoteChange(noteType, ni, 'quantity', e.target.value)}
-                            className="w-14 bg-gray-950 border border-gray-800 rounded px-2 py-1 text-xs text-white outline-none focus:border-indigo-500"
+                            className="w-14 bg-gray-50 border border-gray-200 rounded px-2 py-1 text-xs text-gray-900 outline-none focus:border-indigo-500"
                             placeholder="Qté"
                           />
                           <button
                             onClick={() => handleRemoveNote(noteType, ni)}
-                            className="text-red-400 hover:text-red-300 text-xs"
+                            className="text-red-700 hover:text-red-700 text-xs"
                           >
                             ✕
                           </button>
@@ -373,7 +373,7 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                       ))}
                       <button
                         onClick={() => handleAddNote(noteType)}
-                        className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                        className="text-xs text-indigo-600 hover:text-indigo-600 transition-colors"
                       >
                         + Ajouter
                       </button>
@@ -382,7 +382,7 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                 ))}
               </div>
 
-              <div className="flex justify-end gap-2 mt-6 pt-4 border-t border-gray-800">
+              <div className="flex justify-end gap-2 mt-6 pt-4 border-t border-gray-200">
                 <Button variant="secondary" size="sm" onClick={handleCancelEdit}>Annuler</Button>
                 <Button size="sm" onClick={handleSave} loading={isSaving}>
                   {isSaving ? 'Enregistrement...' : '💾 Enregistrer'}
@@ -393,11 +393,11 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
         </div>
 
         <div className="space-y-6">
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-            <h2 className="text-sm font-semibold text-white mb-4">🖼 Document associé</h2>
+          <div className="bg-gray-100 border border-gray-200 rounded-xl p-6">
+            <h2 className="text-sm font-semibold text-gray-900 mb-4">🖼 Document associé</h2>
             {formula.file_id ? (
               <div>
-                <div ref={previewRef} className="bg-gray-950 border border-gray-800 rounded-lg flex items-center justify-center">
+                <div ref={previewRef} className="bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center">
                   <img
                     src={formulasApi.getThumbnailUrl(formulaId)}
                     alt="Aperçu"
@@ -410,14 +410,14 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                 <div className="flex justify-center gap-2 mt-4">
                   <button
                     onClick={() => setPreviewRotation(r => (r - 90 + 360) % 360)}
-                    className="text-xs text-gray-400 hover:text-white bg-gray-800 px-2 py-1 rounded transition-colors"
+                    className="text-xs text-gray-500 hover:text-gray-900 bg-white px-2 py-1 rounded transition-colors"
                     title="Pivoter à gauche"
                   >
                     ↺
                   </button>
                   <button
                     onClick={() => setPreviewRotation(r => (r + 90) % 360)}
-                    className="text-xs text-gray-400 hover:text-white bg-gray-800 px-2 py-1 rounded transition-colors"
+                    className="text-xs text-gray-500 hover:text-gray-900 bg-white px-2 py-1 rounded transition-colors"
                     title="Pivoter à droite"
                   >
                     ↻
@@ -427,32 +427,32 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                   <a
                     href={filesApi.getDownloadUrl(formula.file_id!)}
                     download
-                    className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                    className="text-xs text-indigo-600 hover:text-indigo-600 transition-colors"
                   >
                     ⬇️ Télécharger
                   </a>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-32 text-gray-500">
+              <div className="flex flex-col items-center justify-center h-32 text-gray-600">
                 <span className="text-2xl mb-2">📄</span>
                 <p className="text-sm">Aucun document associé</p>
               </div>
             )}
           </div>
 
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-            <h2 className="text-sm font-semibold text-white mb-4">📦 Commandes liées ({orders.length})</h2>
+          <div className="bg-gray-100 border border-gray-200 rounded-xl p-6">
+            <h2 className="text-sm font-semibold text-gray-900 mb-4">📦 Commandes liées ({orders.length})</h2>
             {ordersLoading ? (
-              <p className="text-sm text-gray-500">Chargement...</p>
+              <p className="text-sm text-gray-600">Chargement...</p>
             ) : orders.length === 0 ? (
-              <p className="text-sm text-gray-500">Aucune commande liée à cette formule</p>
+              <p className="text-sm text-gray-600">Aucune commande liée à cette formule</p>
             ) : (
               <div className="space-y-2">
                 {orders.map(o => (
-                  <div key={o.id} className="flex items-center justify-between text-xs bg-gray-950 border border-gray-800 rounded-lg px-3 py-2">
-                    <span className="text-white">#{o.id} - {o.order_type}</span>
-                    <span className="text-gray-500">{o.status}</span>
+                  <div key={o.id} className="flex items-center justify-between text-xs bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+                    <span className="text-gray-900">#{o.id} - {o.order_type}</span>
+                    <span className="text-gray-600">{o.status}</span>
                   </div>
                 ))}
               </div>
@@ -474,20 +474,20 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                   style={getFitStyle(naturalSize, Math.min(window.innerWidth - 200, 632), window.innerHeight * 0.7, lightboxRotation, lightboxZoom)}
                 />
               </div>
-              <div className="bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 flex flex-col gap-2 shrink-0">
+              <div className="bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 flex flex-col gap-2 shrink-0">
                 <div className="flex justify-end">
-                  <button onClick={() => setLightboxImage(null)} className="text-white/60 hover:text-white text-sm">✕ Fermer</button>
+                  <button onClick={() => setLightboxImage(null)} className="text-gray-900/60 hover:text-gray-900 text-sm">✕ Fermer</button>
                 </div>
                 <div className="flex justify-end gap-2">
                   <button
                     onClick={() => setLightboxRotation(r => (r - 90 + 360) % 360)}
-                    className="text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-colors"
+                    className="text-gray-900 bg-white hover:bg-gray-200 px-3 py-1 rounded text-sm transition-colors"
                   >
                     ↺
                   </button>
                   <button
                     onClick={() => setLightboxRotation(r => (r + 90) % 360)}
-                    className="text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-colors"
+                    className="text-gray-900 bg-white hover:bg-gray-200 px-3 py-1 rounded text-sm transition-colors"
                   >
                     ↻
                   </button>
@@ -495,16 +495,16 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                 <div className="flex justify-end gap-2">
                   <button
                     onClick={() => setLightboxZoom(z => Math.max(1, +(z - 0.25).toFixed(2)))}
-                    className="text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-colors"
+                    className="text-gray-900 bg-white hover:bg-gray-200 px-3 py-1 rounded text-sm transition-colors"
                   >
                     −
                   </button>
-                  <span className="flex items-center text-xs text-gray-400 w-10 justify-center">
+                  <span className="flex items-center text-xs text-gray-500 w-10 justify-center">
                     {Math.round(lightboxZoom * 100)}%
                   </span>
                   <button
                     onClick={() => setLightboxZoom(z => Math.min(4, +(z + 0.25).toFixed(2)))}
-                    className="text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-colors"
+                    className="text-gray-900 bg-white hover:bg-gray-200 px-3 py-1 rounded text-sm transition-colors"
                   >
                     +
                   </button>
@@ -515,7 +515,7 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
         </div>
       )}
 
-      <button onClick={onBack} className="text-sm text-gray-400 hover:text-white transition-colors">← Retour au client</button>
+      <button onClick={onBack} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">← Retour au client</button>
     </div>
   )
 }

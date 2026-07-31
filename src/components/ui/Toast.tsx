@@ -56,10 +56,10 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
         <div className="fixed top-4 right-4 z-[100] flex flex-col gap-2 max-w-sm">
           {toasts.map(t => (
             <div key={t.id} className={`rounded-lg border px-4 py-3 shadow-lg text-sm flex items-start gap-3 ${
-              t.type === 'error' ? 'bg-red-900/90 border-red-700 text-red-100' :
-              t.type === 'success' ? 'bg-emerald-900/90 border-emerald-700 text-emerald-100' :
-              t.type === 'warning' ? 'bg-amber-900/90 border-amber-700 text-amber-100' :
-              'bg-gray-800 border-gray-700 text-gray-100'
+              t.type === 'error' ? 'bg-red-50/90 border-red-200 text-red-800' :
+              t.type === 'success' ? 'bg-emerald-50/90 border-emerald-200 text-emerald-800' :
+              t.type === 'warning' ? 'bg-amber-50/90 border-amber-200 text-amber-800' :
+              'bg-white border-gray-300 text-gray-900'
             }`}>
               <span className="shrink-0 mt-0.5 font-bold text-base">
                 {t.type === 'error' ? '!' : t.type === 'success' ? '✓' : t.type === 'warning' ? '⚠' : 'i'}
@@ -69,7 +69,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
                 {t.message && <div className="opacity-90">{t.message}</div>}
                 {t.action && <div className="text-[11px] opacity-70 mt-1">{t.action}</div>}
               </div>
-              <button onClick={() => removeToast(t.id)} className="text-white/60 hover:text-white shrink-0">×</button>
+              <button onClick={() => removeToast(t.id)} className="text-gray-900/60 hover:text-gray-900 shrink-0">×</button>
             </div>
           ))}
         </div>

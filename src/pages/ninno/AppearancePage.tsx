@@ -13,8 +13,8 @@ export default function AppearancePage() {
       .finally(() => setLoading(false))
   }, [])
 
-  if (loading) return <p className="text-gray-400 text-sm">Chargement...</p>
-  if (!config) return <p className="text-red-400 text-sm">Impossible de charger la configuration.</p>
+  if (loading) return <p className="text-gray-500 text-sm">Chargement...</p>
+  if (!config) return <p className="text-red-700 text-sm">Impossible de charger la configuration.</p>
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

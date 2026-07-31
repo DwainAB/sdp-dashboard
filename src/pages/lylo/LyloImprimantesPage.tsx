@@ -460,11 +460,11 @@ export default function LyloImprimantesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="rounded-lg border border-gray-800 bg-gray-900 p-6">
+      <div className="rounded-lg border border-gray-200 bg-gray-100 p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Imprimantes</h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <h2 className="text-xl font-semibold text-gray-900">Imprimantes</h2>
+            <p className="mt-1 text-sm text-gray-500">
               Gère les imprimantes réseau. Clique sur une ligne pour modifier ou supprimer.
             </p>
           </div>
@@ -476,17 +476,17 @@ export default function LyloImprimantesPage() {
           </div>
         </div>
         {error ? (
-          <div className="mt-4 rounded-lg border border-red-800 bg-red-900/30 p-3 text-sm text-red-400">
+          <div className="mt-4 rounded-lg border border-red-200 bg-red-50/30 p-3 text-sm text-red-700">
             {error}
           </div>
         ) : null}
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-lg border border-gray-800 bg-gray-900">
-        <div className="flex flex-col gap-3 border-b border-gray-800 bg-gray-950/20 px-6 py-4 md:flex-row md:items-center md:justify-between">
-          <div className="text-sm font-semibold text-white">
-            Liste des imprimantes <span className="text-gray-500">({filteredPrinters.length})</span>
+      <div className="overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+        <div className="flex flex-col gap-3 border-b border-gray-200 bg-gray-50/20 px-6 py-4 md:flex-row md:items-center md:justify-between">
+          <div className="text-sm font-semibold text-gray-900">
+            Liste des imprimantes <span className="text-gray-600">({filteredPrinters.length})</span>
           </div>
           <div className="w-full md:w-80">
             <Input
@@ -498,27 +498,27 @@ export default function LyloImprimantesPage() {
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-800">
-            <thead className="bg-gray-950/40">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50/40">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Nom</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Location</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">IP</th>
-                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">Port</th>
-                <th className="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-400">Statut</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Nom</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Location</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">IP</th>
+                <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Port</th>
+                <th className="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Statut</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
+            <tbody className="divide-y divide-gray-200">
               {filteredPrinters.map((p) => (
                 <tr
                   key={String(p.id)}
-                  className="cursor-pointer transition-colors hover:bg-gray-800/50"
+                  className="cursor-pointer transition-colors hover:bg-gray-100/60"
                   onClick={() => openDetail(p)}
                 >
-                  <td className="px-6 py-4 text-sm font-medium text-white">{p.name}</td>
-                  <td className="px-6 py-4 text-sm capitalize text-gray-300">{p.location}</td>
-                  <td className="px-6 py-4 font-mono text-sm text-gray-300">{p.ip}</td>
-                  <td className="px-6 py-4 text-right font-mono text-sm text-gray-300">{p.port}</td>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{p.name}</td>
+                  <td className="px-6 py-4 text-sm capitalize text-gray-600">{p.location}</td>
+                  <td className="px-6 py-4 font-mono text-sm text-gray-600">{p.ip}</td>
+                  <td className="px-6 py-4 text-right font-mono text-sm text-gray-600">{p.port}</td>
                   <td className="px-6 py-4 text-center" onClick={(e) => toggleActive(p, e)}>
                     <Toggle active={p.is_active} />
                   </td>
@@ -526,7 +526,7 @@ export default function LyloImprimantesPage() {
               ))}
               {filteredPrinters.length === 0 ? (
                 <tr>
-                  <td className="px-6 py-10 text-center text-sm text-gray-400" colSpan={5}>
+                  <td className="px-6 py-10 text-center text-sm text-gray-500" colSpan={5}>
                     {isBusy ? "Chargement…" : "Aucune imprimante trouvée."}
                   </td>
                 </tr>
@@ -550,23 +550,23 @@ export default function LyloImprimantesPage() {
             <button
               type="button"
               onClick={startScan}
-              className="flex items-center gap-4 rounded-lg border border-gray-800 bg-gray-950/30 px-5 py-4 text-left transition-colors hover:border-indigo-500 hover:bg-indigo-600/5"
+              className="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50/30 px-5 py-4 text-left transition-colors hover:border-indigo-500 hover:bg-indigo-600/5"
             >
-              <span className="material-symbols-outlined text-[28px] text-indigo-400">wifi_find</span>
+              <span className="material-symbols-outlined text-[28px] text-indigo-600">wifi_find</span>
               <div>
-                <p className="text-sm font-semibold text-white">Scanner le réseau</p>
-                <p className="mt-0.5 text-xs text-gray-400">Détecte les imprimantes disponibles (~5-10 s)</p>
+                <p className="text-sm font-semibold text-gray-900">Scanner le réseau</p>
+                <p className="mt-0.5 text-xs text-gray-500">Détecte les imprimantes disponibles (~5-10 s)</p>
               </div>
             </button>
             <button
               type="button"
               onClick={openManualForm}
-              className="flex items-center gap-4 rounded-lg border border-gray-800 bg-gray-950/30 px-5 py-4 text-left transition-colors hover:border-indigo-500 hover:bg-indigo-600/5"
+              className="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50/30 px-5 py-4 text-left transition-colors hover:border-indigo-500 hover:bg-indigo-600/5"
             >
-              <span className="material-symbols-outlined text-[28px] text-indigo-400">edit</span>
+              <span className="material-symbols-outlined text-[28px] text-indigo-600">edit</span>
               <div>
-                <p className="text-sm font-semibold text-white">Ajouter manuellement</p>
-                <p className="mt-0.5 text-xs text-gray-400">Saisir l'IP, le port et les informations manuellement</p>
+                <p className="text-sm font-semibold text-gray-900">Ajouter manuellement</p>
+                <p className="mt-0.5 text-xs text-gray-500">Saisir l'IP, le port et les informations manuellement</p>
               </div>
             </button>
           </div>
@@ -577,8 +577,8 @@ export default function LyloImprimantesPage() {
           <div className="flex flex-col items-center gap-5 py-8">
             <ScanSpinner />
             <div className="text-center">
-              <p className="text-sm font-semibold text-white">Scan en cours…</p>
-              <p className="mt-1 text-xs text-gray-400">
+              <p className="text-sm font-semibold text-gray-900">Scan en cours…</p>
+              <p className="mt-1 text-xs text-gray-500">
                 Recherche des imprimantes sur le réseau local. Cela peut prendre jusqu'à 10 secondes.
               </p>
             </div>
@@ -589,16 +589,16 @@ export default function LyloImprimantesPage() {
         {addStep === "results" && !confirmingIp && (
           <div className="space-y-4">
             {scanError ? (
-              <div className="rounded-lg border border-red-800 bg-red-900/30 p-3 text-sm text-red-400">
+              <div className="rounded-lg border border-red-200 bg-red-50/30 p-3 text-sm text-red-700">
                 {scanError}
               </div>
             ) : null}
 
             {scanResult.printers.length === 0 && !scanError ? (
               <div className="flex flex-col items-center gap-3 py-8 text-center">
-                <span className="material-symbols-outlined text-[40px] text-gray-700">print_disabled</span>
-                <p className="text-sm font-semibold text-white">Aucune imprimante détectée</p>
-                <p className="text-xs text-gray-400">
+                <span className="material-symbols-outlined text-[40px] text-gray-800">print_disabled</span>
+                <p className="text-sm font-semibold text-gray-900">Aucune imprimante détectée</p>
+                <p className="text-xs text-gray-500">
                   Vérifie que les imprimantes sont allumées et connectées au réseau.
                 </p>
                 <Button type="button" variant="primary" onClick={startScan} className="mt-2">
@@ -609,7 +609,7 @@ export default function LyloImprimantesPage() {
 
             {scanResult.printers.length > 0 ? (
               <div className="space-y-3">
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-500">
                   {scanResult.printers.length} device{scanResult.printers.length > 1 ? "s" : ""} trouvé
                   {scanResult.printers.length > 1 ? "s" : ""}. Associe chaque imprimante réseau à une imprimante PrintNode.
                 </p>
@@ -620,17 +620,17 @@ export default function LyloImprimantesPage() {
                     return (
                       <div
                         key={device.ip}
-                        className="rounded-lg border border-gray-800 bg-gray-950/20 p-4 space-y-3"
+                        className="rounded-lg border border-gray-200 bg-gray-50/20 p-4 space-y-3"
                       >
                         {/* Device info */}
                         <div className="flex items-center gap-2">
-                          <span className="material-symbols-outlined text-[18px] text-indigo-400">print</span>
-                          <span className="font-mono text-sm font-semibold text-white">{device.ip}</span>
+                          <span className="material-symbols-outlined text-[18px] text-indigo-600">print</span>
+                          <span className="font-mono text-sm font-semibold text-gray-900">{device.ip}</span>
                           {device.hostname ? (
-                            <span className="text-xs text-gray-500">— {device.hostname}</span>
+                            <span className="text-xs text-gray-600">— {device.hostname}</span>
                           ) : null}
                           {device.port ? (
-                            <span className="ml-auto font-mono text-xs text-gray-600">:{device.port}</span>
+                            <span className="ml-auto font-mono text-xs text-gray-700">:{device.port}</span>
                           ) : null}
                         </div>
 
@@ -641,7 +641,7 @@ export default function LyloImprimantesPage() {
                             id={`pn_${device.ip}`}
                             value={sel?.printnode_id ?? ""}
                             onChange={(e) => setDevicePrintNode(device.ip, e.target.value)}
-                            className="w-full rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-white focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                            className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
                           >
                             <option value="">Sélectionner une imprimante PrintNode…</option>
                             {scanResult.printnode_printers.map((pn) => (
@@ -678,16 +678,16 @@ export default function LyloImprimantesPage() {
         {addStep === "results" && confirmingIp && (
           <div className="space-y-4">
             {/* Recap device */}
-            <div className="flex items-center gap-2 rounded-lg border border-gray-800 bg-gray-950/30 px-4 py-3">
-              <span className="material-symbols-outlined text-[18px] text-indigo-400">print</span>
-              <span className="font-mono text-sm font-semibold text-white">{confirmingIp}</span>
+            <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50/30 px-4 py-3">
+              <span className="material-symbols-outlined text-[18px] text-indigo-600">print</span>
+              <span className="font-mono text-sm font-semibold text-gray-900">{confirmingIp}</span>
               {(() => {
                 const device = scanResult.printers.find((d) => d.ip === confirmingIp);
                 return device?.hostname ? (
-                  <span className="text-xs text-gray-500">— {device.hostname}</span>
+                  <span className="text-xs text-gray-600">— {device.hostname}</span>
                 ) : null;
               })()}
-              <span className="ml-auto font-mono text-xs text-gray-600">
+              <span className="ml-auto font-mono text-xs text-gray-700">
                 :{scanResult.printers.find((d) => d.ip === confirmingIp)?.port ?? 9100}
               </span>
             </div>
@@ -710,7 +710,7 @@ export default function LyloImprimantesPage() {
                   value={createForm.location}
                   onChange={(e) => setCreateForm((s) => ({ ...s, location: e.target.value }))}
                   placeholder="Ex : caisse, cuisine, bar…"
-                  className="w-full rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-white focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
                 />
                 <datalist id="location-suggestions">
                   {LOCATION_OPTIONS.map((l) => <option key={l} value={l} />)}
@@ -765,7 +765,7 @@ function Toggle({ active }: { active: boolean }) {
       }`}
     >
       <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-gray-950 shadow transition-transform ${
+        className={`inline-block h-4 w-4 transform rounded-full bg-gray-50 shadow transition-transform ${
           active ? "translate-x-6" : "translate-x-1"
         }`}
       />
@@ -776,11 +776,11 @@ function Toggle({ active }: { active: boolean }) {
 function ScanSpinner() {
   return (
     <div className="relative flex h-16 w-16 items-center justify-center">
-      <svg className="h-16 w-16 animate-spin text-indigo-400" fill="none" viewBox="0 0 64 64" aria-hidden="true">
+      <svg className="h-16 w-16 animate-spin text-indigo-600" fill="none" viewBox="0 0 64 64" aria-hidden="true">
         <circle className="opacity-20" cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="6" />
         <path className="opacity-80" d="M32 4a28 28 0 0 1 28 28" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
       </svg>
-      <span className="material-symbols-outlined absolute text-[24px] text-indigo-400">wifi_find</span>
+      <span className="material-symbols-outlined absolute text-[24px] text-indigo-600">wifi_find</span>
     </div>
   );
 }
@@ -811,7 +811,7 @@ function PrinterForm({
           value={form.location}
           onChange={(e) => onChange((s) => ({ ...s, location: e.target.value }))}
           placeholder="Ex : caisse, cuisine, bar…"
-          className="w-full rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-white focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+          className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
         />
         <datalist id="location-suggestions">
           {LOCATION_OPTIONS.map((l) => <option key={l} value={l} />)}
@@ -846,12 +846,12 @@ function PrinterForm({
           }`}
         >
           <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-gray-950 shadow transition-transform ${
+            className={`inline-block h-4 w-4 transform rounded-full bg-gray-50 shadow transition-transform ${
               form.is_active ? "translate-x-6" : "translate-x-1"
             }`}
           />
         </button>
-        <span className="text-sm text-gray-300">{form.is_active ? "Active" : "Inactive"}</span>
+        <span className="text-sm text-gray-600">{form.is_active ? "Active" : "Inactive"}</span>
       </div>
     </div>
   );

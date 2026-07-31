@@ -1,5 +1,5 @@
 {
-  "name": "sdp-dashboard",
+  "name": "sdp",
   "version": "1.0.0",
   "private": true,
   "main": "dist-electron/main.js",
@@ -8,7 +8,10 @@
     "dev:electron": "concurrently -k \"vite\" \"wait-on -d 1000 tcp:5173 && electron .\"",
     "build": "tsc && vite build && electron-builder",
     "preview": "vite preview",
-    "server": "tsx watch server/index.ts"
+    "server": "tsx watch server/index.ts",
+    "bump:patch": "npm version patch",
+    "bump:minor": "npm version minor",
+    "bump:major": "npm version major"
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.2",
@@ -46,7 +49,7 @@
   },
   "build": {
     "appId": "com.sdp.dashboard",
-    "productName": "SDP Dashboard",
+    "productName": "SDP",
     "directories": {
       "output": "release"
     },

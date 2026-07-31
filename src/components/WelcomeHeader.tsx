@@ -40,25 +40,25 @@ export function WelcomeHeader({ firstName, notifications }: WelcomeHeaderProps) 
   return (
     <div className="flex items-start justify-between mb-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-gray-900">
           {greeting()}, {firstName}
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-600 mt-1">
           {formatDate(now)} — {formatTime(now)}
         </p>
       </div>
 
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-3 max-w-xs">
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+      <div className="bg-gray-100 rounded-xl border border-gray-200 p-3 max-w-xs">
+        <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
           <Bell size={14} />
           Dernière notification
         </div>
         {notifications.length > 0 ? (
-          <p className="text-sm text-gray-200 leading-snug">{notifications[0].message}</p>
+          <p className="text-sm text-gray-700 leading-snug">{notifications[0].message}</p>
         ) : (
-          <p className="text-sm text-gray-500">Aucune notification</p>
+          <p className="text-sm text-gray-600">Aucune notification</p>
         )}
-        <p className="text-[10px] text-gray-600 mt-1">{notifications[0]?.time}</p>
+        <p className="text-[10px] text-gray-700 mt-1">{notifications[0]?.time}</p>
       </div>
     </div>
   )

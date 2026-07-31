@@ -114,11 +114,11 @@ export default function LyloTeamPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">
+      <div className="rounded-xl border border-gray-200 bg-gray-100 p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Équipe</h2>
-            <p className="mt-1 text-sm text-gray-400">Gère les membres de ton équipe.</p>
+            <h2 className="text-xl font-semibold text-gray-900">Équipe</h2>
+            <p className="mt-1 text-sm text-gray-500">Gère les membres de ton équipe.</p>
           </div>
           <div className="flex w-full md:w-auto">
             <Button variant="primary" type="button" onClick={openCreate} className="w-full md:w-auto">
@@ -127,39 +127,39 @@ export default function LyloTeamPage() {
             </Button>
           </div>
         </div>
-        {error && <div className="mt-4 rounded-lg border border-red-800 bg-red-900/30 p-3 text-sm text-red-400">{error}</div>}
+        {error && <div className="mt-4 rounded-lg border border-red-200 bg-red-50/30 p-3 text-sm text-red-700">{error}</div>}
       </div>
-      <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-900">
-        <div className="flex flex-col gap-3 border-b border-gray-800 bg-gray-950/20 px-6 py-4 md:flex-row md:items-center md:justify-between">
-          <div className="text-sm font-semibold text-white">
-            Membres <span className="text-gray-500">({filtered.length})</span>
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
+        <div className="flex flex-col gap-3 border-b border-gray-200 bg-gray-50/20 px-6 py-4 md:flex-row md:items-center md:justify-between">
+          <div className="text-sm font-semibold text-gray-900">
+            Membres <span className="text-gray-600">({filtered.length})</span>
           </div>
           <div className="w-full md:w-96">
             <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher (nom, email, téléphone)" aria-label="Rechercher" />
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-800">
-            <thead className="bg-gray-950/40">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50/40">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Nom</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Prénom</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Téléphone</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Nom</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Prénom</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Téléphone</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
+            <tbody className="divide-y divide-gray-200">
               {filtered.map(m => (
-                <tr key={String(m.id)} className="cursor-pointer transition-colors hover:bg-gray-800/50" onClick={() => openEdit(m)}>
-                  <td className="px-6 py-4 text-sm font-medium text-white">{m.last_name}</td>
-                  <td className="px-6 py-4 text-sm text-gray-300">{m.first_name}</td>
-                  <td className="px-6 py-4 text-sm text-gray-300">{m.email}</td>
-                  <td className="px-6 py-4 text-sm text-gray-300">{m.phone || '—'}</td>
+                <tr key={String(m.id)} className="cursor-pointer transition-colors hover:bg-gray-100/60" onClick={() => openEdit(m)}>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{m.last_name}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">{m.first_name}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">{m.email}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">{m.phone || '—'}</td>
                 </tr>
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td className="px-6 py-10 text-center text-sm text-gray-500" colSpan={4}>
+                  <td className="px-6 py-10 text-center text-sm text-gray-600" colSpan={4}>
                     {isBusy ? 'Chargement...' : "Aucun membre trouvé."}
                   </td>
                 </tr>

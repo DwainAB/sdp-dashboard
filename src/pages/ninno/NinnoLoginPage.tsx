@@ -29,19 +29,19 @@ export default function NinnoLoginPage({ onLogin }: { onLogin: () => void }) {
     <div className="flex items-center justify-center py-16">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-900 border border-gray-800 rounded-xl p-8 w-[360px] shadow-lg flex flex-col gap-4"
+        className="bg-gray-100 border border-gray-200 rounded-xl p-8 w-[360px] shadow-lg flex flex-col gap-4"
       >
-        <h1 className="text-xl font-bold text-white">Ninno — Back office</h1>
-        <p className="text-gray-400 text-sm m-0">Entrez le jeton administrateur pour continuer.</p>
+        <h1 className="text-xl font-bold text-gray-900">Ninno — Back office</h1>
+        <p className="text-gray-500 text-sm m-0">Entrez le jeton administrateur pour continuer.</p>
         <input
           type="password"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Jeton admin"
           autoFocus
-          className="w-full px-3 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 text-sm"
+          className="w-full px-3 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 text-sm"
         />
-        {error && <p className="text-red-400 text-sm m-0">{error}</p>}
+        {error && <p className="text-red-700 text-sm m-0">{error}</p>}
         <button
           type="submit"
           disabled={loading || !value}

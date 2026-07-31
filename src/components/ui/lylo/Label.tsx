@@ -4,7 +4,7 @@ export function Label({ className = '', ...props }: LabelHTMLAttributes<HTMLLabe
   return (
     <label
       {...props}
-      className={['text-xs font-semibold uppercase tracking-wider text-gray-400', className].join(' ')}
+      className={['text-xs font-semibold uppercase tracking-wider text-gray-500', className].join(' ')}
     />
   )
 }

@@ -29,11 +29,11 @@ function NoteImageField({
   return (
     <div className="flex items-center gap-2.5">
       <div
-        className="w-12 h-12 shrink-0 rounded-lg border border-gray-800"
+        className="w-12 h-12 shrink-0 rounded-lg border border-gray-200"
         style={displayUrl ? { background: `center/cover no-repeat url(${displayUrl})` } : { background: 'var(--bg)' }}
       />
       <div className="flex-1 text-left">
-        <label className="block text-xs text-gray-400 mb-0.5">{label}</label>
+        <label className="block text-xs text-gray-500 mb-0.5">{label}</label>
         <input
           type="file"
           accept={accept}
@@ -42,7 +42,7 @@ function NoteImageField({
             onChange(file)
             setPreview(file ? URL.createObjectURL(file) : null)
           }}
-          className="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-500"
+          className="text-xs text-gray-600 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-500"
         />
       </div>
     </div>
@@ -91,10 +91,10 @@ export default function NoteForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-2.5 bg-gray-900 border border-gray-800 rounded-xl p-4"
+      className="flex flex-col gap-2.5 bg-gray-100 border border-gray-200 rounded-xl p-4"
     >
       <input
-        className="w-full px-2.5 py-2 rounded-lg border border-gray-700 bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+        className="w-full px-2.5 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-indigo-500"
         placeholder="Nom"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -111,7 +111,7 @@ export default function NoteForm({
         />
       ))}
 
-      {error && <p className="text-red-400 text-xs m-0">{error}</p>}
+      {error && <p className="text-red-700 text-xs m-0">{error}</p>}
 
       <div className="flex gap-2">
         <button
@@ -125,7 +125,7 @@ export default function NoteForm({
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 rounded-lg border border-gray-700 bg-transparent text-gray-300 text-xs hover:bg-gray-800"
+            className="px-4 py-2 rounded-lg border border-gray-300 bg-transparent text-gray-600 text-xs hover:bg-gray-100"
           >
             Annuler
           </button>
