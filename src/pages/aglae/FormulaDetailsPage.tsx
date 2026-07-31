@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { formulasApi, ordersApi, customersApi, filesApi } from '../../api/ocrClient'
 import { useToast } from '../../components/ui/Toast'
 import { Button } from '../../components/ui/Button'
@@ -85,6 +85,26 @@ function calculateNotesStats(notes: Note[]) {
   return { total, invalidNotes }
 }
 
+function getFitStyle(
+  size: { w: number; h: number } | null,
+  boxW: number,
+  boxH: number,
+  rotation: number,
+): React.CSSProperties {
+  if (!size || boxW <= 0 || boxH <= 0) {
+    return { width: '100%', transform: `rotate(${rotation}deg)`, transition: 'transform 0.3s ease' }
+  }
+  const rotated = rotation % 180 !== 0
+  const base = Math.min(boxW / size.w, boxH / size.h)
+  const scale = rotated ? Math.min(base, boxW / size.h, boxH / size.w) : base
+  return {
+    width: Math.floor(size.w * scale),
+    height: Math.floor(size.h * scale),
+    transform: `rotate(${rotation}deg)`,
+    transition: 'transform 0.3s ease',
+  }
+}
+
 export default function FormulaDetailsPage({ formulaId, customerId, onBack }: FormulaDetailsPageProps) {
   const { showError, showSuccess } = useToast()
   const [formula, setFormula] = useState<Formula | null>(null)
@@ -96,6 +116,9 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
   const [previewRotation, setPreviewRotation] = useState(0)
   const [lightboxRotation, setLightboxRotation] = useState(0)
+  const previewRef = useRef<HTMLDivElement>(null)
+  const [previewWidth, setPreviewWidth] = useState(0)
+  const [naturalSize, setNaturalSize] = useState<{ w: number; h: number } | null>(null)
   const [orders, setOrders] = useState<Order[]>([])
   const [ordersLoading, setOrdersLoading] = useState(false)
 
@@ -116,6 +139,23 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
       .catch(() => showError('Erreur', 'Impossible de charger la formule'))
       .finally(() => setLoading(false))
   }, [formulaId, customerId])
+
+  useEffect(() => {
+    const el = previewRef.current
+    if (!el) return
+    const update = () => setPreviewWidth(el.clientWidth)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const el = e.currentTarget
+    if (el.naturalWidth > 0 && el.naturalHeight > 0) {
+      setNaturalSize({ w: el.naturalWidth, h: el.naturalHeight })
+    }
+  }
 
   const fetchOrders = async (fId: number | undefined) => {
     if (!fId) return
@@ -352,12 +392,13 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
             <h2 className="text-sm font-semibold text-white mb-4">🖼 Document associé</h2>
             {formula.file_id ? (
               <div>
-                <div className="bg-gray-950 border border-gray-800 rounded-lg overflow-hidden aspect-square flex items-center justify-center">
+                <div ref={previewRef} className="bg-gray-950 border border-gray-800 rounded-lg flex items-center justify-center">
                   <img
                     src={formulasApi.getThumbnailUrl(formulaId)}
                     alt="Aperçu"
-                    className="max-h-full max-w-full object-contain cursor-pointer"
-                    style={{ transform: `rotate(${previewRotation}deg)`, transition: 'transform 0.3s ease' }}
+                    className="cursor-pointer relative z-10"
+                    onLoad={handleImageLoad}
+                    style={getFitStyle(naturalSize, previewWidth, 420, previewRotation)}
                     onClick={() => { setLightboxImage(formulasApi.getThumbnailUrl(formulaId)); setLightboxRotation(previewRotation) }}
                   />
                 </div>
@@ -418,8 +459,10 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
       {lightboxImage && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={() => setLightboxImage(null)}>
           <div className="relative max-w-2xl w-full" onClick={e => e.stopPropagation()}>
-            <button onClick={() => setLightboxImage(null)} className="absolute -top-8 right-0 text-white/60 hover:text-white text-sm">✕ Fermer</button>
-            <div className="flex justify-center gap-2 mb-2">
+            <div className="flex justify-end mb-2">
+              <button onClick={() => setLightboxImage(null)} className="text-white/60 hover:text-white text-sm">✕ Fermer</button>
+            </div>
+            <div className="flex justify-end gap-2 mb-2">
               <button
                 onClick={() => setLightboxRotation(r => (r - 90 + 360) % 360)}
                 className="text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-colors"
@@ -433,12 +476,13 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                 ↻
               </button>
             </div>
-            <div className="overflow-hidden rounded-lg bg-gray-950 flex items-center justify-center max-h-[80vh]">
+            <div className="flex justify-center rounded-lg">
               <img
                 src={lightboxImage}
                 alt="Aperçu"
-                className="max-h-[75vh] max-w-full object-contain"
-                style={{ transform: `rotate(${lightboxRotation}deg)`, transition: 'transform 0.3s ease' }}
+                className="rounded-lg relative z-10"
+                onLoad={handleImageLoad}
+                style={getFitStyle(naturalSize, Math.min(window.innerWidth - 48, 672), window.innerHeight * 0.7, lightboxRotation)}
               />
             </div>
           </div>
