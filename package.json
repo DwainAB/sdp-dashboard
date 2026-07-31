@@ -8,7 +8,7 @@
     "dev:electron": "concurrently -k \"vite\" \"wait-on -d 1000 tcp:5173 && electron .\"",
     "build": "tsc && vite build && electron-builder",
     "preview": "vite preview",
-    "server": "tsx watch server/index.ts",
+    "server": "npm --prefix server run dev",
     "bump:patch": "npm version patch",
     "bump:minor": "npm version minor",
     "bump:major": "npm version major",
