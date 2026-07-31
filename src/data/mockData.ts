@@ -11,7 +11,7 @@ export const mockNotifications: Notification[] = [
 ]
 
 export const mockProjects: Project[] = [
-  { id: 1, name: 'SDP Core', slug: 'sdp-core', description: 'Plateforme principale de gestion des paiements', color: '#996F56', status: 'active', created_at: '2024-01-01T00:00:00Z' },
+  { id: 1, name: 'Accueil', slug: 'sdp-core', description: 'Plateforme principale de gestion des paiements', color: '#996F56', status: 'active', created_at: '2024-01-01T00:00:00Z' },
   { id: 2, name: 'Aglae', slug: 'aglae', description: 'Place de marché B2B', color: '#f59e0b', status: 'active', created_at: '2024-01-01T00:00:00Z' },
   { id: 3, name: 'Ninno', slug: 'mobile-app', description: 'Application mobile clients', color: '#10b981', status: 'active', created_at: '2024-01-01T00:00:00Z' },
   { id: 4, name: 'Lylo', slug: 'lylo', description: 'Back-office Lylo', color: '#996f56', status: 'active', created_at: '2024-01-01T00:00:00Z' },
@@ -20,7 +20,7 @@ export const mockProjects: Project[] = [
 
 export const mockDashboards: Record<string, Dashboard> = {
   'sdp-core': {
-    id: 1, name: 'SDP Core', slug: 'sdp-core', description: 'Plateforme principale de gestion des paiements', color: '#996F56', status: 'active', created_at: '2024-01-01T00:00:00Z',
+    id: 1, name: 'Accueil', slug: 'sdp-core', description: 'Plateforme principale de gestion des paiements', color: '#996F56', status: 'active', created_at: '2024-01-01T00:00:00Z',
     sections: [
       { id: 'overview', name: 'Vue d\'ensemble', icon: 'LayoutDashboard', metricIds: [1, 2, 3, 4], chartIds: [1, 2, 3] },
       { id: 'transactions', name: 'Transactions', icon: 'ArrowLeftRight', metricIds: [2], chartIds: [1] },

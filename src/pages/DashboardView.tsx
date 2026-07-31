@@ -26,7 +26,7 @@ const LYLO_SECTIONS = new Set(['accueil', 'clients', 'equipe', 'formules', 'ques
 export function DashboardView() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
-  const { logout } = useAuth()
+  const { logout, user, sdpUser } = useAuth()
   const [dashboard, setDashboard] = useState<Dashboard | null>(null)
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
@@ -212,7 +212,7 @@ export function DashboardView() {
             ) : (
               <div className="space-y-6">
                 {isUserMode && (
-                  <WelcomeHeader firstName={mockUser.firstName} notifications={mockNotifications} />
+                  <WelcomeHeader firstName={sdpUser?.first_name || user?.first_name || mockUser.firstName} notifications={mockNotifications} />
                 )}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
