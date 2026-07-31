@@ -94,6 +94,8 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
   const [isSaving, setIsSaving] = useState(false)
   const [editingData, setEditingData] = useState<Formula | null>(null)
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
+  const [previewRotation, setPreviewRotation] = useState(0)
+  const [lightboxRotation, setLightboxRotation] = useState(0)
   const [orders, setOrders] = useState<Order[]>([])
   const [ordersLoading, setOrdersLoading] = useState(false)
 
@@ -355,8 +357,25 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
                     src={formulasApi.getThumbnailUrl(formulaId)}
                     alt="Aperçu"
                     className="w-full cursor-pointer"
-                    onClick={() => setLightboxImage(formulasApi.getThumbnailUrl(formulaId))}
+                    style={{ transform: `rotate(${previewRotation}deg)`, transition: 'transform 0.3s ease' }}
+                    onClick={() => { setLightboxImage(formulasApi.getThumbnailUrl(formulaId)); setLightboxRotation(previewRotation) }}
                   />
+                </div>
+                <div className="flex justify-center gap-2 mt-2">
+                  <button
+                    onClick={() => setPreviewRotation(r => (r - 90 + 360) % 360)}
+                    className="text-xs text-gray-400 hover:text-white bg-gray-800 px-2 py-1 rounded transition-colors"
+                    title="Pivoter à gauche"
+                  >
+                    ↺
+                  </button>
+                  <button
+                    onClick={() => setPreviewRotation(r => (r + 90) % 360)}
+                    className="text-xs text-gray-400 hover:text-white bg-gray-800 px-2 py-1 rounded transition-colors"
+                    title="Pivoter à droite"
+                  >
+                    ↻
+                  </button>
                 </div>
                 <div className="mt-2 text-center">
                   <a
@@ -400,7 +419,21 @@ export default function FormulaDetailsPage({ formulaId, customerId, onBack }: Fo
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={() => setLightboxImage(null)}>
           <div className="relative max-w-2xl w-full" onClick={e => e.stopPropagation()}>
             <button onClick={() => setLightboxImage(null)} className="absolute -top-8 right-0 text-white/60 hover:text-white text-sm">✕ Fermer</button>
-            <img src={lightboxImage} alt="Aperçu" className="w-full rounded-lg" />
+            <div className="flex justify-center gap-2 mb-2">
+              <button
+                onClick={() => setLightboxRotation(r => (r - 90 + 360) % 360)}
+                className="text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-colors"
+              >
+                ↺
+              </button>
+              <button
+                onClick={() => setLightboxRotation(r => (r + 90) % 360)}
+                className="text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded text-sm transition-colors"
+              >
+                ↻
+              </button>
+            </div>
+            <img src={lightboxImage} alt="Aperçu" className="w-full rounded-lg" style={{ transform: `rotate(${lightboxRotation}deg)`, transition: 'transform 0.3s ease' }} />
           </div>
         </div>
       )}
