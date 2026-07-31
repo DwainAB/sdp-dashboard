@@ -3,6 +3,9 @@
 interface Window {
   electronAPI?: {
     platform: string
+    onUpdateEvent: (callback: (payload: { event: string; payload?: Record<string, unknown> }) => void) => () => void
+    checkForUpdates: () => Promise<boolean>
+    quitAndInstall: () => void
   }
 }
 

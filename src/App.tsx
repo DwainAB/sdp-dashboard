@@ -6,6 +6,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { DashboardView } from './pages/DashboardView'
 import LoginPage from './pages/LoginPage'
 import { AuthGuard } from './components/AuthGuard'
+import { UpdateManager } from './components/UpdateManager'
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
 
@@ -26,6 +27,7 @@ export default function App() {
       <AuthProvider>
         <ToastProvider>
           {content}
+          <UpdateManager />
         </ToastProvider>
       </AuthProvider>
     </ErrorBoundary>
