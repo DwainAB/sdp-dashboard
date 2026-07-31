@@ -18,7 +18,7 @@ Application de gestion interne **SDP** : dashboard desktop (Electron) avec inter
 
 - Node.js 18+
 - MySQL (pour le backend)
-- Compte Resend (emails) et Google Cloud (OAuth) — optionnels en dev
+- Compte Resend (emails) — optionnel en dev
 
 ## Démarrage
 
@@ -34,7 +34,7 @@ npm run server         # backend Express (port 3001, tsx watch)
 
 Toutes les variables sont documentées dans [`.env.example`](.env.example). Points clés :
 
-- **`VITE_*`** : exposées au frontend (Google OAuth, mode user, API OCR)
+- **`VITE_*`** : exposées au frontend (mode user, API OCR)
 - **`DB_*` / `PORT` / `RESEND_*`** : backend uniquement
 - **`GH_TOKEN`** : réservée à la publication de releases (voir plus bas)
 - `.env` est **gitignoré** — ne jamais commiter de secrets (DB creds, RESEND_API_KEY, GH_TOKEN)
@@ -67,13 +67,6 @@ npm run publish           # build + release GitHub
 ```
 
 > Le token GitHub doit avoir le scope **`repo`** (releases privées incluses). Il n'est nécessaire que sur la machine qui publie, pas chez les utilisateurs.
-
-### Limites actuelles (non signé)
-
-- **macOS** : les certificats Apple disponibles sont expirés → le DMG n'est pas signé. Conséquences : avertissement Gatekeeper au premier lancement, et **mise à jour automatique désactivée sur Mac** (electron-updater exige une app signée sur macOS).
-- **Windows** : installateur non signé → écran SmartScreen au premier lancement, mais les mises à jour automatiques fonctionnent.
-
-Pour lever ces limites : signer avec un certificat Developer ID (macOS) et un certificat Windows Code Signing (Windows).
 
 ## Backend et API
 
